@@ -7,7 +7,7 @@ As bytemechanics libraries has the objective to create standalone and short libr
 ## Quick start
 _**IMPORTANT NOTE: We strongly recommends to use as dependency only in final projects to avoid dependency hell when someone use your library/framework**_
 1. First of all include the Jar file in your compile and execution classpath.
-### Maven
+**Maven**
 ```Maven
 	<dependency>
 		<groupId>org.bytemechanics</groupId>
@@ -15,7 +15,7 @@ _**IMPORTANT NOTE: We strongly recommends to use as dependency only in final pro
 		<version>X.X.X</version>
 	</dependency>
 ```
-### Graddle
+**Graddle**
 ```Gradle
 dependencies {
     compile 'org.bytemechanics:copy-commons:X.X.X'
