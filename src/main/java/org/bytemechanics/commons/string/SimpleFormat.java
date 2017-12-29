@@ -16,6 +16,7 @@
 package org.bytemechanics.commons.string;
 
 import java.util.Optional;
+import java.util.function.Supplier;
 
 /**
  * Helper class for <strong>internal use only</strong>
@@ -60,5 +61,17 @@ public final class SimpleFormat {
 		}
 		
 		return builder.toString();
+	}	
+
+	/**
+	 * Supplier that retrieve the message formatted that resplaces _message content '{}' by the giver _args per order.<br/> 
+	 * The method to print the object is by calling object to string and in case the object is null is replaced by the string "null"
+	 * @param _message Message to be replaced
+	 * @param _args Objects to us by replacement
+	 * @return a supplier that provides the _message with the '{}' replaced by the given args or "null"
+	 * @since 1.1.0
+	 */
+	public static final Supplier<String> supplier(final String _message, final Object... _args) {
+		return () -> format(_message, _args);
 	}	
 }
