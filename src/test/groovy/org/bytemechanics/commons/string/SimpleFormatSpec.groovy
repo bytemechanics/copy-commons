@@ -27,6 +27,7 @@ class SimpleFormatSpec extends Specification {
 
 	@Unroll
 	def "When #message is formatted with #arguments result should be #result"(){
+		println(">>>>> SimpleFormatSpec >>>> When $message is formatted with $arguments result should be $result")
 		when:
 			def String actual=SimpleFormat.format(message,(Object[])arguments);
 			
@@ -68,6 +69,7 @@ class SimpleFormatSpec extends Specification {
 
 	@Unroll
 	def "When #message is supplied with #arguments result should be #result"(){
+		println(">>>>> SimpleFormatSpec >>>> When $message is supplied with $arguments result should be $result")
 		when:
 			def Supplier<String> actual=SimpleFormat.supplier(message,(Object[])arguments);
 			
