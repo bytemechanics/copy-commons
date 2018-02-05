@@ -19,11 +19,27 @@ import spock.lang.*
 import spock.lang.Specification
 import org.bytemechanics.commons.string.*
 import java.util.function.*
+import java.io.*
+import java.util.logging.*
 
 /**
  * @author afarre
  */
 class SimpleFormatSpec extends Specification {
+
+	def setupSpec(){
+		println(">>>>> GenericTextParserSpec >>>> setupSpec")
+		final InputStream inputStream = SimpleFormat.class.getResourceAsStream("/logging.properties");
+		try{
+			LogManager.getLogManager().readConfiguration(inputStream);
+		}catch (final IOException e){
+			Logger.getAnonymousLogger().severe("Could not load default logging.properties file");
+			Logger.getAnonymousLogger().severe(e.getMessage());
+		}finally{
+			if(inputStream!=null)
+				inputStream.close();
+		}
+	}
 
 	@Unroll
 	def "When #message is formatted with #arguments result should be #result"(){
