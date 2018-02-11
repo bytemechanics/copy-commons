@@ -38,7 +38,7 @@ import org.bytemechanics.commons.functional.LambdaUnchecker;
  */
 public enum GenericTextParser{
 	
-	BOOLEAN(Boolean.class,(value,config) -> value.map(val -> Boolean.valueOf(val)),boolean.class),
+	BOOLEAN(Boolean.class,(value,config) -> value.map(Boolean::valueOf),boolean.class),
     CHAR(Character.class,(value,config) -> value.map(val -> val.charAt(0)),char.class),
 	/**
 	 * Default format: #0
@@ -95,8 +95,8 @@ public enum GenericTextParser{
 																													return format.parse(val);
 																												}))
 													.map(decimal -> (BigDecimal)decimal),
-							(value,config) -> value.map(val -> new DecimalFormat(config.get(), new DecimalFormatSymbols(Locale.ENGLISH)).format(val))),
-    STRING(String.class,(value,config) -> value.map(val -> String.valueOf(val))),
+							(value,config) -> value.map(new DecimalFormat(config.get(), new DecimalFormatSymbols(Locale.ENGLISH))::format)),
+    STRING(String.class,(value,config) -> value.map(String::valueOf)),
 	/**
 	 * Default format: DateTimeFormatter.ISO_TIME
 	 * @see DateTimeFormatter
@@ -123,7 +123,7 @@ public enum GenericTextParser{
 																		.orElseGet(() -> val.toString()))),
 	ENUM(Enum.class,
 							(value,config) -> value.map(val -> LambdaUnchecker.uncheckedGet(() ->  Enum.valueOf((Class<Enum>)Class.forName(config.get()),val))),
-							(value,config) -> value.map(val -> ((Enum)val).name())),
+							(value,config) -> value.map(val -> val.name())),
 	;
 
 
@@ -170,7 +170,7 @@ public enum GenericTextParser{
 		 * @see BiFunction
 		 */
 		public default BiFunction<Optional<T>,Optional<String>,Optional<String>> getFormatter(){
-			return (value,config) -> value.map(val -> String.valueOf(val));
+			return (value,config) -> value.map(String::valueOf);
 		}
 	}
 	/**
@@ -238,7 +238,7 @@ public enum GenericTextParser{
 		@Override
 		public BiFunction<Optional<T>, Optional<String>, Optional<String>> getFormatter() {
 			return Optional.ofNullable(this.formatter)
-					.orElseGet(() -> ConverterAdapter.super.getFormatter());
+					.orElseGet(ConverterAdapter.super::getFormatter);
 		}
 	}
 
@@ -246,9 +246,6 @@ public enum GenericTextParser{
     
     <T> GenericTextParser(final Class<T> _class,BiFunction<Optional<String>,Optional<String>,Optional<T>> _parser,final Class... _synonyms){
 		this.converter=new Converter(_class, _parser, _synonyms);
-    }
-    <T> GenericTextParser(final Class<T> _class,final String _defaultConfiguration,BiFunction<Optional<String>,Optional<String>,Optional<T>> _parser,final Class... _synonyms){
-		this.converter=new Converter(_class,_defaultConfiguration, _parser, _synonyms);
     }
     <T> GenericTextParser(final Class<T> _class,BiFunction<Optional<String>,Optional<String>,Optional<T>> _parser,BiFunction<Optional<T>,Optional<String>,Optional<String>> _formatter,final Class... _synonyms){
 		this.converter=new Converter(_class, _parser, _formatter, _synonyms);
@@ -277,8 +274,8 @@ public enum GenericTextParser{
 											.apply(Optional.ofNullable(_object)
 													,Optional.ofNullable(_format)
 																.filter(value -> !value.isEmpty())
-																.map(format -> Optional.of(format))
-																.orElseGet(() -> this.converter.getFormat()));
+																.map(Optional::of)
+																.orElseGet(this.converter::getFormat));
 	}
 	/**
 	 * Convert the given string to the intended _class usign default format
@@ -334,15 +331,15 @@ public enum GenericTextParser{
 																.filter(value -> !value.isEmpty())
 													,Optional.ofNullable(_format)
 																.filter(value -> !value.isEmpty())
-																.map(format -> Optional.of(format))
-																.orElseGet(() -> this.converter.getFormat()));
+																.map(Optional::of)
+																.orElseGet(this.converter::getFormat));
 	}
 	
 	
 	private static Optional<GenericTextParser> find(final Object _object){
 		return Optional.of(_object)
-					.map(value -> value.getClass())
-					.flatMap(valueClass -> find(valueClass));
+					.map(Object::getClass)
+					.flatMap(GenericTextParser::find);
 	}
 	private static Optional<GenericTextParser> find(final Class _class){
 		return Optional.of(_class)
@@ -367,7 +364,7 @@ public enum GenericTextParser{
 	 */
 	public static final Optional<String> toFormattedString(final Object _object,final String _format){
 		return Optional.ofNullable(_object)
-					.flatMap(object -> find(object))
+					.flatMap(GenericTextParser::find)
 					.flatMap(converter -> converter.format(_object, _format));
 	}
 

@@ -43,7 +43,7 @@ public final class LambdaUnchecker {
 	 * @see Consumer
 	 */
 	@FunctionalInterface
-	public interface Consumer_WithExceptions<T, E extends Exception> {
+	public interface ConsumerWithExceptions<T, E extends Exception> {
 		/**
 		 * @param t consumer input
 		 * @throws E checked exception
@@ -60,7 +60,7 @@ public final class LambdaUnchecker {
 	 * @see BiConsumer
 	 */
 	@FunctionalInterface
-	public interface BiConsumer_WithExceptions<T, U, E extends Exception> {
+	public interface BiConsumerWithExceptions<T, U, E extends Exception> {
 		/**
 		 * @param t consumer input
 		 * @param u biconsumer second
@@ -78,7 +78,7 @@ public final class LambdaUnchecker {
 	 * @see Function
 	 */
 	@FunctionalInterface
-	public interface Function_WithExceptions<T, R, E extends Exception> {
+	public interface FunctionWithExceptions<T, R, E extends Exception> {
 		/**
 		 * @param t consumer input
 		 * @return function result
@@ -95,7 +95,7 @@ public final class LambdaUnchecker {
 	 * @see Supplier
 	 */
 	@FunctionalInterface
-	public interface Supplier_WithExceptions<T, E extends Exception> {
+	public interface SupplierWithExceptions<T, E extends Exception> {
 		/**
 		 * @return function result
 		 * @throws E checked exception
@@ -110,7 +110,7 @@ public final class LambdaUnchecker {
 	 * @see Runnable
 	 */
 	@FunctionalInterface
-	public interface Runnable_WithExceptions<E extends Exception> {
+	public interface RunnableWithExceptions<E extends Exception> {
 		/**
 		 * @throws E checked exception
 		 * @see Runnable#run() 
@@ -129,9 +129,9 @@ public final class LambdaUnchecker {
 	 * @param <E> checked exception
 	 * @param _consumer consumer to wrap
 	 * @return wrapped consumer that throws the exceptions produced without compilation check
-	 * @see Consumer_WithExceptions
+	 * @see ConsumerWithExceptions
 	 */
-	public static <T, E extends Exception> Consumer<T> uncheckedConsumer(final Consumer_WithExceptions<T, E> _consumer) {
+	public static <T, E extends Exception> Consumer<T> uncheckedConsumer(final ConsumerWithExceptions<T, E> _consumer) {
 		return t -> {
 			try {
 				_consumer.accept(t);
@@ -151,9 +151,9 @@ public final class LambdaUnchecker {
 	 * @param <E> checked exception
 	 * @param _consumer consumer to wrap
 	 * @return wrapped consumer that silence the exceptions produced without compilation check
-	 * @see Consumer_WithExceptions
+	 * @see ConsumerWithExceptions
 	 */
-	public static <T, E extends Exception> Consumer<T> silencedConsumer(final Consumer_WithExceptions<T, E> _consumer) {
+	public static <T, E extends Exception> Consumer<T> silencedConsumer(final ConsumerWithExceptions<T, E> _consumer) {
 		return t -> {
 			try {
 				_consumer.accept(t);
@@ -172,9 +172,9 @@ public final class LambdaUnchecker {
 	 * @param <E> checked exception
 	 * @param _consumer consumer to wrap
 	 * @param _input consumer input
-	 * @see Consumer_WithExceptions
+	 * @see ConsumerWithExceptions
 	 */
-	public static <T, E extends Exception> void uncheckedAccept(final Consumer_WithExceptions<T, E> _consumer,final T _input) {
+	public static <T, E extends Exception> void uncheckedAccept(final ConsumerWithExceptions<T, E> _consumer,final T _input) {
 		uncheckedConsumer(_consumer)
 				.accept(_input);
 	}
@@ -187,9 +187,9 @@ public final class LambdaUnchecker {
 	 * @param <E> checked exception
 	 * @param _consumer consumer to wrap
 	 * @param _input consumer input
-	 * @see Consumer_WithExceptions
+	 * @see ConsumerWithExceptions
 	 */
-	public static <T, E extends Exception> void silencedAccept(final Consumer_WithExceptions<T, E> _consumer,final T _input) {
+	public static <T, E extends Exception> void silencedAccept(final ConsumerWithExceptions<T, E> _consumer,final T _input) {
 		silencedConsumer(_consumer)
 				.accept(_input);
 	}
@@ -204,9 +204,9 @@ public final class LambdaUnchecker {
 	 * @param _biConsumer biconsumer to wrap
 	 * @return wrapped biconsumer that throws the exceptions produced without compilation check
 	 * @see BiConsumer
-	 * @see BiConsumer_WithExceptions
+	 * @see BiConsumerWithExceptions
 	 */
-	public static <T, U, E extends Exception> BiConsumer<T, U> uncheckedBiConsumer(final BiConsumer_WithExceptions<T, U, E> _biConsumer) {
+	public static <T, U, E extends Exception> BiConsumer<T, U> uncheckedBiConsumer(final BiConsumerWithExceptions<T, U, E> _biConsumer) {
 		return (t, u) -> {
 			try {
 				_biConsumer.accept(t, u);
@@ -226,9 +226,9 @@ public final class LambdaUnchecker {
 	 * @param _biConsumer biconsumer to wrap
 	 * @return wrapped biconsumer that silence the exceptions produced without compilation check
 	 * @see BiConsumer
-	 * @see BiConsumer_WithExceptions
+	 * @see BiConsumerWithExceptions
 	 */
-	public static <T, U, E extends Exception> BiConsumer<T, U> silencedBiConsumer(final BiConsumer_WithExceptions<T, U, E> _biConsumer) {
+	public static <T, U, E extends Exception> BiConsumer<T, U> silencedBiConsumer(final BiConsumerWithExceptions<T, U, E> _biConsumer) {
 		return (t, u) -> {
 			try {
 				_biConsumer
@@ -252,9 +252,9 @@ public final class LambdaUnchecker {
 	 * @param _firstInput biconsumer first input
 	 * @param _secondInput biconsumer second input
 	 * @see BiConsumer
-	 * @see BiConsumer_WithExceptions
+	 * @see BiConsumerWithExceptions
 	 */
-	public static <T, U, E extends Exception> void uncheckedAccept(final BiConsumer_WithExceptions<T, U, E> _biConsumer,final T _firstInput,final U _secondInput) {
+	public static <T, U, E extends Exception> void uncheckedAccept(final BiConsumerWithExceptions<T, U, E> _biConsumer,final T _firstInput,final U _secondInput) {
 		uncheckedBiConsumer(_biConsumer)
 				.accept(_firstInput,_secondInput);
 	}
@@ -270,9 +270,9 @@ public final class LambdaUnchecker {
 	 * @param _firstInput biconsumer first input
 	 * @param _secondInput biconsumer second input
 	 * @see BiConsumer
-	 * @see BiConsumer_WithExceptions
+	 * @see BiConsumerWithExceptions
 	 */
-	public static <T, U, E extends Exception> void silencedAccept(final BiConsumer_WithExceptions<T, U, E> _biConsumer,final T _firstInput,final U _secondInput) {
+	public static <T, U, E extends Exception> void silencedAccept(final BiConsumerWithExceptions<T, U, E> _biConsumer,final T _firstInput,final U _secondInput) {
 		silencedBiConsumer(_biConsumer)
 				.accept(_firstInput,_secondInput);
 	}
@@ -289,9 +289,9 @@ public final class LambdaUnchecker {
 	 * @param _function biconsumer to wrap
 	 * @return wrapped function that throws the exceptions produced without compilation check
 	 * @see Function
-	 * @see Function_WithExceptions
+	 * @see FunctionWithExceptions
 	 */
-	public static <T, R, E extends Exception> Function<T, R> uncheckedFunction(final Function_WithExceptions<T, R, E> _function) {
+	public static <T, R, E extends Exception> Function<T, R> uncheckedFunction(final FunctionWithExceptions<T, R, E> _function) {
 		return t -> {
 			try {
 				return _function.apply(t);
@@ -313,9 +313,9 @@ public final class LambdaUnchecker {
 	 * @param _function biconsumer to wrap
 	 * @return wrapped function that silence the exceptions produced without compilation check
 	 * @see Function
-	 * @see Function_WithExceptions
+	 * @see FunctionWithExceptions
 	 */
-	public static <T, R, E extends Exception> Function<T, R> silencedFunction(final Function_WithExceptions<T, R, E> _function) {
+	public static <T, R, E extends Exception> Function<T, R> silencedFunction(final FunctionWithExceptions<T, R, E> _function) {
 		return t -> {
 			try {
 				return _function.apply(t);
@@ -339,9 +339,9 @@ public final class LambdaUnchecker {
 	 * @param _input function input
 	 * @return function result
 	 * @see Function
-	 * @see Function_WithExceptions
+	 * @see FunctionWithExceptions
 	 */
-	public static <T, R, E extends Exception> R uncheckedApply(final Function_WithExceptions<T, R, E> _function,final T _input) {
+	public static <T, R, E extends Exception> R uncheckedApply(final FunctionWithExceptions<T, R, E> _function,final T _input) {
 		return uncheckedFunction(_function)
 				.apply(_input);
 	}
@@ -359,9 +359,9 @@ public final class LambdaUnchecker {
 	 * @param _input function input
 	 * @return function result or null if exception
 	 * @see Function
-	 * @see Function_WithExceptions
+	 * @see FunctionWithExceptions
 	 */
-	public static <T, R, E extends Exception> R silencedApply(final Function_WithExceptions<T, R, E> _function,final T _input) {
+	public static <T, R, E extends Exception> R silencedApply(final FunctionWithExceptions<T, R, E> _function,final T _input) {
 		return silencedFunction(_function)
 				.apply(_input);
 	}
@@ -375,9 +375,9 @@ public final class LambdaUnchecker {
 	 * @param _supplier supplier to wrap
 	 * @return wrapped function that throws the exceptions produced without compilation check
 	 * @see Supplier
-	 * @see Supplier_WithExceptions
+	 * @see SupplierWithExceptions
 	 */
-	public static <T, E extends Exception> Supplier<T> uncheckedSupplier(final Supplier_WithExceptions<T, E> _supplier) {
+	public static <T, E extends Exception> Supplier<T> uncheckedSupplier(final SupplierWithExceptions<T, E> _supplier) {
 		return () -> {
 			try {
 				return _supplier.get();
@@ -396,9 +396,9 @@ public final class LambdaUnchecker {
 	 * @param _supplier supplier to wrap
 	 * @return wrapped function that silence the exceptions produced without compilation check
 	 * @see Supplier
-	 * @see Supplier_WithExceptions
+	 * @see SupplierWithExceptions
 	 */
-	public static <T, E extends Exception> Supplier<T> silencedSupplier(final Supplier_WithExceptions<T, E> _supplier) {
+	public static <T, E extends Exception> Supplier<T> silencedSupplier(final SupplierWithExceptions<T, E> _supplier) {
 		return () -> {
 			try {
 				return _supplier.get();
@@ -418,9 +418,9 @@ public final class LambdaUnchecker {
 	 * @param _supplier supplier to wrap
 	 * @return supplier result
 	 * @see Supplier
-	 * @see Supplier_WithExceptions
+	 * @see SupplierWithExceptions
 	 */
-	public static <T, E extends Exception> T uncheckedGet(final Supplier_WithExceptions<T, E> _supplier) {
+	public static <T, E extends Exception> T uncheckedGet(final SupplierWithExceptions<T, E> _supplier) {
 		return uncheckedSupplier(_supplier)
 					.get();
 	}
@@ -433,9 +433,9 @@ public final class LambdaUnchecker {
 	 * @param _supplier supplier to wrap
 	 * @return supplier result or get if exception
 	 * @see Supplier
-	 * @see Supplier_WithExceptions
+	 * @see SupplierWithExceptions
 	 */
-	public static <T, E extends Exception> T silencedGet(final Supplier_WithExceptions<T, E> _supplier) {
+	public static <T, E extends Exception> T silencedGet(final SupplierWithExceptions<T, E> _supplier) {
 		return silencedSupplier(_supplier)
 					.get();
 	}
@@ -448,9 +448,9 @@ public final class LambdaUnchecker {
 	 * @param _runnable runnable to wrap
 	 * @return wrapped runnable that throws the exceptions produced without compilation check
 	 * @see Runnable
-	 * @see Runnable_WithExceptions
+	 * @see RunnableWithExceptions
 	 */
-	public static Runnable uncheckedRunnable(final Runnable_WithExceptions _runnable) {
+	public static Runnable uncheckedRunnable(final RunnableWithExceptions _runnable) {
 		return () -> {
 			try {
 				_runnable.run();
@@ -466,9 +466,9 @@ public final class LambdaUnchecker {
 	 * @param _runnable runnable to wrap
 	 * @return wrapped runnable that silence the exceptions produced without compilation check
 	 * @see Runnable
-	 * @see Runnable_WithExceptions
+	 * @see RunnableWithExceptions
 	 */
-	public static Runnable silencedRunnable(final Runnable_WithExceptions _runnable) {
+	public static Runnable silencedRunnable(final RunnableWithExceptions _runnable) {
 		return () -> {
 			try {
 				_runnable.run();
@@ -484,9 +484,9 @@ public final class LambdaUnchecker {
 	 * <code>uncheckedGet(() -> new StringJoiner(new String(new byte[]{77, 97, 114, 107}, "UTF-8")))</code>
 	 * @param _runnable runnable to wrap
 	 * @see Supplier
-	 * @see Supplier_WithExceptions
+	 * @see SupplierWithExceptions
 	 */
-	public static void uncheckedRun(final Runnable_WithExceptions _runnable) {
+	public static void uncheckedRun(final RunnableWithExceptions _runnable) {
 		uncheckedRunnable(_runnable)
 					.run();
 	}
@@ -496,9 +496,9 @@ public final class LambdaUnchecker {
 	 * <code>silencedGet(() -> new StringJoiner(new String(new byte[]{77, 97, 114, 107}, "UTF-8")))</code>
 	 * @param _runnable runnable to wrap
 	 * @see Supplier
-	 * @see Supplier_WithExceptions
+	 * @see SupplierWithExceptions
 	 */
-	public static void silencedRun(final Runnable_WithExceptions _runnable) {
+	public static void silencedRun(final RunnableWithExceptions _runnable) {
 		silencedRunnable(_runnable)
 					.run();
 	}
