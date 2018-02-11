@@ -18,20 +18,81 @@ package org.bytemechanics.commons.string;
 import spock.lang.*
 import spock.lang.Specification
 import org.bytemechanics.commons.string.*
+import java.util.function.*
+import java.io.*
+import java.util.logging.*
 
 /**
  * @author afarre
  */
 class SimpleFormatSpec extends Specification {
 
+	def setupSpec(){
+		println(">>>>> GenericTextParserSpec >>>> setupSpec")
+		final InputStream inputStream = SimpleFormat.class.getResourceAsStream("/logging.properties");
+		try{
+			LogManager.getLogManager().readConfiguration(inputStream);
+		}catch (final IOException e){
+			Logger.getAnonymousLogger().severe("Could not load default logging.properties file");
+			Logger.getAnonymousLogger().severe(e.getMessage());
+		}finally{
+			if(inputStream!=null)
+				inputStream.close();
+		}
+	}
+
 	@Unroll
 	def "When #message is formatted with #arguments result should be #result"(){
+		println(">>>>> SimpleFormatSpec >>>> When $message is formatted with $arguments result should be $result")
 		when:
 			def String actual=SimpleFormat.format(message,(Object[])arguments);
 			
 		then:
 			actual!=null
 			actual==result
+		
+		where:
+			message							| arguments					| result
+ 			"message without args"			| []						| "message without args"
+			"message without args"			| ["fsdf"]					| "message without args"
+			"message without args"			| [1]						| "message without args"
+			"message with 1:{} arg"			| []						| "message with 1:null arg"
+			"message with 1:{} arg"			| ["fsdf"]					| "message with 1:fsdf arg"
+			"message with 1:{} arg"			| [1]						| "message with 1:1 arg"
+			"message with 1:{} arg"			| ["fsdf",2]				| "message with 1:fsdf arg"
+			"message with 1:{} arg"			| ["fsdf","fsdfsd"]			| "message with 1:fsdf arg"
+			"message with arg 1:{}"			| []						| "message with arg 1:null"
+			"message with arg 1:{}"			| ["fsdf"]					| "message with arg 1:fsdf"
+			"message with arg 1:{}"			| [1]						| "message with arg 1:1"
+			"message with arg 1:{}"			| ["fsdf",2]				| "message with arg 1:fsdf"
+			"message with arg 1:{}"			| ["fsdf","fsdfsd"]			| "message with arg 1:fsdf"
+			"message with arg 1:{},2:{}"	| []						| "message with arg 1:null,2:null"
+			"message with arg 1:{},2:{}"	| ["fsdf"]					| "message with arg 1:fsdf,2:null"
+			"message with arg 1:{},2:{}"	| [1]						| "message with arg 1:1,2:null"
+			"message with arg 1:{},2:{}"	| ["fsdf",2]				| "message with arg 1:fsdf,2:2"
+			"message with arg 1:{},2:{}"	| ["fsdf","fsdfsd"]			| "message with arg 1:fsdf,2:fsdfsd"
+			"{} message with arg 1:,2:{}"	| []						| "null message with arg 1:,2:null"
+			"{} message with arg 2:{}"		| ["fsdf"]					| "fsdf message with arg 2:null"
+			"{} message with arg 2:{}"		| [1]						| "1 message with arg 2:null"
+			"{} message with arg 2:{}"		| ["fsdf",2]				| "fsdf message with arg 2:2"
+			"{} message with arg 2:{}"		| ["fsdf","fsdfsd"]			| "fsdf message with arg 2:fsdfsd"
+			"message with arg 1:{},2:{}"	| []						| "message with arg 1:null,2:null"
+			"message with arg 1:{},2:{}"	| ["fsdf {}"]				| "message with arg 1:fsdf {},2:null"
+			"message with arg 1:{},2:{}"	| [1]						| "message with arg 1:1,2:null"
+			"message with arg 1:{},2:{}"	| ["fsdf {}",2]				| "message with arg 1:fsdf {},2:2"
+			"message with arg 1:{},2:{}"	| ["fsdf {}","fsdfsd {}"]	| "message with arg 1:fsdf {},2:fsdfsd {}"
+	}
+
+	@Unroll
+	def "When #message is supplied with #arguments result should be #result"(){
+		println(">>>>> SimpleFormatSpec >>>> When $message is supplied with $arguments result should be $result")
+		when:
+			def Supplier<String> actual=SimpleFormat.supplier(message,(Object[])arguments);
+			
+		then:
+			actual!=null
+			actual.get()!=null
+			actual.get()==result
 		
 		where:
 			message							| arguments					| result

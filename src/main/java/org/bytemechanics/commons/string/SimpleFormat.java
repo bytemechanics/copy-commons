@@ -16,16 +16,25 @@
 package org.bytemechanics.commons.string;
 
 import java.util.Optional;
+import java.util.function.Supplier;
 
 /**
  * Helper class for <strong>internal use only</strong>
  * Please keep in mind that this <strong>class can be changed, renamed, deleted or extended without previous advice between fix releases, minor versions or major versions</strong>
  * @author Albert Farré Figueras
  * @since 0.0.1
- * @version 1.0.0
+ * @version 1.0.1
  */
 public final class SimpleFormat {
 	
+	/**
+	 * Formatter that resplaces _message content '{}' by the giver _args per order.<br/> 
+	 * The method to print the object is by calling object to string and in case the object is null is replaced by the string "null"
+	 * @param _message Message to be replaced
+	 * @param _args Objects to us by replacement
+	 * @return the _message with the '{}' replaced by the given args or "null"
+	 * @since 0.0.1
+	 */
 	public static final String format(final String _message, final Object... _args) {
 		
 		final StringBuilder builder=new StringBuilder();
@@ -40,7 +49,7 @@ public final class SimpleFormat {
 				builder.append(Optional.of(numArg++)
 										.filter(counter -> counter<_args.length)
 										.map(counter -> _args[counter])
-										.map(object -> String.valueOf(object))
+										.map(String::valueOf)
 										.orElse("null"));
 				ic1=lastBreak=ic1+2;
 			}
@@ -50,5 +59,17 @@ public final class SimpleFormat {
 		}
 		
 		return builder.toString();
+	}	
+
+	/**
+	 * Supplier that retrieve the message formatted that resplaces _message content '{}' by the giver _args per order.<br/> 
+	 * The method to print the object is by calling object to string and in case the object is null is replaced by the string "null"
+	 * @param _message Message to be replaced
+	 * @param _args Objects to us by replacement
+	 * @return a supplier that provides the _message with the '{}' replaced by the given args or "null"
+	 * @since 1.1.0
+	 */
+	public static final Supplier<String> supplier(final String _message, final Object... _args) {
+		return () -> format(_message, _args);
 	}	
 }
