@@ -28,7 +28,7 @@ import java.util.function.Supplier;
 public final class SimpleFormat {
 	
 	/**
-	 * Formatter that resplaces _message content '{}' by the giver _args per order.<br/> 
+	 * Formatter that resplaces _message content '{}' by the giver _args per order.<br> 
 	 * The method to print the object is by calling object to string and in case the object is null is replaced by the string "null"
 	 * @param _message Message to be replaced
 	 * @param _args Objects to us by replacement
@@ -62,7 +62,7 @@ public final class SimpleFormat {
 	}	
 
 	/**
-	 * Supplier that retrieve the message formatted that resplaces _message content '{}' by the giver _args per order.<br/> 
+	 * Supplier that retrieve the message formatted that resplaces _message content '{}' by the giver _args per order.<br> 
 	 * The method to print the object is by calling object to string and in case the object is null is replaced by the string "null"
 	 * @param _message Message to be replaced
 	 * @param _args Objects to us by replacement

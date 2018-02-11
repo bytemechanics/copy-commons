@@ -122,7 +122,7 @@ public final class LambdaUnchecker {
 	/**
 	 * Wraps consumer lambda returning the consumer but hacking the compiler to avoid compilation check.
 	 * Example:
-	 * <code>.forEach(uncheckedConsumer(name -> System.out.println(Class.forName(name))));</code>
+	 * <code>.forEach(uncheckedConsumer(name -&gt; System.out.println(Class.forName(name))));</code>
 	 * or 
 	 * <code>.forEach(uncheckedConsumer(ClassNameUtil::println));</code>
 	 * @param <T> consumer input type
@@ -144,7 +144,7 @@ public final class LambdaUnchecker {
 	/**
 	 * Wraps consumer lambda returning the same one but silencing the exception
 	 * Example:
-	 * <code>.forEach(silencedConsumer(name -> System.out.println(Class.forName(name))));</code>
+	 * <code>.forEach(silencedConsumer(name -&gt; System.out.println(Class.forName(name))));</code>
 	 * or 
 	 * <code>.forEach(silencedConsumer(ClassNameUtil::println));</code>
 	 * @param <T> consumer input type
@@ -167,7 +167,7 @@ public final class LambdaUnchecker {
 	/**
 	 * Accept consumer input but hacking the compiler to avoid compilation check.
 	 * Example:
-	 * <code>uncheckedAccept(name -> System.out.println(Class.forName(name)),"java.util.List");</code>
+	 * <code>uncheckedAccept(name -&gt; System.out.println(Class.forName(name)),"java.util.List");</code>
 	 * @param <T> consumer input type
 	 * @param <E> checked exception
 	 * @param _consumer consumer to wrap
@@ -182,7 +182,7 @@ public final class LambdaUnchecker {
 	/**
 	 * Accept consumer input but silencing the exception
 	 * Example:
-	 * <code>uncheckedAccept(name -> System.out.println(Class.forName(name)),"java.util.List");</code>
+	 * <code>uncheckedAccept(name -&gt; System.out.println(Class.forName(name)),"java.util.List");</code>
 	 * @param <T> consumer input type
 	 * @param <E> checked exception
 	 * @param _consumer consumer to wrap
@@ -197,7 +197,7 @@ public final class LambdaUnchecker {
 	/**
 	 * Wraps biconsumer lambda returning the same one but hacking the compiler to avoid compilation check.
 	 * Example:
-	 * <code>.forEach(uncheckedBiConsumer((name,value) -> System.out.println(Class.forName(name)+value)));</code>
+	 * <code>.forEach(uncheckedBiConsumer((name,value) -&gt; System.out.println(Class.forName(name)+value)));</code>
 	 * @param <T> biconsumer first input type
 	 * @param <U> biconsumer second input type
 	 * @param <E> checked exception
@@ -219,7 +219,7 @@ public final class LambdaUnchecker {
 	/**
 	 * Wraps biconsumer lambda returning the same one but returning null when exception and silencing the exception
 	 * Example:
-	 * <code>.forEach(silencedBiConsumer((name,value) -> System.out.println(Class.forName(name)+value)));</code>
+	 * <code>.forEach(silencedBiConsumer((name,value) -&gt; System.out.println(Class.forName(name)+value)));</code>
 	 * @param <T> biconsumer first input type
 	 * @param <U> biconsumer second input type
 	 * @param <E> checked exception
@@ -244,7 +244,7 @@ public final class LambdaUnchecker {
 	/**
 	 * Accept consumer input but hacking the compiler to avoid compilation check.
 	 * Example:
-	 * <code>uncheckedAccept((name,value) -> System.out.println(Class.forName(name)+value));</code>
+	 * <code>uncheckedAccept((name,value) -&gt; System.out.println(Class.forName(name)+value));</code>
 	 * @param <T> biconsumer first input type
 	 * @param <U> biconsumer second input type
 	 * @param <E> checked exception
@@ -262,7 +262,7 @@ public final class LambdaUnchecker {
 	/**
 	 * Accept consumer input but silencing the exception
 	 * Example:
-	 * <code>silencedAccept((name,value) -> System.out.println(Class.forName(name)+value));</code>
+	 * <code>silencedAccept((name,value) -&gt; System.out.println(Class.forName(name)+value));</code>
 	 * @param <T> biconsumer first input type
 	 * @param <U> biconsumer second input type
 	 * @param <E> checked exception
@@ -280,7 +280,7 @@ public final class LambdaUnchecker {
 	/**
 	 * Wraps function lambda returning the same one but hacking the compiler to avoid compilation check.
 	 * Example:
-	 * <code>.map(uncheckedFunction(name -> Class.forName(name)))</code>
+	 * <code>.map(uncheckedFunction(name -&gt; Class.forName(name)))</code>
 	 * or
 	 * <code>.map(uncheckedFunction(Class::forName))</code>
 	 * @param <T> function input type
@@ -304,7 +304,7 @@ public final class LambdaUnchecker {
 	/**
 	 * Wraps function lambda returning the same one but returning null when exception and silencing the exception
 	 * Example:
-	 * <code>.map(silencedFunction(name -> Class.forName(name)))</code>
+	 * <code>.map(silencedFunction(name -&gt; Class.forName(name)))</code>
 	 * or
 	 * <code>.map(silencedFunction(Class::forName))</code>
 	 * @param <T> function input type
@@ -329,7 +329,7 @@ public final class LambdaUnchecker {
 	/**
 	 * Apply function returning the result but hacking the compiler to avoid compilation check.
 	 * Example:
-	 * <code>uncheckedFunction(name -> Class.forName(name))</code>
+	 * <code>uncheckedFunction(name -&gt; Class.forName(name))</code>
 	 * or
 	 * <code>uncheckedFunction(Class::forName)</code>
 	 * @param <T> function input type
@@ -349,7 +349,7 @@ public final class LambdaUnchecker {
 	/**
 	 * Apply function returning the result but returning null when exception and silencing the exception and in this case returning null
 	 * Example:
-	 * <code>silencedFunction(name -> Class.forName(name))</code>
+	 * <code>silencedFunction(name -&gt; Class.forName(name))</code>
 	 * or
 	 * <code>silencedFunction(Class::forName)</code>
 	 * @param <T> function input type
@@ -369,7 +369,7 @@ public final class LambdaUnchecker {
 	/**
 	 * Wraps supplier lambda returning the same one but hacking the compiler to avoid compilation check.
 	 * Example:
-	 * <code>uncheckedSupplier(() -> new StringJoiner(new String(new byte[]{77, 97, 114, 107}, "UTF-8"))),</code>
+	 * <code>uncheckedSupplier(() -&gt; new StringJoiner(new String(new byte[]{77, 97, 114, 107}, "UTF-8"))),</code>
 	 * @param <T> supplier result
 	 * @param <E> checked exception
 	 * @param _supplier supplier to wrap
@@ -390,7 +390,7 @@ public final class LambdaUnchecker {
 	/**
 	 * Wraps supplier lambda returning the same one but returning null when exception and silencing the exception
 	 * Example:
-	 * <code>silencedSupplier(() -> new StringJoiner(new String(new byte[]{77, 97, 114, 107}, "UTF-8"))),</code>
+	 * <code>silencedSupplier(() -&gt; new StringJoiner(new String(new byte[]{77, 97, 114, 107}, "UTF-8"))),</code>
 	 * @param <T> supplier result
 	 * @param <E> checked exception
 	 * @param _supplier supplier to wrap
@@ -412,7 +412,7 @@ public final class LambdaUnchecker {
 	/**
 	 * Get supplier returning the supplier result but hacking the compiler to avoid compilation check.
 	 * Example:
-	 * <code>uncheckedGet(() -> new StringJoiner(new String(new byte[]{77, 97, 114, 107}, "UTF-8")))</code>
+	 * <code>uncheckedGet(() -&gt; new StringJoiner(new String(new byte[]{77, 97, 114, 107}, "UTF-8")))</code>
 	 * @param <T> supplier result
 	 * @param <E> checked exception
 	 * @param _supplier supplier to wrap
@@ -427,7 +427,7 @@ public final class LambdaUnchecker {
 	/**
 	 * Get supplier returning the supplier result or null if exception
 	 * Example:
-	 * <code>silencedGet(() -> new StringJoiner(new String(new byte[]{77, 97, 114, 107}, "UTF-8")))</code>
+	 * <code>silencedGet(() -&gt; new StringJoiner(new String(new byte[]{77, 97, 114, 107}, "UTF-8")))</code>
 	 * @param <T> supplier result
 	 * @param <E> checked exception
 	 * @param _supplier supplier to wrap
@@ -444,7 +444,7 @@ public final class LambdaUnchecker {
 	/**
 	 * Wraps Runnable lambda returning the same one but hacking the compiler to avoid compilation check.
 	 * Example:
-	 * <code>uncheckedSupplier(() -> new StringJoiner(new String(new byte[]{77, 97, 114, 107}, "UTF-8"))),</code>
+	 * <code>uncheckedSupplier(() -&gt; new StringJoiner(new String(new byte[]{77, 97, 114, 107}, "UTF-8"))),</code>
 	 * @param _runnable runnable to wrap
 	 * @return wrapped runnable that throws the exceptions produced without compilation check
 	 * @see Runnable
@@ -462,7 +462,7 @@ public final class LambdaUnchecker {
 	/**
 	 * Wraps Runnable lambda returning the same one but returning null when exception and silencing the exception
 	 * Example:
-	 * <code>silencedSupplier(() -> new StringJoiner(new String(new byte[]{77, 97, 114, 107}, "UTF-8"))),</code>
+	 * <code>silencedSupplier(() -&gt; new StringJoiner(new String(new byte[]{77, 97, 114, 107}, "UTF-8"))),</code>
 	 * @param _runnable runnable to wrap
 	 * @return wrapped runnable that silence the exceptions produced without compilation check
 	 * @see Runnable
@@ -481,7 +481,7 @@ public final class LambdaUnchecker {
 	/**
 	 * Run Runnable but hacking the compiler to avoid compilation check.
 	 * Example:
-	 * <code>uncheckedGet(() -> new StringJoiner(new String(new byte[]{77, 97, 114, 107}, "UTF-8")))</code>
+	 * <code>uncheckedGet(() -&gt; new StringJoiner(new String(new byte[]{77, 97, 114, 107}, "UTF-8")))</code>
 	 * @param _runnable runnable to wrap
 	 * @see Supplier
 	 * @see SupplierWithExceptions
@@ -493,7 +493,7 @@ public final class LambdaUnchecker {
 	/**
 	 * Run Runnable but silencing any exception
 	 * Example:
-	 * <code>silencedGet(() -> new StringJoiner(new String(new byte[]{77, 97, 114, 107}, "UTF-8")))</code>
+	 * <code>silencedGet(() -&gt; new StringJoiner(new String(new byte[]{77, 97, 114, 107}, "UTF-8")))</code>
 	 * @param _runnable runnable to wrap
 	 * @see Supplier
 	 * @see SupplierWithExceptions
