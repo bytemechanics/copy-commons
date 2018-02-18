@@ -1,5 +1,3 @@
-package org.bytemechanics.commons.reflection;
-
 /*
  * Copyright 2017 Byte Mechanics.
  *
@@ -15,7 +13,7 @@ package org.bytemechanics.commons.reflection;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+package org.bytemechanics.commons.reflection;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;

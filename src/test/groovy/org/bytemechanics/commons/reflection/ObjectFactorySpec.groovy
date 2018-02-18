@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.bytemechanics.commons.reflection
 
 import org.bytemechanics.commons.reflection.ObjectFactory;
@@ -157,6 +156,33 @@ class ObjectFactorySpec extends Specification{
 		where:
 			supplierClass			| arguments
 			DummieServiceImpl.class	| ["1arg-arg1",3,false,"3arg-arg2"]
+	}
+	
+	@Unroll
+	def "when object factory try to autobox #primitive primitive returns #object class"(){
+		println(">>>>> ObjectFactorySpec >>>> when object factory try to autobox $primitive primitive returns $object class")
+
+		when:
+			def result=ObjectFactory.of(DummieServiceImpl.class)
+										.autobox(primitive)
+
+		then:
+			result!=null
+			result==object
+			
+		where:
+			primitive		| object
+			void.class		| Void.class
+			byte.class		| Byte.class
+			boolean.class	| Boolean.class
+			char.class		| Character.class
+			short.class		| Short.class
+			int.class		| Integer.class
+			long.class		| Long.class
+			float.class		| Float.class
+			double.class	| Double.class
+			Integer.class	| Integer.class
+			String.class	| String.class
 	}
 }
 
