@@ -24,6 +24,7 @@ import java.util.logging.*
 import java.time.*
 import java.time.format.*
 import java.text.*
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author afarre
@@ -360,4 +361,47 @@ class GenericTextParserSpec extends Specification {
 			null									| GenericTextParser.LOCALDATETIME	| null													
 			null									| GenericTextParser.ENUM			| "org.bytemechanics.commons.string.GenericTextParser"	
 	}		
+
+	@Unroll
+	def "When try to find the appropiate parser for #value the result found is #genericTextParser"(){
+		println(">>>>> GenericTextParserSpec >>>> When try to find the appropiate parser for $value the result found is $genericTextParser")
+		when:
+			def Optional<GenericTextParser> actual=GenericTextParser.find(value);
+			
+		then:
+			actual!=null
+			actual.isPresent()==genericTextParser.isPresent()
+			if(genericTextParser.isPresent()){
+				actual.get()==genericTextParser.get()
+			}
+		
+		where:
+			value									| genericTextParser							
+ 			true									| Optional.of(GenericTextParser.BOOLEAN)	
+ 			Boolean.TRUE							| Optional.of(GenericTextParser.BOOLEAN)	
+ 			false									| Optional.of(GenericTextParser.BOOLEAN)	
+ 			Boolean.FALSE							| Optional.of(GenericTextParser.BOOLEAN)	
+ 			(char)'a'								| Optional.of(GenericTextParser.CHAR)			
+ 			new Character((char)'j')				| Optional.of(GenericTextParser.CHAR)			
+ 			(char)'d'								| Optional.of(GenericTextParser.CHAR)			
+ 			new Character((char)'i')				| Optional.of(GenericTextParser.CHAR)			
+ 			(char)'z'								| Optional.of(GenericTextParser.CHAR)			
+ 			new Character((char)'h')				| Optional.of(GenericTextParser.CHAR)			
+			(short)1								| Optional.of(GenericTextParser.SHORT)			
+ 			Short.valueOf((short)2)					| Optional.of(GenericTextParser.SHORT)			
+			(int)1									| Optional.of(GenericTextParser.INTEGER)			
+			Integer.valueOf((int)100)				| Optional.of(GenericTextParser.INTEGER)			
+			100l									| Optional.of(GenericTextParser.LONG)			
+ 			Long.valueOf(324l)						| Optional.of(GenericTextParser.LONG)			
+ 			3435.4f									| Optional.of(GenericTextParser.FLOAT)			
+ 			Float.valueOf(3435.4f)					| Optional.of(GenericTextParser.FLOAT)			
+			232423532.6576d							| Optional.of(GenericTextParser.DOUBLE)			
+ 			Double.valueOf(3242151.34d)				| Optional.of(GenericTextParser.DOUBLE)			
+			new BigDecimal("-1242352.2314")			| Optional.of(GenericTextParser.BIGDECIMAL)		
+			"myMessage"								| Optional.of(GenericTextParser.STRING)			
+			LocalTime.now()							| Optional.of(GenericTextParser.LOCALTIME)		
+			LocalDateTime.now()						| Optional.of(GenericTextParser.LOCALDATETIME)	
+			TimeUnit.NANOSECONDS					| Optional.of(GenericTextParser.ENUM)			
+			Instant.now()							| Optional.empty()
+	}	
 }

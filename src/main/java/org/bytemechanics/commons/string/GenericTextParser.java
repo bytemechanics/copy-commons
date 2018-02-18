@@ -336,15 +336,29 @@ public enum GenericTextParser{
 	}
 	
 	
-	private static Optional<GenericTextParser> find(final Object _object){
+	/**
+	 * Try to convert the given object to string usign default format
+	 * @param _object object to format
+	 * @return an optional of the object converted to string (if the given object can not be converted, its not the correct type, throws an exception)
+	 */
+	public static Optional<GenericTextParser> find(final Object _object){
 		return Optional.of(_object)
 					.map(Object::getClass)
 					.flatMap(GenericTextParser::find);
 	}
-	private static Optional<GenericTextParser> find(final Class _class){
+	/**
+	 * Try to return an available parser for the given class
+	 * @param _class class to parse
+	 * @return an optional of the appropiate converter or an empty optional
+	 * @since 1.1.0
+	 */
+	public static Optional<GenericTextParser> find(final Class _class){
 		return Optional.of(_class)
 					.flatMap(valueClass -> Stream.of(values())
-												.filter(converter -> converter.converter.getClasses().contains(valueClass))
+												.filter(converter -> converter.converter
+																					.getClasses()
+																						.stream()
+																							.anyMatch(clazz -> ((Class)clazz).isAssignableFrom(_class)))
 												.findAny());
 	}
 	
