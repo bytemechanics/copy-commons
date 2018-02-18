@@ -1,4 +1,8 @@
 # Copy Commons
+[![Latest version](https://maven-badges.herokuapp.com/maven-central/org.bytemechanics/copy-commons/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.bytemechanics/copy-commons/badge.svg)
+[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=org.bytemechanics%3Acopy-commons)](https://sonarcloud.io/dashboard/index/org.bytemechanics%3Acopy-commons)
+[![Coverage](https://sonarcloud.io/api/badges/measure?key=org.bytemechanics%3Acopy-commons&metric=coverage)](https://sonarcloud.io/dashboard/index/org.bytemechanics%3Acopy-commons)
+
 Base project to copy sources to the other projects in order to have a single place to test sources and keep zero dependencies in libraries
 
 ## Motivation
