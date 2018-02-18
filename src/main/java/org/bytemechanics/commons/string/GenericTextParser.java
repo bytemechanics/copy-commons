@@ -340,6 +340,7 @@ public enum GenericTextParser{
 	 * Try to convert the given object to string usign default format
 	 * @param _object object to format
 	 * @return an optional of the object converted to string (if the given object can not be converted, its not the correct type, throws an exception)
+	 * @since 1.2.0
 	 */
 	public static Optional<GenericTextParser> find(final Object _object){
 		return Optional.of(_object)
@@ -350,7 +351,7 @@ public enum GenericTextParser{
 	 * Try to return an available parser for the given class
 	 * @param _class class to parse
 	 * @return an optional of the appropiate converter or an empty optional
-	 * @since 1.1.0
+	 * @since 1.2.0
 	 */
 	public static Optional<GenericTextParser> find(final Class _class){
 		return Optional.of(_class)

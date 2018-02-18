@@ -31,7 +31,7 @@ import java.util.stream.Stream;
  * Factory to create objects looking for the appropiate constructor
  * @author afarre 
  * @param <T> Type of class to instantiate
- * @since 1.1.0
+ * @since 1.2.0
  */
 public class ObjectFactory<T> {
 
