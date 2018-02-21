@@ -101,8 +101,8 @@ public class ObjectFactory<T> {
 		for(int ic1=0;ic1<_destiny.length;ic1++){
 			final Class boxedDestiny=autobox(_destiny[ic1]);
 			final Class boxedOrigin=Optional.ofNullable(_origin[ic1])
-												.map(origin -> origin.getClass())
-												.map(clazz -> autobox(clazz))
+												.map(Object::getClass)
+												.map(this::autobox)
 												.orElse(null);
 			reply&=(boxedOrigin==null)||(boxedDestiny.isAssignableFrom(boxedOrigin));
 		}
