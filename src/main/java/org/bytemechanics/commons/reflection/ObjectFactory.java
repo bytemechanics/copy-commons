@@ -138,6 +138,7 @@ public class ObjectFactory<T> {
 
 	/**
 	 * Returns the supplier for the class of this factory using, if provided, the attributes
+	 * Note: this supplier throws an exception if an error occurs during instantiation
 	 * @return Supplier for the current factory class
 	 * @see Supplier
 	 */
@@ -156,9 +157,14 @@ public class ObjectFactory<T> {
 																			.map(Arrays::asList)
 																			.map(attributesList -> MessageFormat.format("Unable to instantiate object using constructor {0} with attributes {1}",constructor,attributesList))
 																			.orElseGet(() -> MessageFormat.format("Unable to instantiate object using constructor {0} without arguments",constructor)));
+								throwAsUnchecked(e);
 							}
 
 							return reply;
 						});
 	}	
+	@SuppressWarnings("unchecked")
+	private static <E extends Throwable> void throwAsUnchecked(Exception _exception) throws E {
+		throw (E) _exception;
+	}
 }
