@@ -41,7 +41,8 @@ public final class SimpleFormat {
 		
 		int lastBreak=0;
 		int numArg=0;
-		for(int ic1=0;ic1<_message.length();ic1++){
+		int ic1=0;
+		while(ic1<_message.length()){
 			final char current=_message.charAt(ic1);
 			final char next=(ic1<_message.length()-1)? _message.charAt(ic1+1) : 'A';
 			if((current=='{')&&(next=='}')){
@@ -51,7 +52,9 @@ public final class SimpleFormat {
 										.map(counter -> _args[counter])
 										.map(String::valueOf)
 										.orElse("null"));
-				ic1=lastBreak=ic1+2;
+				lastBreak=ic1+=2;
+			}else{
+				ic1++;
 			}
 		}
 		if(lastBreak<_message.length()){
