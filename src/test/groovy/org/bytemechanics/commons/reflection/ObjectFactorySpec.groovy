@@ -112,8 +112,10 @@ class ObjectFactorySpec extends Specification{
 			DummieServiceImpl.class	| []							| DummieServiceImpl.class.getConstructor()
 			DummieServiceImpl.class	| ["1arg-arg1"]					| DummieServiceImpl.class.getConstructor((Class[])[String.class])
 			DummieServiceImpl.class	| ["1arg-arg1",3,"3arg-arg2"]	| DummieServiceImpl.class.getConstructor((Class[])[String.class,int.class,String.class])
+			DummieServiceImpl.class	| [null,3,"3arg-arg2"]			| DummieServiceImpl.class.getConstructor((Class[])[String.class,int.class,String.class])
+			DummieServiceImpl.class	| ["1arg-arg1",3,null]			| DummieServiceImpl.class.getConstructor((Class[])[String.class,int.class,String.class])
 	}
-
+	
 	@Unroll
 	def "when object factory builds a supplier of #supplierClass with #arguments should return a supplier of #supplierClass"(){
 		println(">>>>> ObjectFactorySpec >>>> when object factory builds a supplier of $supplierClass with $arguments should return a supplier of $supplierClass")
@@ -137,7 +139,7 @@ class ObjectFactorySpec extends Specification{
 			DummieServiceImpl.class	| ["1arg-arg1"]
 			DummieServiceImpl.class	| ["1arg-arg1",3,"3arg-arg2"]
 			expected=[(arguments.size()>0)? arguments[0] : "",(arguments.size()>1)? arguments[1] : 0,(arguments.size()>2)? arguments[2] : ""]			
-		}
+	}
 
 	@Unroll
 	def "when object factory builds a supplier of #supplierClass with #arguments should return a empty optional and write a log"(){
