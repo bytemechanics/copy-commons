@@ -177,7 +177,7 @@ class ObjectFactorySpec extends Specification{
 			
 		where:
 			supplierClass			| arguments								| failure
-			DummieServiceImpl.class	| ["1arg-arg1",null,false,"3arg-arg2"]	| IllegalArgumentException.class
+			DummieServiceImpl.class	| ["1arg-arg1",null,false,"3arg-arg2"]	| InvocationTargetException.class
 			DummieServiceImpl.class	| ["1arg-arg1",3,false,"3arg-arg2"]		| InvocationTargetException.class
 	}
 	

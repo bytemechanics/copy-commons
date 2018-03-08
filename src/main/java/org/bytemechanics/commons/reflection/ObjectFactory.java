@@ -22,8 +22,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -151,13 +149,13 @@ public class ObjectFactory<T> {
 
 							try{
 								reply=(T)constructor.newInstance(this.attributes);
-							} catch (SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-								Logger.getLogger(ObjectFactory.class.getName())
-									  .log(Level.SEVERE, e, () -> Optional.ofNullable(this.attributes)
-																			.map(Arrays::asList)
-																			.map(attributesList -> MessageFormat.format("Unable to instantiate object using constructor {0} with attributes {1}",constructor,attributesList))
-																			.orElseGet(() -> MessageFormat.format("Unable to instantiate object using constructor {0} without arguments",constructor)));
+							} catch (SecurityException | IllegalAccessException e) {
 								throwAsUnchecked(e);
+							} catch (InstantiationException | IllegalArgumentException | InvocationTargetException e) {
+								throwAsUnchecked(new InvocationTargetException(e,Optional.ofNullable(this.attributes)
+																			.map(Arrays::asList)
+																			.map(attributesList -> MessageFormat.format("Unable to instantiate object using constructor {0}({1})",constructor,attributesList))
+																			.orElseGet(() -> MessageFormat.format("Unable to instantiate object using constructor {0}()",constructor))));
 							}
 
 							return reply;
