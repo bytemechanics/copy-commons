@@ -20,6 +20,8 @@ import spock.lang.Specification
 import org.bytemechanics.commons.string.*
 import java.util.function.*
 import java.io.*
+import java.nio.file.*;
+import java.nio.file.InvalidPathException
 import java.util.logging.*
 import java.time.*
 import java.time.format.*
@@ -150,6 +152,8 @@ class GenericTextParserSpec extends Specification {
 			"2007/12/03 10-15-30"					| GenericTextParser.LOCALDATETIME	| "yyyy/MM/dd HH-mm[-ss]"								| LocalDateTime.of(2007,12,03,10,15,30)
 			"ENUM"									| GenericTextParser.ENUM			| "org.bytemechanics.commons.string.GenericTextParser"	| GenericTextParser.ENUM
 			"LOCALDATE"								| GenericTextParser.ENUM			| "org.bytemechanics.commons.string.GenericTextParser"	| GenericTextParser.LOCALDATE
+			"/etc/bin"								| GenericTextParser.PATH			| ""													| Paths.get("/etc/bin")
+			"/home/usr"								| GenericTextParser.PATH			| ""													| Paths.get("/home/usr")
 	}
 
 	@Unroll
@@ -187,6 +191,8 @@ class GenericTextParserSpec extends Specification {
 			""										| GenericTextParser.LOCALDATETIME	| null													
 			null									| GenericTextParser.ENUM			| "org.bytemechanics.commons.string.GenericTextParser"	
 			""										| GenericTextParser.ENUM			| "org.bytemechanics.commons.string.GenericTextParser"	
+			null									| GenericTextParser.PATH			| null
+			""										| GenericTextParser.PATH			| null
 	}		
 	
 	@Unroll
@@ -334,6 +340,8 @@ class GenericTextParserSpec extends Specification {
 			"2007/12/03 10-15-30"										| GenericTextParser.LOCALDATETIME	| "yyyy/MM/dd HH-mm[-ss]"								| LocalDateTime.of(2007,12,03,10,15,30)
 			"ENUM"														| GenericTextParser.ENUM			| "org.bytemechanics.commons.string.GenericTextParser"	| GenericTextParser.ENUM
 			"LOCALDATE"													| GenericTextParser.ENUM			| "org.bytemechanics.commons.string.GenericTextParser"	| GenericTextParser.LOCALDATE
+			"/etc/bin"													| GenericTextParser.PATH			| ""													| Paths.get("/etc/bin")
+			"/home/usr"													| GenericTextParser.PATH			| ""													| Paths.get("/home/usr")
 	}
 	
 	@Unroll
@@ -360,6 +368,7 @@ class GenericTextParserSpec extends Specification {
 			null									| GenericTextParser.LOCALTIME		| null													
 			null									| GenericTextParser.LOCALDATETIME	| null													
 			null									| GenericTextParser.ENUM			| "org.bytemechanics.commons.string.GenericTextParser"	
+			null									| GenericTextParser.PATH			| null													
 	}		
 
 	@Unroll
@@ -402,6 +411,7 @@ class GenericTextParserSpec extends Specification {
 			LocalTime.now()							| Optional.of(GenericTextParser.LOCALTIME)		
 			LocalDateTime.now()						| Optional.of(GenericTextParser.LOCALDATETIME)	
 			TimeUnit.NANOSECONDS					| Optional.of(GenericTextParser.ENUM)			
+			Paths.get("/etc")						| Optional.of(GenericTextParser.PATH)			
 			Instant.now()							| Optional.empty()
 	}	
 }
