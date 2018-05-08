@@ -53,6 +53,6 @@ public class GenericTestParserTest {
 		
 		Assert.assertNotNull(actual);
 		Assert.assertTrue(actual.isPresent());
-		Assert.assertEquals(actual.get(),GenericTextParser.INTEGER);
+		Assert.assertEquals(GenericTextParser.INTEGER,actual.get());
 	}
 }

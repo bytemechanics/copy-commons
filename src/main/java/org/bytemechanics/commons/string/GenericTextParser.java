@@ -126,7 +126,7 @@ public enum GenericTextParser{
 	ENUM(Enum.class,
 							(value,config) -> value.map(val -> LambdaUnchecker.uncheckedGet(() ->  Enum.valueOf((Class<Enum>)Class.forName(config.get()),val))),
 							(value,config) -> value.map(val -> val.name())),
-	PATH(Path.class,(value,config) -> value.map(val -> Paths.get(val)),(value,config) -> value.map(val -> val.toString())),
+	PATH(Path.class,(value,config) -> value.map(Paths::get),(value,config) -> value.map(Path::toString)),
 	;
 
 
