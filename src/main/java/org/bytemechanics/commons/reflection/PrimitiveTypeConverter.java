@@ -61,7 +61,7 @@ public enum PrimitiveTypeConverter {
 														.filter(value -> value.primitiveClass.equals(candidate))
 														.map(value -> value.objectClass)
 														.findAny()
-															.orElseThrow(() -> new ClassCastException("Unable to get class from _primitiveClass "+String.valueOf(candidate)+" not primitive")))
+															.orElseThrow(() -> new ClassCastException("Unable to get class from _primitiveClass "+candidate+" not primitive")))
 							.orElseThrow(() -> new NullPointerException("Unable to get class from null _primitiveClass"));
 	}
 }
