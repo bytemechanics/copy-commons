@@ -77,15 +77,14 @@ class PrimitiveTypeConverterSpec extends Specification{
 			e.getMessage()=="Unable to get class from null _primitiveClass"
 	}
 
-	def "Try to convert an unnexistent primitive #primitive shoud raise a ClassCastExeption"(){
-		println(">>>>> PrimitiveTypeConverterSpec >>>> Try to convert an unnexistent primitive $primitive shoud raise a ClassCastExeption")
+	def "Try to convert an unnexistent primitive #primitive shoud return the same class"(){
+		println(">>>>> PrimitiveTypeConverterSpec >>>> Try to convert an unnexistent primitive $primitive shoud return the same class")
 
 		when:
-			PrimitiveTypeConverter.convert(primitive)
+			def actual=PrimitiveTypeConverter.convert(primitive)
 
 		then:
-			def e=thrown(ClassCastException.class)
-			e.getMessage()=="Unable to get class from _primitiveClass "+String.valueOf(primitive)+" not primitive"
+			actual==primitive
 			
 		where:
 			primitive << [Integer.class]

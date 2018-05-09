@@ -47,10 +47,9 @@ public enum PrimitiveTypeConverter {
 	
 	
 	/**
-	 * Convert primitive types to it's corresponding class type
+	 * Try to convert primitive types to it's corresponding class type if are primitives 
 	 * @param _primitiveClass primitive to convert
-	 * @return it's correponding primitive class
-	 * @throws ClassCastException if the class provided is not primitive
+	 * @return it's correponding primitive class or the same class if it's not primitive
 	 * @throws NullPointerException if the class provided is null
 	 */
 	public static final Class convert(final Class _primitiveClass){
@@ -61,7 +60,7 @@ public enum PrimitiveTypeConverter {
 														.filter(value -> value.primitiveClass.equals(candidate))
 														.map(value -> value.objectClass)
 														.findAny()
-															.orElseThrow(() -> new ClassCastException("Unable to get class from _primitiveClass "+candidate+" not primitive")))
+															.orElse(_primitiveClass))
 							.orElseThrow(() -> new NullPointerException("Unable to get class from null _primitiveClass"));
 	}
 }
