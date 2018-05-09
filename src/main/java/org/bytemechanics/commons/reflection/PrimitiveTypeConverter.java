@@ -23,6 +23,7 @@ import java.util.stream.Stream;
  * int - Integer, float - Float...
  * Usage: Class objectClass=PrimitiveTypeConverter.convert(primitiveClass)
  * @author afarre
+ * @since 1.3.0
  */
 public enum PrimitiveTypeConverter {
 	

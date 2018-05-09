@@ -37,6 +37,7 @@ import org.bytemechanics.commons.functional.LambdaUnchecker;
  * Generic type text parser and formatter
  * @author afarre
  * @since 1.1.0
+ * @since 1.3.0 
  */
 public enum GenericTextParser{
 	
