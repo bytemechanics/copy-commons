@@ -33,15 +33,11 @@ public class GenericTestParserTest {
 	@BeforeClass
 	public static void setup() throws IOException{
 		System.out.println(">>>>> GenericTestParserTest >>>> setupSpec");
-		final InputStream inputStream = GenericTextParser.class.getResourceAsStream("/logging.properties");
-		try{
+		try(InputStream inputStream = GenericTextParser.class.getResourceAsStream("/logging.properties")){
 			LogManager.getLogManager().readConfiguration(inputStream);
 		}catch (final IOException e){
 			Logger.getAnonymousLogger().severe("Could not load default logging.properties file");
 			Logger.getAnonymousLogger().severe(e.getMessage());
-		}finally{
-			if(inputStream!=null)
-				inputStream.close();
 		}
 	}
 
