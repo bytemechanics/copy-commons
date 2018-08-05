@@ -113,17 +113,19 @@ class FigletSpec extends Specification {
 		
 		when:
 			def actual=figlet.line(phrase,compression,(char)character)
+			println(figlet.print(phrase,compression))
+			println(actual)
 			
 		then:
 			actual!=null
 			actual==line
 		
 		where:
-			phrase						| compression	| character	| line									
- 			"aixo es un primer test"	| true			| '-'		| "------------------------------------------------------------------------------------------------------------------------------------------------------------"
-			"això es un segón test"		| true			| '_'		| "___________________________________________________________________________________________________________________________________________________"
-			"Això es un 3er test"		| true			| 'X'		| "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-			"Això es un 4-ªrt test"		| true			| '-'		| "-----------------------------------------------------------------------------------------------------------------------------------------------------"
+			phrase						| compression	| character	| line		
+ 			"aixo es un primer test"	| true			| '-'		| "----------------------------------------------------------------------------------------------------------------"
+			"això es un segón test"		| true			| '_'		| "_________________________________________________________________________________________________________"
+			"Això es un 3er test"		| true			| 'X'		| "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+			"Això es un 4-ªrt test"		| true			| '-'		| "-----------------------------------------------------------------------------------------------------------"
  			"aixo es un primer test"	| false			| 'c'		| "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
 			"això es un segón test"		| false			| '-'		| "---------------------------------------------------------------------------------------------------------------------------------------------------"
 			"Això es un 3er test"		| false			| '-'		| "------------------------------------------------------------------------------------------------------------------------------------"

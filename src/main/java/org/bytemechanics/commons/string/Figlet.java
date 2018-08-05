@@ -263,7 +263,7 @@ public class Figlet {
 	 * @return the length of the banner
 	 */
 	public int length(final String _phrase){
-		return length(_phrase,false);
+		return length(_phrase,true);
 	}
 
 	/**
@@ -274,7 +274,7 @@ public class Figlet {
 	 * @return string with the same length of the phrase corresponding banner but with only onle line filled with _filler
 	 */
 	public String line(final String _phrase,final boolean _compressed,final char _filler){
-		final char[] reply=new char[this.length(_phrase)];
+		final char[] reply=new char[this.length(_phrase,_compressed)];
 		Arrays.fill(reply,_filler);
 		return String.valueOf(reply);
 	}
@@ -286,6 +286,6 @@ public class Figlet {
 	 * @return string with the same length of the phrase corresponding banner but with only onle line filled with _filler
 	 */
 	public String line(final String _phrase,final char _filler){
-		return line(_phrase, false, _filler);
+		return line(_phrase, true, _filler);
 	}
 }
