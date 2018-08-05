@@ -22,6 +22,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -238,5 +239,53 @@ public class Figlet {
 	 */
 	public String print(final String _phrase){
 		return print(_phrase,true);
+	}
+
+	/**
+	 * Calculate the length of the banner
+	 * @param _phrase phrase to calculate length
+	 * @param _compressed if phrase must be considered compressed
+	 * @return the length of the banner
+	 */
+	public int length(final String _phrase,final boolean _compressed){
+		return _phrase.chars()
+						.boxed()
+						.map(charNum -> this.aphabet.get(charNum))
+						.map(bannerChar -> bannerChar[0].length())
+						.map(bannerCharSize -> (_compressed)? bannerCharSize-2 : bannerCharSize)
+						.mapToInt(bannerCharSize -> (int)bannerCharSize)
+						.sum();
+	}
+
+	/**
+	 * Calculate the length of the banner without compression
+	 * @param _phrase phrase to calculate length
+	 * @return the length of the banner
+	 */
+	public int length(final String _phrase){
+		return length(_phrase,false);
+	}
+
+	/**
+	 * Returns an string with the same length of the _phrase but filled with _filler
+	 * @param _phrase phrase to represent
+	 * @param _compressed if phrase must be considered compressed
+	 * @param _filler character to fill the same phrase length in the returned string
+	 * @return string with the same length of the phrase corresponding banner but with only onle line filled with _filler
+	 */
+	public String line(final String _phrase,final boolean _compressed,final char _filler){
+		final char[] reply=new char[this.length(_phrase)];
+		Arrays.fill(reply,_filler);
+		return String.valueOf(reply);
+	}
+
+	/**
+	 * Returns an string with the same length of the _phrase but filled with _filler without compression
+	 * @param _phrase phrase to represent
+	 * @param _filler character to fill the same phrase length in the returned string
+	 * @return string with the same length of the phrase corresponding banner but with only onle line filled with _filler
+	 */
+	public String line(final String _phrase,final char _filler){
+		return line(_phrase, false, _filler);
 	}
 }

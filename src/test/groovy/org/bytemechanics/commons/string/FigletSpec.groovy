@@ -75,5 +75,61 @@ class FigletSpec extends Specification {
 			
 			standard="/standard.flf"
 	}
+
+	@Unroll
+	def "When #phrase with compression #compression calculate the length must be the same as looking for first newline"(){
+		println(">>>>> FigletSpec >>>> When $phrase with compression $compression calculate the length must be the same as looking for first newline")
+
+		setup:
+			def figlet=new Figlet(Figlet.class.getResourceAsStream(standard), Charset.defaultCharset());
+			
+		when:
+			def actual=figlet.length(phrase,compression)
+			
+		then:
+			actual!=null
+			actual==figlet.print(phrase,compression).indexOf('\n')
+		
+		where:
+			phrase						| compression		
+ 			"aixo es un primer test"	| true			
+			"això es un segón test"		| true			
+			"Això es un 3er test"		| true			
+			"Això es un 4-ªrt test"		| true			
+ 			"aixo es un primer test"	| false			
+			"això es un segón test"		| false			
+			"Això es un 3er test"		| false			
+			"Això es un 4-ªrt test"		| false			
+			
+			standard="/standard.flf"
+	}
+
+	@Unroll
+	def "When #phrase with compression #compression renders as line with #character must return #line"(){
+		println(">>>>> FigletSpec >>>> When $phrase with compression $compression renders as line with $character must return $line")
+
+		setup:
+			def figlet=new Figlet(Figlet.class.getResourceAsStream(standard), Charset.defaultCharset());
+		
+		when:
+			def actual=figlet.line(phrase,compression,(char)character)
+			
+		then:
+			actual!=null
+			actual==line
+		
+		where:
+			phrase						| compression	| character	| line									
+ 			"aixo es un primer test"	| true			| '-'		| "------------------------------------------------------------------------------------------------------------------------------------------------------------"
+			"això es un segón test"		| true			| '_'		| "___________________________________________________________________________________________________________________________________________________"
+			"Això es un 3er test"		| true			| 'X'		| "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+			"Això es un 4-ªrt test"		| true			| '-'		| "-----------------------------------------------------------------------------------------------------------------------------------------------------"
+ 			"aixo es un primer test"	| false			| 'c'		| "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+			"això es un segón test"		| false			| '-'		| "---------------------------------------------------------------------------------------------------------------------------------------------------"
+			"Això es un 3er test"		| false			| '-'		| "------------------------------------------------------------------------------------------------------------------------------------"
+			"Això es un 4-ªrt test"		| false			| '_'		| "_____________________________________________________________________________________________________________________________________________________"
+			
+			standard="/standard.flf"
+	}
 }
 
