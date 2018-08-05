@@ -22,8 +22,8 @@ import java.util.Objects;
  * Immutable object to keep context of two values
  * @author afarre
  * @since 1.3.0
- * @param <A>
- * @param <B>
+ * @param <A> first value
+ * @param <B> second value
  */
 public class Tuple<A,B> {
 

@@ -31,11 +31,13 @@ import java.util.stream.Stream;
 
 /**
  * Figlet java implementation
- * Documentation: 
- *    https://duckduckgo.com/?q=big+text+test&ia=answer
- *    https://en.wikipedia.org/wiki/ASCII
- *    http://www.jave.de/figlet/figfont.html
- *    https://github.com/Marak/asciimo/issues/3
+ * Documentation:
+ * <ul>
+ * <li><a href="https://duckduckgo.com/?q=big+text+test&ia=answer"></a></li>
+ * <li><a href="https://en.wikipedia.org/wiki/ASCII"></a></li>
+ * <li><a href="http://www.jave.de/figlet/figfont.html"></a></li>
+ * <li><a href="https://github.com/Marak/asciimo/issues/3"></a></li>
+ * </ul>
  * @author afarre
  * @since 1.3.0
  */
