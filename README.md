@@ -29,6 +29,6 @@ dependencies {
 }
 ```
 
-1. Use the library you prefer, to main reference please download and look in javadoc, we intend to keep it updated and explicative
+2. Use the library you prefer, to main reference please download and look in javadoc, we intend to keep it updated and explicative
 
 
