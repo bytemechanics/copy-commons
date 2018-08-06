@@ -110,41 +110,39 @@ public class Figlet {
 			logger.fine("figlet::load::ascii::standard::end");
 			logger.finer("figlet::load::ascii::extended::begin");
 			while((line!=null)&&(line.charAt(0)!='0')){
-				int alphabetPos=Integer.valueOf(line.substring(0,line.indexOf(' ')));
-				String[] letter=new String[this.height];
-				char endCharacter='@';
-				for(int ic1=0;ic1<this.height;ic1++){
-					line=bufferedReader.readLine();
-					logger.log(Level.FINEST, "figlet::load::ascii::extended::char::{0}::line::{1}::read::{2}", new Object[]{alphabetPos, ic1, line});
-					letter[ic1]=line.replace(this.blank,' ');
-					endCharacter=(ic1==0)? letter[ic1].charAt(letter[ic1].length()-1) : endCharacter;
-					letter[ic1]=letter[ic1].replace(endCharacter,' ');
-				}
-				letter[this.height-1]=letter[this.height-1].substring(0,letter[this.height-1].length()-1);
-				this.aphabet.put(alphabetPos,letter);
-				line=bufferedReader.readLine();
+				int alphabetPos=Integer.parseInt(line.substring(0,line.indexOf(' ')));
+				line=parseLetter(bufferedReader, alphabetPos,"ascii");
 			}
 			logger.fine("figlet::load::ascii::extended::end");
 			logger.fine("figlet::load::ascii::end");
 			logger.finer("figlet::load::utf-8::begin");
 			while((line!=null)&&(line.charAt(0)=='0')){
 				int alphabetPos=Integer.decode(line.substring(0,line.indexOf(' ')));
-				String[] letter=new String[this.height];
-				char endCharacter='@';
-				for(int ic1=0;ic1<this.height;ic1++){
-					line=bufferedReader.readLine();
-					logger.log(Level.FINEST, "figlet::load::utf-8::char::{0}::line::{1}::read::{2}", new Object[]{alphabetPos, ic1, line});
-					letter[ic1]=line.replace(this.blank,' ');
-					endCharacter=(ic1==0)? letter[ic1].charAt(letter[ic1].length()-1) : endCharacter;
-					letter[ic1]=letter[ic1].replace(endCharacter,' ');
-				}
-				letter[this.height-1]=letter[this.height-1].substring(0,letter[this.height-1].length()-1);
-				this.aphabet.put(alphabetPos,letter);
-				line=bufferedReader.readLine();
+				line=parseLetter(bufferedReader, alphabetPos,"utf-8");
 			}
 			logger.fine("figlet::load::utf-8::end");
 			logger.fine("figlet::load::end");
 		}
+	}
+	
+	private String parseLetter(final BufferedReader bufferedReader,final int alphabetPos,final String _encoding) throws IOException{
+		
+		String reply;
+		
+		String[] letter=new String[this.height];
+		char endCharacter='@';
+		for(int ic1=0;ic1<this.height;ic1++){
+			reply=bufferedReader.readLine();
+			logger.log(Level.FINEST, "figlet::load::{0}::char::{1}::line::{2}::read::{3}", new Object[]{_encoding,alphabetPos, ic1, reply});
+			letter[ic1]=reply.replace(this.blank,' ');
+			endCharacter=(ic1==0)? letter[ic1].charAt(letter[ic1].length()-1) : endCharacter;
+			letter[ic1]=letter[ic1].replace(endCharacter,' ');
+		}
+		letter[this.height-1]=letter[this.height-1].substring(0,letter[this.height-1].length()-1);
+		this.aphabet.put(alphabetPos,letter);
+		reply=bufferedReader.readLine();
+		
+		return reply;
 	}
 	
 	protected final String[] fillColumn(final String _column){
@@ -263,7 +261,7 @@ public class Figlet {
 	public int length(final String _phrase,final boolean _compressed){
 		return _phrase.chars()
 						.boxed()
-						.map(charNum -> this.aphabet.get(charNum))
+						.map(this.aphabet::get)
 						.map(bannerChar -> bannerChar[0].length())
 						.map(bannerCharSize -> (_compressed)? bannerCharSize-2 : bannerCharSize)
 						.mapToInt(bannerCharSize -> (int)bannerCharSize)
