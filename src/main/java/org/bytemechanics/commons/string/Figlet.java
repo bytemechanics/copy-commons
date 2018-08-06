@@ -46,6 +46,19 @@ public class Figlet {
 	
 	private static final Logger logger=Logger.getLogger(Figlet.class.getName());
 	
+	/**
+	 * Exception to report that provided font url is not valid
+	 * @author afarre
+	 */
+	public class NoFigletFontFormatException extends RuntimeException{
+		
+		private static final String MESSAGE="Input has not figlet font file format (.flf)";
+
+		public NoFigletFontFormatException() {
+			super(MESSAGE);	
+		}
+	}
+	
 	protected final char blank;
 	protected final int height;
 	protected final Map<Integer,String[]> aphabet;
@@ -63,7 +76,7 @@ public class Figlet {
 			//Process header
 			final String header=bufferedReader.readLine(); 
 			if(!header.startsWith("flf2a"))
-				throw new IOException("Input has not figlet font file format (.flf)");
+				throw new NoFigletFontFormatException();
 			this.blank=header.charAt(5);
 			logger.log(Level.FINE, "figlet::load::blank::{0}", this.blank);
 			final String[] headerParameters=header.split(" ");

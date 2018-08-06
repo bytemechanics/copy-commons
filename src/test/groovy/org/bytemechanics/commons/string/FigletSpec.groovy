@@ -133,5 +133,16 @@ class FigletSpec extends Specification {
 			
 			standard="/standard.flf"
 	}
+
+	def "When wrong font is provided raises a NoFigletFontFormatException"(){
+		println(">>>>> FigletSpec >>>> When wrong font is provided raises a NoFigletFontFormatException")
+
+		when:
+			def figlet=new Figlet(Figlet.class.getResourceAsStream("/logging.properties"), Charset.defaultCharset());
+			
+		then:
+			def e=thrown(Figlet.NoFigletFontFormatException)
+			e.getMessage()=="Input has not figlet font file format (.flf)"
+	}
 }
 
