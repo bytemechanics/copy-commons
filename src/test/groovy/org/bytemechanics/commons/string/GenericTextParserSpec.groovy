@@ -20,6 +20,9 @@ import spock.lang.Specification
 import org.bytemechanics.commons.string.*
 import java.util.function.*
 import java.io.*
+import java.net.URL
+import java.nio.file.*;
+import java.nio.file.InvalidPathException
 import java.util.logging.*
 import java.time.*
 import java.time.format.*
@@ -150,6 +153,8 @@ class GenericTextParserSpec extends Specification {
 			"2007/12/03 10-15-30"					| GenericTextParser.LOCALDATETIME	| "yyyy/MM/dd HH-mm[-ss]"								| LocalDateTime.of(2007,12,03,10,15,30)
 			"ENUM"									| GenericTextParser.ENUM			| "org.bytemechanics.commons.string.GenericTextParser"	| GenericTextParser.ENUM
 			"LOCALDATE"								| GenericTextParser.ENUM			| "org.bytemechanics.commons.string.GenericTextParser"	| GenericTextParser.LOCALDATE
+			"/etc/bin"								| GenericTextParser.PATH			| ""													| Paths.get("/etc/bin")
+			"/home/usr"								| GenericTextParser.PATH			| ""													| Paths.get("/home/usr")
 	}
 
 	@Unroll
@@ -187,6 +192,8 @@ class GenericTextParserSpec extends Specification {
 			""										| GenericTextParser.LOCALDATETIME	| null													
 			null									| GenericTextParser.ENUM			| "org.bytemechanics.commons.string.GenericTextParser"	
 			""										| GenericTextParser.ENUM			| "org.bytemechanics.commons.string.GenericTextParser"	
+			null									| GenericTextParser.PATH			| null
+			""										| GenericTextParser.PATH			| null
 	}		
 	
 	@Unroll
@@ -334,6 +341,8 @@ class GenericTextParserSpec extends Specification {
 			"2007/12/03 10-15-30"										| GenericTextParser.LOCALDATETIME	| "yyyy/MM/dd HH-mm[-ss]"								| LocalDateTime.of(2007,12,03,10,15,30)
 			"ENUM"														| GenericTextParser.ENUM			| "org.bytemechanics.commons.string.GenericTextParser"	| GenericTextParser.ENUM
 			"LOCALDATE"													| GenericTextParser.ENUM			| "org.bytemechanics.commons.string.GenericTextParser"	| GenericTextParser.LOCALDATE
+			"/etc/bin"													| GenericTextParser.PATH			| ""													| Paths.get("/etc/bin")
+			"/home/usr"													| GenericTextParser.PATH			| ""													| Paths.get("/home/usr")
 	}
 	
 	@Unroll
@@ -360,7 +369,57 @@ class GenericTextParserSpec extends Specification {
 			null									| GenericTextParser.LOCALTIME		| null													
 			null									| GenericTextParser.LOCALDATETIME	| null													
 			null									| GenericTextParser.ENUM			| "org.bytemechanics.commons.string.GenericTextParser"	
+			null									| GenericTextParser.PATH			| null													
 	}		
+
+	@Unroll
+	def "When try to find the appropiate parser for #clazz the result found is #genericTextParser"(){
+		println(">>>>> GenericTextParserSpec >>>> When try to find the appropiate parser for $clazz the result found is $genericTextParser")
+		when:
+			def Optional<GenericTextParser> actual=GenericTextParser.find(clazz);
+			
+		then:
+			actual!=null
+			actual.isPresent()==genericTextParser.isPresent()
+			actual.get()==genericTextParser.get()
+		
+		where:
+			clazz									| genericTextParser							
+ 			boolean.class							| Optional.of(GenericTextParser.BOOLEAN)	
+ 			Boolean.class							| Optional.of(GenericTextParser.BOOLEAN)	
+ 			char.class								| Optional.of(GenericTextParser.CHAR)			
+ 			Character.class							| Optional.of(GenericTextParser.CHAR)			
+			short.class								| Optional.of(GenericTextParser.SHORT)			
+ 			Short.class								| Optional.of(GenericTextParser.SHORT)			
+			int.class								| Optional.of(GenericTextParser.INTEGER)			
+			Integer.class							| Optional.of(GenericTextParser.INTEGER)			
+			long.class								| Optional.of(GenericTextParser.LONG)			
+ 			Long.class								| Optional.of(GenericTextParser.LONG)			
+ 			float.class								| Optional.of(GenericTextParser.FLOAT)			
+ 			Float.class								| Optional.of(GenericTextParser.FLOAT)			
+			double.class							| Optional.of(GenericTextParser.DOUBLE)			
+ 			Double.class							| Optional.of(GenericTextParser.DOUBLE)			
+			BigDecimal.class						| Optional.of(GenericTextParser.BIGDECIMAL)		
+			String.class							| Optional.of(GenericTextParser.STRING)			
+			LocalTime.class							| Optional.of(GenericTextParser.LOCALTIME)		
+			LocalDateTime.class						| Optional.of(GenericTextParser.LOCALDATETIME)	
+			TimeUnit.class							| Optional.of(GenericTextParser.ENUM)			
+			Path.class								| Optional.of(GenericTextParser.PATH)			
+	}	
+
+	@Unroll
+	def "When try to find the appropiate parser for #clazz the result found is empty"(){
+		println(">>>>> GenericTextParserSpec >>>> When try to find the appropiate parser for $clazz the result found is empty")
+		when:
+			def Optional<GenericTextParser> actual=GenericTextParser.find(clazz);
+			
+		then:
+			actual!=null
+			!actual.isPresent()
+		
+		where:
+			clazz << [Instant.class,URL.class]
+	}
 
 	@Unroll
 	def "When try to find the appropiate parser for #value the result found is #genericTextParser"(){
@@ -371,9 +430,7 @@ class GenericTextParserSpec extends Specification {
 		then:
 			actual!=null
 			actual.isPresent()==genericTextParser.isPresent()
-			if(genericTextParser.isPresent()){
-				actual.get()==genericTextParser.get()
-			}
+			actual.get()==genericTextParser.get()
 		
 		where:
 			value									| genericTextParser							
@@ -381,15 +438,15 @@ class GenericTextParserSpec extends Specification {
  			Boolean.TRUE							| Optional.of(GenericTextParser.BOOLEAN)	
  			false									| Optional.of(GenericTextParser.BOOLEAN)	
  			Boolean.FALSE							| Optional.of(GenericTextParser.BOOLEAN)	
- 			(char)'a'								| Optional.of(GenericTextParser.CHAR)			
+ 			((char)'a')								| Optional.of(GenericTextParser.CHAR)			
  			new Character((char)'j')				| Optional.of(GenericTextParser.CHAR)			
- 			(char)'d'								| Optional.of(GenericTextParser.CHAR)			
+ 			((char)'d')								| Optional.of(GenericTextParser.CHAR)			
  			new Character((char)'i')				| Optional.of(GenericTextParser.CHAR)			
- 			(char)'z'								| Optional.of(GenericTextParser.CHAR)			
+ 			((char)'z')								| Optional.of(GenericTextParser.CHAR)			
  			new Character((char)'h')				| Optional.of(GenericTextParser.CHAR)			
-			(short)1								| Optional.of(GenericTextParser.SHORT)			
+			((short)1)								| Optional.of(GenericTextParser.SHORT)			
  			Short.valueOf((short)2)					| Optional.of(GenericTextParser.SHORT)			
-			(int)1									| Optional.of(GenericTextParser.INTEGER)			
+			((int)1)								| Optional.of(GenericTextParser.INTEGER)			
 			Integer.valueOf((int)100)				| Optional.of(GenericTextParser.INTEGER)			
 			100l									| Optional.of(GenericTextParser.LONG)			
  			Long.valueOf(324l)						| Optional.of(GenericTextParser.LONG)			
@@ -402,6 +459,20 @@ class GenericTextParserSpec extends Specification {
 			LocalTime.now()							| Optional.of(GenericTextParser.LOCALTIME)		
 			LocalDateTime.now()						| Optional.of(GenericTextParser.LOCALDATETIME)	
 			TimeUnit.NANOSECONDS					| Optional.of(GenericTextParser.ENUM)			
-			Instant.now()							| Optional.empty()
+			Paths.get("/etc")						| Optional.of(GenericTextParser.PATH)			
 	}	
+	
+	@Unroll
+	def "When try to find the appropiate parser for #value the result found is empty"(){
+		println(">>>>> GenericTextParserSpec >>>> When try to find the appropiate parser for $value the result found is empty")
+		when:
+			def Optional<GenericTextParser> actual=GenericTextParser.find(value);
+			
+		then:
+			actual!=null
+			!actual.isPresent()
+		
+		where:
+		value << [Instant.now(),new URL("http://bytemechanics.org")]
+	}
 }

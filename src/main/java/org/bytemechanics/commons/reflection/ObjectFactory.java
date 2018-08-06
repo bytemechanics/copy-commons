@@ -22,8 +22,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -100,8 +98,11 @@ public class ObjectFactory<T> {
 	
 		for(int ic1=0;ic1<_destiny.length;ic1++){
 			final Class boxedDestiny=autobox(_destiny[ic1]);
-			final Class boxedOrigin=autobox(_origin[ic1].getClass());
-			reply&=boxedDestiny.isAssignableFrom(boxedOrigin);
+			final Class boxedOrigin=Optional.ofNullable(_origin[ic1])
+												.map(Object::getClass)
+												.map(this::autobox)
+												.orElse(null);
+			reply&=(boxedOrigin==null)||(boxedDestiny.isAssignableFrom(boxedOrigin));
 		}
 		
 		return reply;
@@ -135,6 +136,7 @@ public class ObjectFactory<T> {
 
 	/**
 	 * Returns the supplier for the class of this factory using, if provided, the attributes
+	 * Note: this supplier throws an exception if an error occurs during instantiation
 	 * @return Supplier for the current factory class
 	 * @see Supplier
 	 */
@@ -147,15 +149,20 @@ public class ObjectFactory<T> {
 
 							try{
 								reply=(T)constructor.newInstance(this.attributes);
-							} catch (SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-								Logger.getLogger(ObjectFactory.class.getName())
-									  .log(Level.SEVERE, e, () -> Optional.ofNullable(this.attributes)
+							} catch (SecurityException | IllegalAccessException e) {
+								throwAsUnchecked(e);
+							} catch (InstantiationException | IllegalArgumentException | InvocationTargetException e) {
+								throwAsUnchecked(new InvocationTargetException(e,Optional.ofNullable(this.attributes)
 																			.map(Arrays::asList)
-																			.map(attributesList -> MessageFormat.format("Unable to instantiate object using constructor {0} with attributes {1}",constructor,attributesList))
-																			.orElseGet(() -> MessageFormat.format("Unable to instantiate object using constructor {0} without arguments",constructor)));
+																			.map(attributesList -> MessageFormat.format("Unable to instantiate object using constructor {0}({1})",constructor,attributesList))
+																			.orElseGet(() -> MessageFormat.format("Unable to instantiate object using constructor {0}()",constructor))));
 							}
 
 							return reply;
 						});
 	}	
+	@SuppressWarnings("unchecked")
+	private static <E extends Throwable> void throwAsUnchecked(Exception _exception) throws E {
+		throw (E) _exception;
+	}
 }

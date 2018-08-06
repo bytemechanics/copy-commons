@@ -21,7 +21,7 @@ import java.util.logging.*
 import spock.lang.Specification;
 import spock.lang.Unroll
 import java.util.logging.*
-
+import java.lang.reflect.*
 
 /**
  *
@@ -112,8 +112,11 @@ class ObjectFactorySpec extends Specification{
 			DummieServiceImpl.class	| []							| DummieServiceImpl.class.getConstructor()
 			DummieServiceImpl.class	| ["1arg-arg1"]					| DummieServiceImpl.class.getConstructor((Class[])[String.class])
 			DummieServiceImpl.class	| ["1arg-arg1",3,"3arg-arg2"]	| DummieServiceImpl.class.getConstructor((Class[])[String.class,int.class,String.class])
+			DummieServiceImpl.class	| [null,3,"3arg-arg2"]			| DummieServiceImpl.class.getConstructor((Class[])[String.class,int.class,String.class])
+			DummieServiceImpl.class	| ["1arg-arg1",3,null]			| DummieServiceImpl.class.getConstructor((Class[])[String.class,int.class,String.class])
+			DummieServiceImpl.class	| ["1arg-arg1",null,"3arg-arg2"]| DummieServiceImpl.class.getConstructor((Class[])[String.class,int.class,String.class])
 	}
-
+	
 	@Unroll
 	def "when object factory builds a supplier of #supplierClass with #arguments should return a supplier of #supplierClass"(){
 		println(">>>>> ObjectFactorySpec >>>> when object factory builds a supplier of $supplierClass with $arguments should return a supplier of $supplierClass")
@@ -137,7 +140,7 @@ class ObjectFactorySpec extends Specification{
 			DummieServiceImpl.class	| ["1arg-arg1"]
 			DummieServiceImpl.class	| ["1arg-arg1",3,"3arg-arg2"]
 			expected=[(arguments.size()>0)? arguments[0] : "",(arguments.size()>1)? arguments[1] : 0,(arguments.size()>2)? arguments[2] : ""]			
-		}
+	}
 
 	@Unroll
 	def "when object factory builds a supplier of #supplierClass with #arguments should return a empty optional and write a log"(){
@@ -155,7 +158,27 @@ class ObjectFactorySpec extends Specification{
 			
 		where:
 			supplierClass			| arguments
-			DummieServiceImpl.class	| ["1arg-arg1",3,false,"3arg-arg2"]
+			DummieServiceImpl.class	| ["1arg-arg1",3,false,false]
+			DummieServiceImpl.class	| ["1arg-arg1",3,24.3,false]
+	}
+	
+	@Unroll
+	def "When object factory builds a supplier of #supplierClass with #arguments that throws an exception should fail with #failure"(){
+		println(">>>>> ObjectFactorySpec >>>> When object factory builds a supplier of $supplierClass with $arguments that throws an exception should fail with $failure")
+
+		when:
+			def result=ObjectFactory.of(supplierClass)
+										.with((Object[])arguments)
+										.supplier()
+										.get()
+
+		then:
+			thrown(failure)
+			
+		where:
+			supplierClass			| arguments								| failure
+			DummieServiceImpl.class	| ["1arg-arg1",null,false,"3arg-arg2"]	| InvocationTargetException.class
+			DummieServiceImpl.class	| ["1arg-arg1",3,false,"3arg-arg2"]		| InvocationTargetException.class
 	}
 	
 	@Unroll

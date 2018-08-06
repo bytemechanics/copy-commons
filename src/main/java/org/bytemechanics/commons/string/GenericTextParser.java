@@ -16,6 +16,8 @@
 package org.bytemechanics.commons.string;
 
 import java.math.BigDecimal;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.time.LocalDate;
@@ -35,6 +37,7 @@ import org.bytemechanics.commons.functional.LambdaUnchecker;
  * Generic type text parser and formatter
  * @author afarre
  * @since 1.1.0
+ * @since 1.3.0 
  */
 public enum GenericTextParser{
 	
@@ -124,6 +127,7 @@ public enum GenericTextParser{
 	ENUM(Enum.class,
 							(value,config) -> value.map(val -> LambdaUnchecker.uncheckedGet(() ->  Enum.valueOf((Class<Enum>)Class.forName(config.get()),val))),
 							(value,config) -> value.map(val -> val.name())),
+	PATH(Path.class,(value,config) -> value.map(Paths::get),(value,config) -> value.map(Path::toString)),
 	;
 
 
