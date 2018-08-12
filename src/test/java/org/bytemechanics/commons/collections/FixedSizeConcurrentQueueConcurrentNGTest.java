@@ -359,7 +359,7 @@ public class FixedSizeConcurrentQueueConcurrentNGTest {
 																		.parallel()
 																		.forEach(forkJoinPool::execute);
 															});
-		forkJoinPool.awaitTermination(1000, TimeUnit.MILLISECONDS);
+		forkJoinPool.awaitTermination(5, TimeUnit.MILLISECONDS);
 		if(task.isCompletedAbnormally()){
 			throw task.getException();
 		}

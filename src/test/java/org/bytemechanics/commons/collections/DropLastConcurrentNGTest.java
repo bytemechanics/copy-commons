@@ -31,7 +31,7 @@ import org.testng.annotations.Test;
  *
  * @author afarre
  */
-public class DropLastConcurrentNGTest1 {
+public class DropLastConcurrentNGTest {
 
 	protected void assertLessOrEqual(final int _actual,final int _expected){
 	
@@ -325,7 +325,7 @@ public class DropLastConcurrentNGTest1 {
 		}
 	}
 	
-	@Test(testName ="concurrent" , singleThreaded = true, invocationCount = 10,successPercentage = 100)
+	@Test(testName ="concurrent" , singleThreaded = true, invocationCount = 100,successPercentage = 100)
 	public void test_concurrent() throws InterruptedException, ExecutionException, Throwable {
 		System.out.println("FixedSizeConcurrentDropLastQueueConcurrentNGTest >>>> test_concurrent");
 		final int queueSize=30;
@@ -357,7 +357,7 @@ public class DropLastConcurrentNGTest1 {
 																		.parallel()
 																		.forEach(forkJoinPool::execute);
 															});
-		forkJoinPool.awaitTermination(1000, TimeUnit.MILLISECONDS);
+		forkJoinPool.awaitTermination(5, TimeUnit.MILLISECONDS);
 		if(task.isCompletedAbnormally()){
 			throw task.getException();
 		}
@@ -365,7 +365,7 @@ public class DropLastConcurrentNGTest1 {
 			System.out.println("FixedSizeConcurrentDropLastQueueConcurrentNGTest >>>> test_concurrent >>> exception found");
 			throw exception.get();
 		}
-		assertLessOrEqual(concurrentDropLastQueue.size(),queueSize+2);
+		assertLessOrEqual(concurrentDropLastQueue.size(),queueSize);
 		System.out.println("FixedSizeConcurrentDropLastQueueConcurrentNGTest >>>> test_concurrent >>> Finished");
 	}
 }
