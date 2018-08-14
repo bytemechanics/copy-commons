@@ -9,13 +9,13 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author afarre
  * @param <T>
  */
-public class FixedSizeConcurrentQueue<T> extends ConcurrentLinkedQueue<T>{
+public class FastDropLastQueue<T> extends ConcurrentLinkedQueue<T>{
 
 	private final AtomicInteger currentSize;
 	private final int maxSize;
 	
 	
-	public FixedSizeConcurrentQueue(final int _maxSize){
+	public FastDropLastQueue(final int _maxSize){
 		this.maxSize=_maxSize;
 		this.currentSize=new AtomicInteger(0);
 	}

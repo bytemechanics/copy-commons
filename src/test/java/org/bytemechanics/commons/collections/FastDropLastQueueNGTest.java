@@ -27,25 +27,25 @@ import org.testng.annotations.Test;
  *
  * @author afarre
  */
-public class FixedSizeConcurrentQueueNGTest {
+public class FastDropLastQueueNGTest {
 
 	private Queue<Integer> concurrentQueue;
 	
 	@BeforeMethod
 	public void setUpMethod() throws Exception {
-		System.out.println("FixedSizeConcurrentQueueNGTest >>>> setUpMethod");
-		this.concurrentQueue=new FixedSizeConcurrentQueue<>(20);
+		System.out.println("FastDropLastQueueNGTest >>>> setUpMethod");
+		this.concurrentQueue=new FastDropLastQueue<>(20);
 	}
 
 	@AfterMethod
 	public void tearDownMethod() throws Exception {
-		System.out.println("FixedSizeConcurrentQueueNGTest >>>> tearDownMethod");
+		System.out.println("FastDropLastQueueNGTest >>>> tearDownMethod");
 		this.concurrentQueue=null;
 	}
 
 	@Test
 	public void testAddAll() {
-		System.out.println("FixedSizeConcurrentQueueNGTest >>>> testAddAll");
+		System.out.println("FastDropLastQueueNGTest >>>> testAddAll");
 
 		Assert.assertTrue(concurrentQueue.isEmpty());
 
@@ -90,7 +90,7 @@ public class FixedSizeConcurrentQueueNGTest {
 
 	@Test
 	public void testRemove() {
-		System.out.println("FixedSizeConcurrentQueueNGTest >>>> testRemove");
+		System.out.println("FastDropLastQueueNGTest >>>> testRemove");
 		
 		Assert.assertTrue(concurrentQueue.isEmpty());
 
@@ -139,7 +139,7 @@ public class FixedSizeConcurrentQueueNGTest {
 
 	@Test
 	public void testPoll() {
-		System.out.println("FixedSizeConcurrentQueueNGTest >>>> testPoll");
+		System.out.println("FastDropLastQueueNGTest >>>> testPoll");
 		
 		Assert.assertTrue(concurrentQueue.isEmpty());
 
@@ -242,7 +242,7 @@ public class FixedSizeConcurrentQueueNGTest {
 	
 	@Test(expectedExceptions = NullPointerException.class)
 	public void testOffer_null() {
-		System.out.println("FixedSizeConcurrentQueueNGTest >>>> testOffer_null");
+		System.out.println("FastDropLastQueueNGTest >>>> testOffer_null");
 		Assert.assertTrue(concurrentQueue.isEmpty());
 
 		Assert.assertFalse(concurrentQueue.offer(null));
@@ -250,7 +250,7 @@ public class FixedSizeConcurrentQueueNGTest {
 
 	@Test
 	public void testOffer() {
-		System.out.println("FixedSizeConcurrentQueueNGTest >>>> testOffer");
+		System.out.println("FastDropLastQueueNGTest >>>> testOffer");
 		Assert.assertTrue(concurrentQueue.isEmpty());
 		Assert.assertEquals(concurrentQueue.size(),0);
 		Assert.assertEquals(concurrentQueue.toArray(),new Integer[]{});
