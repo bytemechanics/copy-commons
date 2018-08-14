@@ -41,93 +41,104 @@ import org.bytemechanics.commons.functional.LambdaUnchecker;
  */
 public enum GenericTextParser{
 	
-	BOOLEAN(Boolean.class,(value,config) -> value.map(Boolean::valueOf),boolean.class),
-    CHAR(Character.class,(value,config) -> value.map(val -> val.charAt(0)),char.class),
+	BOOLEAN(Boolean.class,(value,config) -> value.filter(val -> !val.isEmpty()).map(Boolean::valueOf),boolean.class),
+    CHAR(Character.class,(value,config) -> value.filter(val -> !val.isEmpty()).map(val -> val.charAt(0)),char.class),
 	/**
 	 * Default format: #0
 	 * @see DecimalFormat
 	 */
-	SHORT(Short.class,	(value,config) -> value.map(val -> config.map(conf -> LambdaUnchecker.uncheckedGet(() -> new DecimalFormat(conf, new DecimalFormatSymbols(Locale.ENGLISH)).parse(val)))
-																	.map(decimal -> decimal.shortValue())
-																	.orElseGet(() -> Short.valueOf(val))),
+	SHORT(Short.class,	(value,config) -> value.filter(val -> !val.isEmpty())
+												.map(val -> config.map(conf -> LambdaUnchecker.uncheckedGet(() -> new DecimalFormat(conf, new DecimalFormatSymbols(Locale.ENGLISH)).parse(val)))
+												.map(decimal -> decimal.shortValue())
+												.orElseGet(() -> Short.valueOf(val))),
 						(value,config) -> value.map(val -> config.map(conf -> new DecimalFormat(conf, new DecimalFormatSymbols(Locale.ENGLISH)).format(val))
-																.orElseGet(() -> String.valueOf(val))),short.class),
+												.orElseGet(() -> String.valueOf(val))),short.class),
 	/**
 	 * Default format: #0
 	 * @see DecimalFormat
 	 */
-	INTEGER(Integer.class,(value,config) -> value.map(val -> config.map(conf -> LambdaUnchecker.uncheckedGet(() -> new DecimalFormat(conf, new DecimalFormatSymbols(Locale.ENGLISH)).parse(val)))
-																	.map(decimal -> decimal.intValue())
-																	.orElseGet(() -> Integer.valueOf(val))),
+	INTEGER(Integer.class,(value,config) -> value.filter(val -> !val.isEmpty())
+													.map(val -> config.map(conf -> LambdaUnchecker.uncheckedGet(() -> new DecimalFormat(conf, new DecimalFormatSymbols(Locale.ENGLISH)).parse(val)))
+													.map(decimal -> decimal.intValue())
+													.orElseGet(() -> Integer.valueOf(val))),
 						(value,config) -> value.map(val -> config.map(conf -> new DecimalFormat(conf, new DecimalFormatSymbols(Locale.ENGLISH)).format(val))
-																.orElseGet(() -> String.valueOf(val))),int.class),
+												.orElseGet(() -> String.valueOf(val))),int.class),
 	/**
 	 * Default format: #0
 	 * @see DecimalFormat
 	 */
-	LONG(Long.class,(value,config) -> value.map(val -> config.map(conf -> LambdaUnchecker.uncheckedGet(() -> new DecimalFormat(conf, new DecimalFormatSymbols(Locale.ENGLISH)).parse(val)))
-																	.map(decimal -> decimal.longValue())
-																	.orElseGet(() -> Long.valueOf(val))),
+	LONG(Long.class,(value,config) -> value.filter(val -> !val.isEmpty())
+											.map(val -> config.map(conf -> LambdaUnchecker.uncheckedGet(() -> new DecimalFormat(conf, new DecimalFormatSymbols(Locale.ENGLISH)).parse(val)))
+											.map(decimal -> decimal.longValue())
+											.orElseGet(() -> Long.valueOf(val))),
 						(value,config) -> value.map(val -> config.map(conf -> new DecimalFormat(conf, new DecimalFormatSymbols(Locale.ENGLISH)).format(val))
-																.orElseGet(() -> String.valueOf(val))),long.class),
+												.orElseGet(() -> String.valueOf(val))),long.class),
 	/**
 	 * Default format: #0.0
 	 * @see DecimalFormat
 	 */
-	FLOAT(Float.class,(value,config) -> value.map(val -> config.map(conf -> LambdaUnchecker.uncheckedGet(() -> new DecimalFormat(conf, new DecimalFormatSymbols(Locale.ENGLISH)).parse(val)))
-																	.map(decimal -> decimal.floatValue())
-																	.orElseGet(() -> Float.valueOf(val))),
+	FLOAT(Float.class,(value,config) -> value.filter(val -> !val.isEmpty())
+												.map(val -> config.map(conf -> LambdaUnchecker.uncheckedGet(() -> new DecimalFormat(conf, new DecimalFormatSymbols(Locale.ENGLISH)).parse(val)))
+												.map(decimal -> decimal.floatValue())
+												.orElseGet(() -> Float.valueOf(val))),
 						(value,config) -> value.map(val -> config.map(conf -> new DecimalFormat(conf, new DecimalFormatSymbols(Locale.ENGLISH)).format(val))
-																.orElseGet(() -> val.toString())),float.class),
+												.orElseGet(() -> val.toString())),float.class),
 	/**
 	 * Default format: #0.0
 	 * @see DecimalFormat
 	 */
-	DOUBLE(Double.class,(value,config) -> value.map(val -> config.map(conf -> LambdaUnchecker.uncheckedGet(() -> new DecimalFormat(conf, new DecimalFormatSymbols(Locale.ENGLISH)).parse(val)))
-																	.map(decimal -> decimal.doubleValue())
-																	.orElseGet(() -> Double.valueOf(val))),
+	DOUBLE(Double.class,(value,config) -> value.filter(val -> !val.isEmpty())
+												.map(val -> config.map(conf -> LambdaUnchecker.uncheckedGet(() -> new DecimalFormat(conf, new DecimalFormatSymbols(Locale.ENGLISH)).parse(val)))
+												.map(decimal -> decimal.doubleValue())
+												.orElseGet(() -> Double.valueOf(val))),
 						(value,config) -> value.map(val -> config.map(conf -> new DecimalFormat(conf, new DecimalFormatSymbols(Locale.ENGLISH)).format(val))
-																.orElseGet(() -> val.toString())),double.class),
+												.orElseGet(() -> val.toString())),double.class),
 	/**
 	 * Default format: #,##0.0#
 	 * @see DecimalFormat
 	 */
-	BIGDECIMAL(BigDecimal.class,"#,##0.0#",(value,config) -> value.map(val -> LambdaUnchecker.uncheckedGet(() -> {
-																													DecimalFormat format=new DecimalFormat(config.get(), new DecimalFormatSymbols(Locale.ENGLISH));
-																													format.setParseBigDecimal(true);
-																													return format.parse(val);
-																												}))
-													.map(decimal -> (BigDecimal)decimal),
+	BIGDECIMAL(BigDecimal.class,"#,##0.0#",(value,config) -> value.filter(val -> !val.isEmpty())
+																	.map(val -> LambdaUnchecker.uncheckedGet(() -> {
+																				DecimalFormat format=new DecimalFormat(config.get(), new DecimalFormatSymbols(Locale.ENGLISH));
+																				format.setParseBigDecimal(true);
+																				return format.parse(val);
+																			}))
+																	.map(decimal -> (BigDecimal)decimal),
 							(value,config) -> value.map(new DecimalFormat(config.get(), new DecimalFormatSymbols(Locale.ENGLISH))::format)),
     STRING(String.class,(value,config) -> value.map(String::valueOf)),
 	/**
 	 * Default format: DateTimeFormatter.ISO_TIME
 	 * @see DateTimeFormatter
 	 */
-	LOCALTIME(LocalTime.class,(value,config) -> value.map(val -> config.map(conf -> LambdaUnchecker.uncheckedGet(() -> LocalTime.parse(val, DateTimeFormatter.ofPattern(conf,Locale.ENGLISH))))
-																		.orElseGet(() -> LocalTime.parse(val))),
+	LOCALTIME(LocalTime.class,(value,config) -> value.filter(val -> !val.isEmpty())
+														.map(val -> config.map(conf -> LambdaUnchecker.uncheckedGet(() -> LocalTime.parse(val, DateTimeFormatter.ofPattern(conf,Locale.ENGLISH))))
+														.orElseGet(() -> LocalTime.parse(val))),
 								(value,config) -> value.map(val -> config.map(conf -> LambdaUnchecker.uncheckedGet(() -> DateTimeFormatter.ofPattern(conf,Locale.ENGLISH).format(val)))
-																		.orElseGet(() -> val.toString()))),
+														.orElseGet(() -> val.toString()))),
 	/**
 	 * Default format: DateTimeFormatter.ISO_DATE
 	 * @see DateTimeFormatter
 	 */
-	LOCALDATE(LocalDate.class,(value,config) -> value.map(val -> config.map(conf -> LambdaUnchecker.uncheckedGet(() -> LocalDate.parse(val, DateTimeFormatter.ofPattern(conf,Locale.ENGLISH))))
-																		.orElseGet(() -> LocalDate.parse(val))),
+	LOCALDATE(LocalDate.class,(value,config) -> value.filter(val -> !val.isEmpty())
+														.map(val -> config.map(conf -> LambdaUnchecker.uncheckedGet(() -> LocalDate.parse(val, DateTimeFormatter.ofPattern(conf,Locale.ENGLISH))))
+														.orElseGet(() -> LocalDate.parse(val))),
 								(value,config) -> value.map(val -> config.map(conf -> LambdaUnchecker.uncheckedGet(() -> DateTimeFormatter.ofPattern(conf,Locale.ENGLISH).format(val)))
-																		.orElseGet(() -> val.toString()))),
+														.orElseGet(() -> val.toString()))),
 	/**
 	 * Default format: DateTimeFormatter.ISO_DATE_TIME
 	 * @see DateTimeFormatter
 	 */
-	LOCALDATETIME(LocalDateTime.class,(value,config) -> value.map(val -> config.map(conf -> LambdaUnchecker.uncheckedGet(() -> LocalDateTime.parse(val, DateTimeFormatter.ofPattern(conf,Locale.ENGLISH))))
-																		.orElseGet(() -> LocalDateTime.parse(val))),
-								(value,config) -> value.map(val -> config.map(conf -> LambdaUnchecker.uncheckedGet(() -> DateTimeFormatter.ofPattern(conf,Locale.ENGLISH).format(val)))
-																		.orElseGet(() -> val.toString()))),
-	ENUM(Enum.class,
-							(value,config) -> value.map(val -> LambdaUnchecker.uncheckedGet(() ->  Enum.valueOf((Class<Enum>)Class.forName(config.get()),val))),
-							(value,config) -> value.map(val -> val.name())),
-	PATH(Path.class,(value,config) -> value.map(Paths::get),(value,config) -> value.map(Path::toString)),
+	LOCALDATETIME(LocalDateTime.class,(value,config) -> value.filter(val -> !val.isEmpty())
+																.map(val -> config.map(conf -> LambdaUnchecker.uncheckedGet(() -> LocalDateTime.parse(val, DateTimeFormatter.ofPattern(conf,Locale.ENGLISH))))
+																.orElseGet(() -> LocalDateTime.parse(val))),
+									(value,config) -> value.map(val -> config.map(conf -> LambdaUnchecker.uncheckedGet(() -> DateTimeFormatter.ofPattern(conf,Locale.ENGLISH).format(val)))
+															.orElseGet(() -> val.toString()))),
+	ENUM(Enum.class,(value,config) -> value.filter(val -> !val.isEmpty())
+											.map(val -> LambdaUnchecker.uncheckedGet(() ->  Enum.valueOf((Class<Enum>)Class.forName(config.get()),val))),
+					(value,config) -> value.map(val -> val.name())),
+	PATH(Path.class,(value,config) -> value.filter(val -> !val.isEmpty())
+											.map(Paths::get),
+					(value,config) -> value.map(Path::toString)),
 	;
 
 
@@ -332,7 +343,7 @@ public enum GenericTextParser{
 		return	(Optional<Object>)this.converter
 										.getParser()
 											.apply(Optional.ofNullable(_string)
-																.filter(value -> !value.isEmpty())
+																
 													,Optional.ofNullable(_format)
 																.filter(value -> !value.isEmpty())
 																.map(Optional::of)
