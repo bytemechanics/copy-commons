@@ -140,6 +140,7 @@ class GenericTextParserSpec extends Specification {
  			"24125.3211"+"\$"						| GenericTextParser.BIGDECIMAL		| "###0.0#\$"											| new BigDecimal("24125.3211")
  			"231412432.432423"+"\$"					| GenericTextParser.BIGDECIMAL		| "###0.0#\$"											| new BigDecimal("231412432.432423")
 			"myMessage"								| GenericTextParser.STRING			| null													| "myMessage"
+			""										| GenericTextParser.STRING			| null													| ""
 			"10:15"									| GenericTextParser.LOCALTIME		| null													| LocalTime.of(10,15)
 			"10:15:30"								| GenericTextParser.LOCALTIME		| null													| LocalTime.of(10,15,30)
 			"10:15:30.123"							| GenericTextParser.LOCALTIME		| null													| LocalTime.of(10,15,30,123000000)
