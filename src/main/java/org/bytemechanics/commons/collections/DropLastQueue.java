@@ -17,12 +17,17 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 /**
- * 
+ * Synchronized queue that keeps the same size whatever adds done by droping the extra elements from the head
+ * This implementation is not fast but never overflow the initial size
  * @author afarre
  * @param <T>
  */
 public class DropLastQueue<T> {
 
+	/**
+	 * Queue node
+	 * @param <T> node type 
+	 */
 	private static class Node<T>{
 		
 		private final T content;
@@ -154,7 +159,7 @@ public class DropLastQueue<T> {
 	 * Read only pointers to nodes with size control
 	 * This queue can when accumulate is called can left some old nodes still pointed by the oldest node,
 	 * those should be purged by parent class
-	 * <T> queue type
+	 * @param <T> queue typ
 	 */
 	private static class ReadOnlyQueue<T> {
 
@@ -314,9 +319,15 @@ public class DropLastQueue<T> {
 		}
 	}
 	
+	/** queue max size */
 	private final int maxSize;
+	/** read only queue structure */
 	private final AtomicReference<ReadOnlyQueue<T>> readOnlyQueue;
 	
+	/**
+	 * Builds a new DropLastQueue from the giving _maxSize
+	 * @param _maxSize max size allowed for this queue
+	 */
 	public DropLastQueue(final int _maxSize){
 		if(_maxSize<1){
 			throw new IllegalArgumentException("Max size can't be zero nor negative");
@@ -325,17 +336,36 @@ public class DropLastQueue<T> {
 		this.readOnlyQueue=new AtomicReference<>(new ReadOnlyQueue<>(this.maxSize));
 	}
 
+	/**
+	 * Recovers the maximum allowed size for this queue
+	 * @return queue max size
+	 */
 	public int maxSize(){
 		return this.maxSize;
 	}
 
+	/**
+	 * Recovers the current queue size
+	 * @return queue current size
+	 */
 	public int size(){
 		return this.readOnlyQueue.get().size;
 	}
+
+	/**
+	 * Returns true if queue is empty
+	 * @return true if queue is empty
+	 */
 	public boolean isEmpty() {
 		return this.readOnlyQueue.get().size==0;
 	}
 
+	/**
+	 * Pushes all values from the stream returning a stream of droped values if has been necessary
+	 * Note that returned stream not allways return all droped values
+	 * @param _value stream of values to add to queue
+	 * @return stream of droped values or empty stream if no drop has been necessary
+	 */
 	public Stream<T> push(final Stream<T> _value){
 
 		return Optional.ofNullable(_value)
@@ -345,6 +375,12 @@ public class DropLastQueue<T> {
 							.map(ReadOnlyQueue::purge)
 							.orElseGet(Stream::empty);
 	}
+	/**
+	 * Pushes all values from the collection returning a stream of droped values if has been necessary
+	 * Note that returned stream not allways return all droped values
+	 * @param _collection collection of elements to add to stream
+	 * @return stream of droped values or empty stream if no drop has been necessary
+	 */
 	public Stream<T> push(final Collection<T> _collection){
 
 		return Optional.ofNullable(_collection)
@@ -357,6 +393,12 @@ public class DropLastQueue<T> {
 							.map(ReadOnlyQueue::purge)
 							.orElseGet(Stream::empty);
 	}
+	/**
+	 * Pushes all values from the array returning a stream of droped values if has been necessary
+	 * Note that returned stream not allways return all droped values
+	 * @param _array array of elements to add to stream
+	 * @return stream of droped values or empty stream if no drop has been necessary
+	 */
 	public Stream<T> push(final T... _array){
 
 		return Optional.ofNullable(_array)
@@ -370,10 +412,19 @@ public class DropLastQueue<T> {
 							.orElseGet(Stream::empty);
 	}
 
+	/**
+	 * Returns the first element of the queue without pulling out
+	 * @return Optional with the first element of the queue or empty optional if queue is empty
+	 */
 	public Optional<T> peek(){
 		return peek(1)
 				.findFirst();
 	}
+	/**
+	 * Returns _number first elements of the queue without pulling out
+	 * @param _number number of elements to peek
+	 * @return Stream with the _number first elements of the queue or empty stream if queue is empty
+	 */
 	public Stream<T> peek(final int _number){
 		return Optional.of(_number)
 						.filter(num -> num>0)
@@ -382,10 +433,19 @@ public class DropLastQueue<T> {
 						.orElseGet(Stream::empty);
 	}
 		
+	/**
+	 * Poll out the first element of the queue
+	 * @return Optional with the first element of the queue or empty optional if queue is empty
+	 */
 	public Optional<T> poll(){
 		return poll(1)
 				.findFirst();
 	}
+	/**
+	 * Poll out _number first elements of the queue
+	 * @param _number number of elements to poll
+	 * @return Stream with the _number first elements of the queue or empty stream if queue is empty
+	 */
 	public Stream<T> poll(final int _number){
 		return Optional.of(_number)
 							.filter(num -> num>0)
@@ -395,6 +455,11 @@ public class DropLastQueue<T> {
 							.orElseGet(Stream::empty);
 	}
 
+	/**
+	 * Removes _number first elements of the queue
+	 * @param _number number of elements to remove
+	 * @return Stream with the _number first elements of the queue or empty stream if queue is empty
+	 */
 	public Stream<T> remove(final int _number){
 
 		return Optional.of(_number)
@@ -405,18 +470,31 @@ public class DropLastQueue<T> {
 							.orElseGet(Stream::empty);
 	}
 
+	/**
+	 * Clear out the queue and returns an stream with the elements removed
+	 * @return Stream of elements removed or empty stream
+	 */
 	public Stream<T> clear(){
 		return this.readOnlyQueue
 					.getAndSet(new ReadOnlyQueue<>(this.maxSize))
 						.stream();
 	}
 	
+	/**
+	 * Return an object array representing all queued elements
+	 * @return array of object elemments in stream
+	 */
 	public Object[] toArray(){
 		return this.readOnlyQueue
 					.get()
 						.stream()
 							.toArray();
 	}
+	/**
+	 * Return an _class array representing all queued elements
+	 * @param _class  class of array elements
+	 * @return array of _class elemments in stream
+	 */
 	public T[] toArray(final Class<T> _class){
 		return Optional.ofNullable(_class)
 							.map(arr -> this.readOnlyQueue
@@ -427,25 +505,50 @@ public class DropLastQueue<T> {
 							.map(collection -> collection.toArray((T[])Array.newInstance(_class,0)))
 							.orElse((T[])Array.newInstance(_class,0));
 	}
+	/**
+	 * Return a list representing all queued elements
+	 * @return list of elemments in stream
+	 */
 	public List<T> toList(){
 		return this.readOnlyQueue
 					.get()
 						.stream()
 							.collect(Collectors.toList());
 	}
+	/**
+	 * Return the queue spliterator in natural order
+	 * Due implementation this method recovers all elements to reverse order
+	 * @return spliterator with the elements in this queue
+	 */
 	public Spliterator<T> spliterator(){
 		return this.readOnlyQueue.get().spliterator();
 	}
+	/**
+	 * Return the queue spliterator in reverse order
+	 * Fastest spliterator from this queue
+	 * @return spliterator with the elements in this queue in reverse order
+	 */
 	public Spliterator<T> reverseSpliterator(){
 		return this.readOnlyQueue.get().reverseSpliterator();
 	}
+	/**
+	 * Return the queue stream in natural order
+	 * Due implementation this method recovers all elements to reverse order
+	 * @return stream with the elements in this queue
+	 */
 	public Stream<T> stream(){
 		return this.readOnlyQueue.get().stream();
 	}
+	/**
+	 * Return the queue stream in reverse order
+	 * Fastest stream from this queue
+	 * @return stream with the elements in this queue in reverse order
+	 */
 	public Stream<T> reverseStream(){
 		return this.readOnlyQueue.get().reverseStream();
 	}
 
+	/**@see Object#hashCode() */
 	@Override
 	public int hashCode() {
 		int hash = 7;
@@ -454,6 +557,7 @@ public class DropLastQueue<T> {
 		return hash;
 	}
 
+	/**@see Object#equals(java.lang.Object)  */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
