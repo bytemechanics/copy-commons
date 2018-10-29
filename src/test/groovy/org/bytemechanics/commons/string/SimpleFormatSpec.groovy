@@ -48,8 +48,7 @@ class SimpleFormatSpec extends Specification {
 			def String actual=SimpleFormat.format(message,(Object[])arguments);
 			
 		then:
-			actual!=null
-			actual==result
+			actual.equals(result)
 		
 		where:
 			message							| arguments					| result
@@ -100,18 +99,21 @@ class SimpleFormatSpec extends Specification {
 			"text {}{}{}{} text"			| ["p1","p2"]				| "text p1p2nullnull text"			
 			"text {}{}{}{} text"			| ["p1","p2","p3"]			| "text p1p2p3null text"			
 			"text {}{}{}{} text"			| ["p1","p2","p3","p4"]		| "text p1p2p3p4 text"			
+			"text {{}}{}{}{} text"			| ["p1","p2","p3","p4"]		| "text {}p2p3p4 text"			
+			"text {}{{}}{}{} text"			| ["p1","p2","p3","p4"]		| "text p1{}p3p4 text"			
+			"text {}{}{{}}{} text"			| ["p1","p2","p3","p4"]		| "text p1p2{}p4 text"			
+			"text {}{}{}{{}} text"			| ["p1","p2","p3","p4"]		| "text p1p2p3{} text"			
 	}
 
 	@Unroll
 	def "When #message is supplied with #arguments result should be #result"(){
 		println(">>>>> SimpleFormatSpec >>>> When $message is supplied with $arguments result should be $result")
 		when:
-			def Supplier<String> actual=SimpleFormat.supplier(message,(Object[])arguments);
+			def String actual=SimpleFormat.supplier(message,(Object[])arguments);
 			
 		then:
-			actual!=null
-			actual.get()!=null
-			actual.get()==result
+		println(">>>>> SimpleFormatSpec >>>> When $message is supplied with $arguments result should be $result >>> "+actual.get())
+			actual.equals(result)
 		
 		where:
 			message							| arguments					| result
@@ -162,5 +164,9 @@ class SimpleFormatSpec extends Specification {
 			"text {}{}{}{} text"			| ["p1","p2"]				| "text p1p2nullnull text"			
 			"text {}{}{}{} text"			| ["p1","p2","p3"]			| "text p1p2p3null text"			
 			"text {}{}{}{} text"			| ["p1","p2","p3","p4"]		| "text p1p2p3p4 text"			
+			"text {{}}{}{}{} text"			| ["p1","p2","p3","p4"]		| "text {}p2p3p4 text"			
+			"text {}{{}}{}{} text"			| ["p1","p2","p3","p4"]		| "text p1{}p3p4 text"			
+			"text {}{}{{}}{} text"			| ["p1","p2","p3","p4"]		| "text p1p2{}p4 text"			
+			"text {}{}{}{{}} text"			| ["p1","p2","p3","p4"]		| "text p1p2p3{} text"			
 	}
 }
