@@ -15,6 +15,7 @@
  */
 package org.bytemechanics.commons.string;
 
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -101,7 +102,7 @@ public final class SimpleFormat {
 				builder.append(Optional.of(numArg++)
 										.filter(counter -> counter<_args.length)
 										.map(counter -> _args[counter])
-										.map(String::valueOf)
+										.map(SimpleFormat::toString)
 										.orElse("null"));
 				lastBreak=ic1+=2;
 			}else{
@@ -115,6 +116,14 @@ public final class SimpleFormat {
 		return builder.toString();
 	}	
 
+	private static String toString(final Object _object){
+		if(_object.getClass().isArray()){
+			return Arrays.toString((Object[])_object);
+		}else{
+			return String.valueOf(_object);
+		}
+	}
+	
 	/**
 	 * Supplier that retrieve the message formatted that resplaces _message content '{}' by the giver _args per order.<br> 
 	 * The method to print the object is by calling object to string and in case the object is null is replaced by the string "null"
