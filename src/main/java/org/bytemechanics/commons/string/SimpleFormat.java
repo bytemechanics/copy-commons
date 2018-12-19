@@ -37,58 +37,7 @@ public final class SimpleFormat {
 	 * @since 0.0.1
 	 */
 	public static final String format(final String _message, final Object... _args) {
-		
-		/*
-		
-		
-		final StringBuilder builder=new StringBuilder();
-		
-		int lastBreak=0;
-		int numArg=0;
-		int ic1=0;
-		while(ic1<_message.length()){
-			final char current=_message.charAt(ic1);
-			if(current=='{'){
-				final char next=(ic1<_message.length()-1)? _message.charAt(ic1+1) : 'A';
-				switch (next) {
-					case '}':
-						builder.append(_message.substring(lastBreak,ic1));
-						builder.append(Optional.of(numArg++)
-								.filter(counter -> counter<_args.length)
-								.map(counter -> _args[counter])
-								.map(String::valueOf)
-								.orElse("null"));
-						lastBreak=ic1+=2;
-						break;
-					case '{':
-						builder.append('{');
-						lastBreak=ic1+=2;
-						final char current2=_message.charAt(ic1);
-						final char next2=(ic1<_message.length()-1)? _message.charAt(ic1+1) : 'A';
-						if((current2=='}')&&(next2=='}')){
-							builder.append('}');
-							lastBreak=ic1+=2;
-						}	break;
-					default:
-						ic1++;
-						break;
-				}
-			}else{
-				ic1++;
-			}
-		}
-		if(lastBreak<_message.length()){
-			builder.append(_message.substring(lastBreak,_message.length()));
-		}
-		
-		return builder.toString();		
-		*/
-		
-		
-		
-		
-		
-		
+			
 		final StringBuilder builder=new StringBuilder();
 		
 		int lastBreak=0;
@@ -118,7 +67,23 @@ public final class SimpleFormat {
 
 	private static String toString(final Object _object){
 		if(_object.getClass().isArray()){
-			return Arrays.toString((Object[])_object);
+			if(_object instanceof Object[]){
+				return Arrays.toString((Object[])_object);
+			}else if(_object instanceof int[]){
+				return Arrays.toString((int[])_object);
+			}else if(_object instanceof long[]){
+				return Arrays.toString((long[])_object);
+			}else if(_object instanceof double[]){
+				return Arrays.toString((double[])_object);
+			}else if(_object instanceof float[]){
+				return Arrays.toString((float[])_object);
+			}else if(_object instanceof byte[]){
+				return Arrays.toString((byte[])_object);
+			}else if(_object instanceof boolean[]){
+				return Arrays.toString((boolean[])_object);
+			}else{
+				return Arrays.toString((short[])_object);
+			}
 		}else{
 			return String.valueOf(_object);
 		}
