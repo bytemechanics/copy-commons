@@ -15,6 +15,7 @@
  */
 package org.bytemechanics.commons.collections;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -25,14 +26,23 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
-import org.testng.Assert;
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 
 /**
  *
  * @author afarre
  */
-public class FastDropLastQueueConcurrentNGTest {
+public class FastDropLastQueueConcurrentTest {
+
+	@BeforeEach
+    void beforeEachTest(final TestInfo testInfo) {
+        System.out.println(">>>>> "+this.getClass().getSimpleName()+" >>>> "+testInfo.getTestMethod().map(Method::getName).orElse("Unkown")+""+testInfo.getTags().toString()+" >>>> "+testInfo.getDisplayName());
+    }
 
 	protected void assertLessOrEqual(final int _actual,final int _expected){
 	
@@ -44,252 +54,250 @@ public class FastDropLastQueueConcurrentNGTest {
 	protected void userSimulation1(final int _task,final int queueSize,final Queue<Integer> concurrentQueue, final AtomicReference<Throwable> _exception){
 		
 		try{
-			System.out.println("FastDropLastQueueConcurrentNGTest >>>> test_concurrent1("+_task+") >>> thread "+Thread.currentThread().getId());
+			System.out.println(">>>>> FastDropLastQueueConcurrentTest >>>> test_concurrent1("+_task+") >>> thread "+Thread.currentThread().getId());
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.addAll(Arrays.asList(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20)));
-			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			concurrentQueue.poll();
-			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.offer(534));
-			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.stream().count()>0);
-			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.offer(5));
+			Assertions.assertTrue(concurrentQueue.addAll(Arrays.asList(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20)));
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
 			concurrentQueue.poll();
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.offer(534));
+			Assertions.assertTrue(concurrentQueue.offer(534));
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.stream().count()>0);
+			Assertions.assertTrue(concurrentQueue.stream().count()>0);
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			concurrentQueue.poll();
-			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.offer(534));
-			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.addAll(Arrays.asList(1,2,3,4,5,6,7,8,9)));
-			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.addAll(Arrays.asList(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20)));
+			Assertions.assertTrue(concurrentQueue.offer(5));
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
 			concurrentQueue.poll();
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.offer(534));
+			Assertions.assertTrue(concurrentQueue.offer(534));
+			assertLessOrEqual(concurrentQueue.size(),queueSize);
+			Assertions.assertTrue(concurrentQueue.stream().count()>0);
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
 			concurrentQueue.poll();
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.offer(534));
+			Assertions.assertTrue(concurrentQueue.offer(534));
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.stream().mapToInt(val -> val).sum()>0);
+			Assertions.assertTrue(concurrentQueue.addAll(Arrays.asList(1,2,3,4,5,6,7,8,9)));
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			concurrentQueue.poll();
-			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.offer(534));
+			Assertions.assertTrue(concurrentQueue.addAll(Arrays.asList(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20)));
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
 			concurrentQueue.poll();
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.offer(534));
+			Assertions.assertTrue(concurrentQueue.offer(534));
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
 			concurrentQueue.poll();
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.offer(534));
+			Assertions.assertTrue(concurrentQueue.offer(534));
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.stream().mapToInt(val -> val).sum()>0);
-			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			concurrentQueue.poll();
-			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.offer(534));
+			Assertions.assertTrue(concurrentQueue.stream().mapToInt(val -> val).sum()>0);
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
 			concurrentQueue.poll();
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.offer(534));
+			Assertions.assertTrue(concurrentQueue.offer(534));
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
 			concurrentQueue.poll();
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.offer(534));
+			Assertions.assertTrue(concurrentQueue.offer(534));
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
 			concurrentQueue.poll();
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.offer(534));
+			Assertions.assertTrue(concurrentQueue.offer(534));
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.stream().mapToInt(val -> val).sum()>0);
+			Assertions.assertTrue(concurrentQueue.stream().mapToInt(val -> val).sum()>0);
+			assertLessOrEqual(concurrentQueue.size(),queueSize);
+			concurrentQueue.poll();
+			assertLessOrEqual(concurrentQueue.size(),queueSize);
+			Assertions.assertTrue(concurrentQueue.offer(534));
+			assertLessOrEqual(concurrentQueue.size(),queueSize);
+			concurrentQueue.poll();
+			assertLessOrEqual(concurrentQueue.size(),queueSize);
+			Assertions.assertTrue(concurrentQueue.offer(534));
+			assertLessOrEqual(concurrentQueue.size(),queueSize);
+			concurrentQueue.poll();
+			assertLessOrEqual(concurrentQueue.size(),queueSize);
+			Assertions.assertTrue(concurrentQueue.offer(534));
+			assertLessOrEqual(concurrentQueue.size(),queueSize);
+			concurrentQueue.poll();
+			assertLessOrEqual(concurrentQueue.size(),queueSize);
+			Assertions.assertTrue(concurrentQueue.offer(534));
+			assertLessOrEqual(concurrentQueue.size(),queueSize);
+			Assertions.assertTrue(concurrentQueue.stream().mapToInt(val -> val).sum()>0);
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
 		}catch(ArrayIndexOutOfBoundsException e){
-			System.out.println("FastDropLastQueueConcurrentNGTest >>>> test_concurrent("+_task+")  >>> thread "+Thread.currentThread().getId()+" >>>> WARNING: "+e.getMessage());
+			System.out.println(">>>>> FastDropLastQueueConcurrentTest >>>> test_concurrent("+_task+")  >>> thread "+Thread.currentThread().getId()+" >>>> WARNING: "+e.getMessage());
 		}catch(Throwable e){
-			System.out.println("FastDropLastQueueConcurrentNGTest >>>> test_concurrent("+_task+")  >>> thread "+Thread.currentThread().getId()+" >>>> FAILURE: "+e.getMessage());
+			System.out.println(">>>>> FastDropLastQueueConcurrentTest >>>> test_concurrent("+_task+")  >>> thread "+Thread.currentThread().getId()+" >>>> FAILURE: "+e.getMessage());
 			_exception.set(e);
 		}
 	}
 	protected void userSimulation2(final int _task,final int queueSize,final Queue<Integer> concurrentQueue,final AtomicReference<Throwable> _exception){
 		
 		try{
-			System.out.println("FastDropLastQueueConcurrentNGTest >>>> test_concurrent2("+_task+") >>> thread "+Thread.currentThread().getId());
+			System.out.println(">>>>> FastDropLastQueueConcurrentTest >>>> test_concurrent2("+_task+") >>> thread "+Thread.currentThread().getId());
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.addAll(Arrays.asList(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20)));
+			Assertions.assertTrue(concurrentQueue.addAll(Arrays.asList(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20)));
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.addAll(Arrays.asList(1,2,3,4,5,6,7,8,9)));
-			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			concurrentQueue.poll();
-			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.offer(534));
-			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.stream().count()>0);
-			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.offer(5));
+			Assertions.assertTrue(concurrentQueue.addAll(Arrays.asList(1,2,3,4,5,6,7,8,9)));
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
 			concurrentQueue.poll();
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			concurrentQueue.poll();
+			Assertions.assertTrue(concurrentQueue.offer(534));
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.offer(534));
+			Assertions.assertTrue(concurrentQueue.stream().count()>0);
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			concurrentQueue.poll();
-			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.offer(534));
-			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.stream().mapToInt(val -> val).sum()>0);
-			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			concurrentQueue.poll();
-			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.offer(534));
-			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.addAll(Arrays.asList(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20)));
-			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			concurrentQueue.poll();
-			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.offer(534));
-			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			concurrentQueue.poll();
-			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.offer(534));
-			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.stream().mapToInt(val -> val).sum()>0);
-			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			concurrentQueue.poll();
-			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.offer(534));
-			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.offer(534));
-			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.stream().count()>0);
-			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.stream().mapToInt(val -> val).sum()>0);
+			Assertions.assertTrue(concurrentQueue.offer(5));
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
 			concurrentQueue.poll();
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
 			concurrentQueue.poll();
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
+			Assertions.assertTrue(concurrentQueue.offer(534));
+			assertLessOrEqual(concurrentQueue.size(),queueSize);
+			concurrentQueue.poll();
+			assertLessOrEqual(concurrentQueue.size(),queueSize);
+			Assertions.assertTrue(concurrentQueue.offer(534));
+			assertLessOrEqual(concurrentQueue.size(),queueSize);
+			Assertions.assertTrue(concurrentQueue.stream().mapToInt(val -> val).sum()>0);
+			assertLessOrEqual(concurrentQueue.size(),queueSize);
+			concurrentQueue.poll();
+			assertLessOrEqual(concurrentQueue.size(),queueSize);
+			Assertions.assertTrue(concurrentQueue.offer(534));
+			assertLessOrEqual(concurrentQueue.size(),queueSize);
+			Assertions.assertTrue(concurrentQueue.addAll(Arrays.asList(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20)));
+			assertLessOrEqual(concurrentQueue.size(),queueSize);
+			concurrentQueue.poll();
+			assertLessOrEqual(concurrentQueue.size(),queueSize);
+			Assertions.assertTrue(concurrentQueue.offer(534));
+			assertLessOrEqual(concurrentQueue.size(),queueSize);
+			concurrentQueue.poll();
+			assertLessOrEqual(concurrentQueue.size(),queueSize);
+			Assertions.assertTrue(concurrentQueue.offer(534));
+			assertLessOrEqual(concurrentQueue.size(),queueSize);
+			Assertions.assertTrue(concurrentQueue.stream().mapToInt(val -> val).sum()>0);
+			assertLessOrEqual(concurrentQueue.size(),queueSize);
+			concurrentQueue.poll();
+			assertLessOrEqual(concurrentQueue.size(),queueSize);
+			Assertions.assertTrue(concurrentQueue.offer(534));
+			assertLessOrEqual(concurrentQueue.size(),queueSize);
+			Assertions.assertTrue(concurrentQueue.offer(534));
+			assertLessOrEqual(concurrentQueue.size(),queueSize);
+			Assertions.assertTrue(concurrentQueue.stream().count()>0);
+			assertLessOrEqual(concurrentQueue.size(),queueSize);
+			Assertions.assertTrue(concurrentQueue.stream().mapToInt(val -> val).sum()>0);
+			assertLessOrEqual(concurrentQueue.size(),queueSize);
+			concurrentQueue.poll();
+			assertLessOrEqual(concurrentQueue.size(),queueSize);
 			concurrentQueue.poll();
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
 			concurrentQueue.poll();
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.offer(534));
+			concurrentQueue.poll();
+			assertLessOrEqual(concurrentQueue.size(),queueSize);
+			Assertions.assertTrue(concurrentQueue.offer(534));
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
 		}catch(ArrayIndexOutOfBoundsException e){
-			System.out.println("FastDropLastQueueConcurrentNGTest >>>> test_concurrent("+_task+")  >>> thread "+Thread.currentThread().getId()+" >>>> WARNING: "+e.getMessage());
+			System.out.println(">>>>> FastDropLastQueueConcurrentTest >>>> test_concurrent("+_task+")  >>> thread "+Thread.currentThread().getId()+" >>>> WARNING: "+e.getMessage());
 		}catch(Throwable e){
-			System.out.println("FastDropLastQueueConcurrentNGTest >>>> test_concurrent("+_task+")  >>> thread "+Thread.currentThread().getId()+" >>>> FAILURE: "+e.getMessage());
+			System.out.println(">>>>> FastDropLastQueueConcurrentTest >>>> test_concurrent("+_task+")  >>> thread "+Thread.currentThread().getId()+" >>>> FAILURE: "+e.getMessage());
 			_exception.set(e);
 		}
 	}
 	protected void userSimulation3(final int _task,final int queueSize,final Queue<Integer> concurrentQueue,final AtomicReference<Throwable> _exception){
 		
 		try{
-			System.out.println("FastDropLastQueueConcurrentNGTest >>>> test_concurrent3("+_task+") >>> thread "+Thread.currentThread().getId());
+			System.out.println(">>>>> FastDropLastQueueConcurrentTest >>>> test_concurrent3("+_task+") >>> thread "+Thread.currentThread().getId());
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.addAll(Arrays.asList(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20)));
-			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			concurrentQueue.poll();
+			Assertions.assertTrue(concurrentQueue.addAll(Arrays.asList(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20)));
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
 			concurrentQueue.poll();
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
 			concurrentQueue.poll();
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.addAll(Arrays.asList(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20)));
+			concurrentQueue.poll();
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.offer(534));
+			Assertions.assertTrue(concurrentQueue.addAll(Arrays.asList(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20)));
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.offer(534));
+			Assertions.assertTrue(concurrentQueue.offer(534));
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.offer(534));
+			Assertions.assertTrue(concurrentQueue.offer(534));
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.addAll(Arrays.asList(1,2,3,4,5,6,7,8,9)));
+			Assertions.assertTrue(concurrentQueue.offer(534));
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.stream().mapToInt(val -> val).sum()>0);
+			Assertions.assertTrue(concurrentQueue.addAll(Arrays.asList(1,2,3,4,5,6,7,8,9)));
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.offer(534));
+			Assertions.assertTrue(concurrentQueue.stream().mapToInt(val -> val).sum()>0);
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.offer(534));
+			Assertions.assertTrue(concurrentQueue.offer(534));
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.offer(534));
+			Assertions.assertTrue(concurrentQueue.offer(534));
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.offer(534));
+			Assertions.assertTrue(concurrentQueue.offer(534));
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.stream().mapToInt(val -> val).sum()>0);
+			Assertions.assertTrue(concurrentQueue.offer(534));
+			assertLessOrEqual(concurrentQueue.size(),queueSize);
+			Assertions.assertTrue(concurrentQueue.stream().mapToInt(val -> val).sum()>0);
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
 		}catch(ArrayIndexOutOfBoundsException e){
-			System.out.println("FastDropLastQueueConcurrentNGTest >>>> test_concurrent("+_task+")  >>> thread "+Thread.currentThread().getId()+" >>>> WARNING: "+e.getMessage());
+			System.out.println(">>>>> FastDropLastQueueConcurrentTest >>>> test_concurrent("+_task+")  >>> thread "+Thread.currentThread().getId()+" >>>> WARNING: "+e.getMessage());
 		}catch(Throwable e){
-			System.out.println("FastDropLastQueueConcurrentNGTest >>>> test_concurrent("+_task+")  >>> thread "+Thread.currentThread().getId()+" >>>> FAILURE: "+e.getMessage());
+			System.out.println(">>>>> FastDropLastQueueConcurrentTest >>>> test_concurrent("+_task+")  >>> thread "+Thread.currentThread().getId()+" >>>> FAILURE: "+e.getMessage());
 			_exception.set(e);
 		}
 	}
 	protected void userSimulation4(final int _task,final int queueSize,final Queue<Integer> concurrentQueue,final AtomicReference<Throwable> _exception){
 		
 		try{
-			System.out.println("FastDropLastQueueConcurrentNGTest >>>> test_concurrent4("+_task+") >>> thread "+Thread.currentThread().getId());
+			System.out.println(">>>>> FastDropLastQueueConcurrentTest >>>> test_concurrent4("+_task+") >>> thread "+Thread.currentThread().getId());
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.addAll(Arrays.asList(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20)));
-			Assert.assertTrue(concurrentQueue.offer(534));
+			Assertions.assertTrue(concurrentQueue.addAll(Arrays.asList(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20)));
+			Assertions.assertTrue(concurrentQueue.offer(534));
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.offer(5));
+			Assertions.assertTrue(concurrentQueue.offer(5));
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.offer(534));
+			Assertions.assertTrue(concurrentQueue.offer(534));
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.offer(534));
+			Assertions.assertTrue(concurrentQueue.offer(534));
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.addAll(Arrays.asList(1,2,3,4,5,6,7,8,9)));
+			Assertions.assertTrue(concurrentQueue.addAll(Arrays.asList(1,2,3,4,5,6,7,8,9)));
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.addAll(Arrays.asList(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20)));
+			Assertions.assertTrue(concurrentQueue.addAll(Arrays.asList(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20)));
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.offer(534));
+			Assertions.assertTrue(concurrentQueue.offer(534));
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.offer(534));
+			Assertions.assertTrue(concurrentQueue.offer(534));
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.stream().mapToInt(val -> val).sum()>0);
+			Assertions.assertTrue(concurrentQueue.stream().mapToInt(val -> val).sum()>0);
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.offer(534));
+			Assertions.assertTrue(concurrentQueue.offer(534));
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.offer(534));
+			Assertions.assertTrue(concurrentQueue.offer(534));
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.offer(534));
+			Assertions.assertTrue(concurrentQueue.offer(534));
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.stream().mapToInt(val -> val).sum()>0);
+			Assertions.assertTrue(concurrentQueue.stream().mapToInt(val -> val).sum()>0);
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.offer(534));
+			Assertions.assertTrue(concurrentQueue.offer(534));
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.offer(534));
+			Assertions.assertTrue(concurrentQueue.offer(534));
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.offer(534));
+			Assertions.assertTrue(concurrentQueue.offer(534));
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.offer(534));
+			Assertions.assertTrue(concurrentQueue.offer(534));
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.stream().mapToInt(val -> val).sum()>0);
+			Assertions.assertTrue(concurrentQueue.stream().mapToInt(val -> val).sum()>0);
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
 		}catch(ArrayIndexOutOfBoundsException e){
-			System.out.println("FastDropLastQueueConcurrentNGTest >>>> test_concurrent("+_task+")  >>> thread "+Thread.currentThread().getId()+" >>>> WARNING: "+e.getMessage());
+			System.out.println(">>>>> FastDropLastQueueConcurrentTest >>>> test_concurrent("+_task+")  >>> thread "+Thread.currentThread().getId()+" >>>> WARNING: "+e.getMessage());
 		}catch(Throwable e){
-			System.out.println("FastDropLastQueueConcurrentNGTest >>>> test_concurrent("+_task+")  >>> thread "+Thread.currentThread().getId()+" >>>> FAILURE: "+e.getMessage());
+			System.out.println(">>>>> FastDropLastQueueConcurrentTest >>>> test_concurrent("+_task+")  >>> thread "+Thread.currentThread().getId()+" >>>> FAILURE: "+e.getMessage());
 			_exception.set(e);
 		}
 	}
 	protected void userSimulation5(final int _task,final int queueSize,final Queue<Integer> concurrentQueue,final AtomicReference<Throwable> _exception){
 		
 		try{
-			System.out.println("FastDropLastQueueConcurrentNGTest >>>> test_concurrent5("+_task+") >>> thread "+Thread.currentThread().getId());
+			System.out.println(">>>>> FastDropLastQueueConcurrentTest >>>> test_concurrent5("+_task+") >>> thread "+Thread.currentThread().getId());
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.addAll(Arrays.asList(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20)));
-			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			concurrentQueue.poll();
+			Assertions.assertTrue(concurrentQueue.addAll(Arrays.asList(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20)));
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
 			concurrentQueue.poll();
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
@@ -303,39 +311,42 @@ public class FastDropLastQueueConcurrentNGTest {
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
 			concurrentQueue.poll();
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.offer(534));
+			concurrentQueue.poll();
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.offer(534));
+			Assertions.assertTrue(concurrentQueue.offer(534));
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.stream().mapToInt(val -> val).sum()>0);
+			Assertions.assertTrue(concurrentQueue.offer(534));
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.offer(534));
+			Assertions.assertTrue(concurrentQueue.stream().mapToInt(val -> val).sum()>0);
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.offer(534));
+			Assertions.assertTrue(concurrentQueue.offer(534));
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.offer(534));
+			Assertions.assertTrue(concurrentQueue.offer(534));
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.offer(534));
+			Assertions.assertTrue(concurrentQueue.offer(534));
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
-			Assert.assertTrue(concurrentQueue.stream().mapToInt(val -> val).sum()>0);
+			Assertions.assertTrue(concurrentQueue.offer(534));
+			assertLessOrEqual(concurrentQueue.size(),queueSize);
+			Assertions.assertTrue(concurrentQueue.stream().mapToInt(val -> val).sum()>0);
 			assertLessOrEqual(concurrentQueue.size(),queueSize);
 		}catch(ArrayIndexOutOfBoundsException e){
-			System.out.println("FastDropLastQueueConcurrentNGTest >>>> test_concurrent("+_task+")  >>> thread "+Thread.currentThread().getId()+" >>>> WARNING: "+e.getMessage());
+			System.out.println(">>>>> FastDropLastQueueConcurrentTest >>>> test_concurrent("+_task+")  >>> thread "+Thread.currentThread().getId()+" >>>> WARNING: "+e.getMessage());
 		}catch(Throwable e){
-			System.out.println("FastDropLastQueueConcurrentNGTest >>>> test_concurrent("+_task+")  >>> thread "+Thread.currentThread().getId()+" >>>> FAILURE: "+e.getMessage());
+			System.out.println(">>>>> FastDropLastQueueConcurrentTest >>>> test_concurrent("+_task+")  >>> thread "+Thread.currentThread().getId()+" >>>> FAILURE: "+e.getMessage());
 			_exception.set(e);
 		}
 	}
 	
-	@Test(testName ="concurrent" , singleThreaded = true, invocationCount = 10,successPercentage = 100)
-	public void test_concurrent() throws InterruptedException, ExecutionException, Throwable {
-		System.out.println("FastDropLastQueueConcurrentNGTest >>>> test_concurrent");
+	@Test
+	@Tag("concurrent")
+	@RepeatedTest(10)
+	public void testConcurrent() throws InterruptedException, ExecutionException, Throwable {
 		final int queueSize=30;
 		final Queue<Integer> concurrentQueue=new FastDropLastQueue<>(queueSize);
-		System.out.println("FastDropLastQueueConcurrentNGTest >>>> test_concurrent >>> ConcurrentQueue Created");
+		System.out.println(">>>>> FastDropLastQueueConcurrentTest >>>> testConcurrent >>> ConcurrentQueue Created");
 		final ForkJoinPool forkJoinPool =new ForkJoinPool(Runtime.getRuntime().availableProcessors());
 		final Random random=new Random(System.currentTimeMillis());
-		System.out.println("FastDropLastQueueConcurrentNGTest >>>> test_concurrent >>> ThreadPool Created");
+		System.out.println(">>>>> FastDropLastQueueConcurrentTest >>>> testConcurrent >>> ThreadPool Created");
 		final List<Runnable> tasks=new ArrayList<>(100);
 		final AtomicReference<Throwable> exception=new AtomicReference<>(null);
 		for(int ic1=0;ic1<100;ic1++){
@@ -353,7 +364,7 @@ public class FastDropLastQueueConcurrentNGTest {
 						break;
 			}
 		}
-		System.out.println("FastDropLastQueueConcurrentNGTest >>>> test_concurrent >>> Tasks Created");
+		System.out.println(">>>>> FastDropLastQueueConcurrentTest >>>> testConcurrent >>> Tasks Created");
 		final ForkJoinTask task=forkJoinPool.submit(() -> {
 																tasks.stream()
 																		.parallel()
@@ -364,10 +375,10 @@ public class FastDropLastQueueConcurrentNGTest {
 			throw task.getException();
 		}
 		if(exception.get()!=null){
-			System.out.println("FastDropLastQueueConcurrentNGTest >>>> test_concurrent >>> exception found");
+			System.out.println(">>>>> FastDropLastQueueConcurrentTest >>>> testConcurrent >>> exception found");
 			throw exception.get();
 		}
 		assertLessOrEqual(concurrentQueue.size(),queueSize+2);
-		System.out.println("FastDropLastQueueConcurrentNGTest >>>> test_concurrent >>> Finished");
+		System.out.println(">>>>> FastDropLastQueueConcurrentTest >>>> testConcurrent >>> Finished");
 	}
 }

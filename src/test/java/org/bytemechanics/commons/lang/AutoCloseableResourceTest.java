@@ -15,9 +15,12 @@
  */
 package org.bytemechanics.commons.lang;
 
-import junit.framework.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import java.lang.reflect.Method;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
+
 
 /**
  *
@@ -28,26 +31,25 @@ public class AutoCloseableResourceTest {
 	public boolean build;
 	public boolean closed; 
 	
-	@Before
-	public void before(){
+	@BeforeEach
+    void beforeEachTest(final TestInfo testInfo) {
+        System.out.println(">>>>> "+this.getClass().getSimpleName()+" >>>> "+testInfo.getTestMethod().map(Method::getName).orElse("Unkown")+""+testInfo.getTags().toString()+" >>>> "+testInfo.getDisplayName());
 		this.build=false;
 		this.closed=false;
 	}
 	
 	@Test
 	public void testSupplierConsumer() throws Exception {
-		System.out.println("AutoCloseableResourceTest >> testSupplierConsumer");
-		
-		Assert.assertFalse(this.build);
-		Assert.assertFalse(this.closed);
+		Assertions.assertFalse(this.build);
+		Assertions.assertFalse(this.closed);
 		try(AutoCloseableResource instance=new AutoCloseableResource(() -> new TestClass(this), test -> test.toClose())){
-			Assert.assertNotNull(instance);
-			Assert.assertTrue(this.build);
+			Assertions.assertNotNull(instance);
+			Assertions.assertTrue(this.build);
 			System.out.println("AutoCloseableResourceTest >> testSupplierConsumer >> doing nothing");
-			Assert.assertFalse(this.closed);
+			Assertions.assertFalse(this.closed);
 		}
-		Assert.assertTrue(this.build);
-		Assert.assertTrue(this.closed);
+		Assertions.assertTrue(this.build);
+		Assertions.assertTrue(this.closed);
 	}
 
 	class TestClass{
@@ -66,18 +68,17 @@ public class AutoCloseableResourceTest {
 
 	@Test
 	public void testInstanceTryClose() throws Exception {
-		System.out.println("AutoCloseableResourceTest >> testInstanceTryClose");
 		
-		Assert.assertFalse(this.build);
-		Assert.assertFalse(this.closed);
+		Assertions.assertFalse(this.build);
+		Assertions.assertFalse(this.closed);
 		try(AutoCloseableResource instance=new AutoCloseableResource(this::init, this::close)){
-			Assert.assertNotNull(instance);
-			Assert.assertTrue(this.build);
+			Assertions.assertNotNull(instance);
+			Assertions.assertTrue(this.build);
 			System.out.println("AutoCloseableResourceTest >> testInstanceTryClose >> doing nothing");
-			Assert.assertFalse(this.closed);
+			Assertions.assertFalse(this.closed);
 		}
-		Assert.assertTrue(this.build);
-		Assert.assertTrue(this.closed);
+		Assertions.assertTrue(this.build);
+		Assertions.assertTrue(this.closed);
 	}
 
 	public void init(){

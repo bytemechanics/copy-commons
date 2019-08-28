@@ -34,8 +34,8 @@ public class FastDropLastQueue<T> extends ConcurrentLinkedQueue<T>{
 		boolean reply=false;
 		
 		reply = _c.stream()
-				.map(value -> super.add(value))
-				.reduce(reply, (accumulator, inserted) -> accumulator | inserted);
+					.map(value -> offer(value))
+					.reduce(reply, (accumulator, inserted) -> accumulator | inserted);
 		
 		return reply;
 	}
@@ -86,4 +86,12 @@ public class FastDropLastQueue<T> extends ConcurrentLinkedQueue<T>{
 		
 		return reply;
 	}
+
+	@Override
+	public void clear() {
+		while(!super.isEmpty()){
+			poll();
+		}
+	}
+
 }

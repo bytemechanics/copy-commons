@@ -63,7 +63,7 @@ public class ObjectFactory<T> {
 	}
 	
 	
-	private Class autobox(final Class _class){
+	protected Class autobox(final Class _class){
 	
 		Class reply=_class;
 		
@@ -107,7 +107,7 @@ public class ObjectFactory<T> {
 		
 		return reply;
 	}	
-	private <T> Optional<Constructor<T>> findConstructor(){
+	protected <T> Optional<Constructor<T>> findConstructor(){
 		
 		return Stream.of(this.toInstantiate.getConstructors())
 				.filter(selectedConstructor -> selectedConstructor.getParameterTypes().length==this.attributes.length)
