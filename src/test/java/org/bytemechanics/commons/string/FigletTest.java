@@ -17,14 +17,12 @@ package org.bytemechanics.commons.string;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.charset.Charset;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 import org.bytemechanics.commons.functional.LambdaUnchecker;
-import org.bytemechanics.commons.reflection.ObjectFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;

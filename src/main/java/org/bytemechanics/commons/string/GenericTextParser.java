@@ -20,6 +20,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -425,5 +426,10 @@ public enum GenericTextParser{
 					.flatMap(object -> find(_class))
 					.flatMap(converter -> converter.parse(_string, _format))
 					.map(value -> (T)value);
+	}
+
+	@Override
+	public String toString() {
+		return this.name();
 	}
 }
