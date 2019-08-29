@@ -1,7 +1,3 @@
-package org.bytemechanics.commons.lang;
-
-import java.util.Arrays;
-
 /*
  * Copyright 2019 Byte Mechanics.
  *
@@ -17,6 +13,9 @@ import java.util.Arrays;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.bytemechanics.commons.lang;
+
+import java.util.Arrays;
 
 /**
  * Array utilities

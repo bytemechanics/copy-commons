@@ -108,7 +108,8 @@ public class SimpleFormatTest {
 			Arguments.of("text {{}}{}{}{} text"	, new Object[]{"p1","p2","p3","p4"}, "text {p1}p2p3p4 text"),			
 			Arguments.of("text {}{{}}{}{} text"	, new Object[]{"p1","p2","p3","p4"}, "text p1{p2}p3p4 text"),			
 			Arguments.of("text {}{}{{}}{} text"	, new Object[]{"p1","p2","p3","p4"}, "text p1p2{p3}p4 text"),			
-			Arguments.of("text {}{}{}{{}} text"	, new Object[]{"p1","p2","p3","p4"}, "text p1p2p3{p4} text")
+			Arguments.of("text {}{}{}{{}} text"	, new Object[]{"p1","p2","p3","p4"}, "text p1p2p3{p4} text"),
+			Arguments.of("text {}{}{}{}{}{}{}{} text"	, new Object[]{new String[]{"pa1","pa2"},new int[]{1,2},new long[]{1l,2l},new double[]{1.0d,2.0d},new float[]{1.0f,2.0f},new byte[]{0b0010_0101,0b0010_0101},new boolean[]{true,false},new short[]{1,2}}, "text [pa1, pa2][1, 2][1, 2][1.0, 2.0][1.0, 2.0][37, 37][true, false][1, 2] text")
 		);
 	}
 
