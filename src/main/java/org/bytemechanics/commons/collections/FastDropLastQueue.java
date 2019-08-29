@@ -9,7 +9,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Concurrent queue that keeps the same size whatever adds done by droping the extra elements from the head
  * This implementation is very fast but can overflow the initial size
  * @author afarre
- * @param <T>
+ * @param <T> Queue type
   */
 public class FastDropLastQueue<T> extends ConcurrentLinkedQueue<T>{
 
