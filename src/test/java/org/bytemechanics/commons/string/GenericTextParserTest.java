@@ -17,12 +17,10 @@ package org.bytemechanics.commons.string;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.ParseException;
@@ -37,7 +35,6 @@ import java.util.logging.LogManager;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 import org.bytemechanics.commons.functional.LambdaUnchecker;
-import org.bytemechanics.commons.reflection.ObjectFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -165,8 +162,8 @@ public class GenericTextParserTest {
 			Arguments.of("2007/12/03 10-15-30", GenericTextParser.LOCALDATETIME, "yyyy/MM/dd HH-mm[-ss]", LocalDateTime.of(2007,12,03,10,15,30)),
 			Arguments.of("ENUM"	, GenericTextParser.ENUM, "org.bytemechanics.commons.string.GenericTextParser", GenericTextParser.ENUM),
 			Arguments.of("LOCALDATE", GenericTextParser.ENUM, "org.bytemechanics.commons.string.GenericTextParser", GenericTextParser.LOCALDATE),
-			Arguments.of("/etc/bin"	, GenericTextParser.PATH, "", Paths.get("/etc/bin")),
-			Arguments.of("/home/usr", GenericTextParser.STRING, "myMessage", Paths.get("/home/usr").toString())
+			Arguments.of(Paths.get("/etc/bin").toString(), GenericTextParser.PATH, "", Paths.get("/etc/bin")),
+			Arguments.of(Paths.get("/home/usr").toString(), GenericTextParser.STRING, "myMessage", Paths.get("/home/usr").toString())
 		);
 	}
 	@ParameterizedTest(name = "When {0} is parsed with {1} using {2} result should be {3}")
@@ -354,8 +351,8 @@ public class GenericTextParserTest {
 			Arguments.of("2007/12/03 10-15-30", GenericTextParser.LOCALDATETIME, "yyyy/MM/dd HH-mm[-ss]", LocalDateTime.of(2007,12,03,10,15,30)),
 			Arguments.of("ENUM"	, GenericTextParser.ENUM, "org.bytemechanics.commons.string.GenericTextParser", GenericTextParser.ENUM),
 			Arguments.of("LOCALDATE", GenericTextParser.ENUM, "org.bytemechanics.commons.string.GenericTextParser", GenericTextParser.LOCALDATE),
-			Arguments.of("/etc/bin"	, GenericTextParser.PATH, "", Paths.get("/etc/bin")),
-			Arguments.of("/home/usr", GenericTextParser.STRING, "myMessage", Paths.get("/home/usr").toString())
+			Arguments.of(Paths.get("/etc/bin").toString(), GenericTextParser.PATH, "", Paths.get("/etc/bin")),
+			Arguments.of(Paths.get("/home/usr").toString(), GenericTextParser.STRING, "myMessage", Paths.get("/home/usr").toString())
 		);
 	}
 	@ParameterizedTest(name = "When {0} is formatted with {1} using {2} result should be {3}")
