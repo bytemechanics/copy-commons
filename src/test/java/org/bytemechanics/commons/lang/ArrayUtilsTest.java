@@ -15,7 +15,13 @@
  */
 package org.bytemechanics.commons.lang;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
+import org.bytemechanics.commons.functional.LambdaUnchecker;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -25,6 +31,17 @@ import org.junit.jupiter.api.Test;
  */
 @DisplayName("ArrayUtils test case")
 public class ArrayUtilsTest {
+
+	@BeforeAll
+	public static void setup() throws IOException{
+		System.out.println(">>>>> ArrayUtilsTest >>>> setupSpec");
+		try(InputStream inputStream = LambdaUnchecker.class.getResourceAsStream("/logging.properties")){
+			LogManager.getLogManager().readConfiguration(inputStream);
+		}catch (final IOException e){
+			Logger.getAnonymousLogger().severe("Could not load default logging.properties file");
+			Logger.getAnonymousLogger().severe(e.getMessage());
+		}
+	}
 	
 	@Test
 	@DisplayName("Concat array with first argument as null should return second")

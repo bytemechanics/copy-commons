@@ -15,6 +15,8 @@
  */
 package org.bytemechanics.commons.collections;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,7 +28,11 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
+import org.bytemechanics.commons.functional.LambdaUnchecker;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Tag;
@@ -38,6 +44,17 @@ import org.junit.jupiter.api.TestInfo;
  * @author afarre
  */
 public class FastDropLastQueueConcurrentTest {
+
+	@BeforeAll
+	public static void setup() throws IOException{
+		System.out.println(">>>>> FastDropLastQueueConcurrentTest >>>> setupSpec");
+		try(InputStream inputStream = LambdaUnchecker.class.getResourceAsStream("/logging.properties")){
+			LogManager.getLogManager().readConfiguration(inputStream);
+		}catch (final IOException e){
+			Logger.getAnonymousLogger().severe("Could not load default logging.properties file");
+			Logger.getAnonymousLogger().severe(e.getMessage());
+		}
+	}
 
 	@BeforeEach
     void beforeEachTest(final TestInfo testInfo) {
