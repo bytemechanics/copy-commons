@@ -162,8 +162,8 @@ public class GenericTextParserTest {
 			Arguments.of("2007/12/03 10-15-30", GenericTextParser.LOCALDATETIME, "yyyy/MM/dd HH-mm[-ss]", LocalDateTime.of(2007,12,03,10,15,30)),
 			Arguments.of("ENUM"	, GenericTextParser.ENUM, "org.bytemechanics.commons.string.GenericTextParser", GenericTextParser.ENUM),
 			Arguments.of("LOCALDATE", GenericTextParser.ENUM, "org.bytemechanics.commons.string.GenericTextParser", GenericTextParser.LOCALDATE),
-			Arguments.of("/etc/bin"	, GenericTextParser.PATH, "", Paths.get("/etc/bin")),
-			Arguments.of("/home/usr", GenericTextParser.STRING, "myMessage", Paths.get("/home/usr").toString())
+			Arguments.of(Paths.get("/etc/bin").toString(), GenericTextParser.PATH, "", Paths.get("/etc/bin")),
+			Arguments.of(Paths.get("/home/usr").toString(), GenericTextParser.STRING, "myMessage", Paths.get("/home/usr").toString())
 		);
 	}
 	@ParameterizedTest(name = "When {0} is parsed with {1} using {2} result should be {3}")
@@ -351,8 +351,8 @@ public class GenericTextParserTest {
 			Arguments.of("2007/12/03 10-15-30", GenericTextParser.LOCALDATETIME, "yyyy/MM/dd HH-mm[-ss]", LocalDateTime.of(2007,12,03,10,15,30)),
 			Arguments.of("ENUM"	, GenericTextParser.ENUM, "org.bytemechanics.commons.string.GenericTextParser", GenericTextParser.ENUM),
 			Arguments.of("LOCALDATE", GenericTextParser.ENUM, "org.bytemechanics.commons.string.GenericTextParser", GenericTextParser.LOCALDATE),
-			Arguments.of("/etc/bin"	, GenericTextParser.PATH, "", Paths.get("/etc/bin")),
-			Arguments.of("/home/usr", GenericTextParser.STRING, "myMessage", Paths.get("/home/usr").toString())
+			Arguments.of(Paths.get("/etc/bin").toString(), GenericTextParser.PATH, "", Paths.get("/etc/bin")),
+			Arguments.of(Paths.get("/home/usr").toString(), GenericTextParser.STRING, "myMessage", Paths.get("/home/usr").toString())
 		);
 	}
 	@ParameterizedTest(name = "When {0} is formatted with {1} using {2} result should be {3}")
