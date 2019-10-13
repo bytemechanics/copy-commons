@@ -59,7 +59,8 @@ public class StringifyTest {
 	public void testStacktrace(){
 		String actual=Stringify.toString(new NullPointerException());
 		String expected="java.lang.NullPointerException"+System.lineSeparator()+
-							"	at org.bytemechanics.commons.string.StringifyTest.testStacktrace(StringifyTest.java:64)"+System.lineSeparator();
+							"	at org.bytemechanics.commons.string.StringifyTest.testStacktrace(StringifyTest.java:60)"+System.lineSeparator();
+		System.out.println(">>>>> StringifyTest >>>> testStacktrace >>> actual >>> \n"+actual);
 		Assertions.assertTrue(actual.startsWith(expected));
 		Assertions.assertTrue(actual.length()>expected.length());
 	}
