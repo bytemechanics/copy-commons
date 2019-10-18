@@ -31,7 +31,7 @@ public class Tuple<A,B> {
 	private final B secondValue;
 
 	/**
-	 * Tuple consutructor
+	 * Tuple constructor
 	 * @param _first first param 
 	 * @param _second second param
 	 */
