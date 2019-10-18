@@ -17,6 +17,7 @@ package org.bytemechanics.commons.string;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.text.MessageFormat;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -30,7 +31,7 @@ public final class Stringify {
 
 	/**
 	 * Prints stacktrace as string (null protected).
-	 * @param _stacktrace exception to generate stacktrace
+	 * @param _stacktrace exception to generate stacktrace if is null then return "null" string
 	 * @return Stacktrace in string format and if any error happens return a text with the error
 	 */
 	public static final String toString(final Throwable _stacktrace){
@@ -40,15 +41,15 @@ public final class Stringify {
 		try(StringWriter stringWriter = new StringWriter();
 				PrintWriter printWriter=new PrintWriter(stringWriter)){
 			_stacktrace.printStackTrace(printWriter);
-			return stringWriter.toString();
+			return stringWriter.toString(); 
 		} catch (Exception e) {
-			return "<unable to print stacktrace: "+String.valueOf(e.getMessage())+">";
+			return MessageFormat.format("<unable to print stacktrace: {0}>",e.getMessage());
 		}
 	}
 
 	/**
 	 * Format duration as string (null protected)
-	 * @param _duration exception to generate stacktrace
+	 * @param _duration exception to generate stacktrace if is null then return "null" string
 	 * @param _pattern pattern to use if null uses ISO_TIME
 	 * @return duration in format provided or string with an error if failed
 	 */
@@ -62,7 +63,7 @@ public final class Stringify {
 												.orElse(DateTimeFormatter.ISO_TIME);
 			return formatter.format(LocalTime.MIDNIGHT.plus(_duration));
 		}catch(Exception e){
-			return "<unable to print stacktrace: "+String.valueOf(e.getMessage())+">";
+			return MessageFormat.format("<unable to print stacktrace: {0}>",e.getMessage());
 		}
 	}
 }

@@ -9,7 +9,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Concurrent queue that keeps the same size whatever adds done by droping the extra elements from the head
  * This implementation is very fast but can overflow the initial size
  * @author afarre
- * @param <T>
+ * @param <T> Queue type
   */
 public class FastDropLastQueue<T> extends ConcurrentLinkedQueue<T>{
 
@@ -34,8 +34,8 @@ public class FastDropLastQueue<T> extends ConcurrentLinkedQueue<T>{
 		boolean reply=false;
 		
 		reply = _c.stream()
-				.map(value -> super.add(value))
-				.reduce(reply, (accumulator, inserted) -> accumulator | inserted);
+					.map(this::offer)
+					.reduce(reply, (accumulator, inserted) -> accumulator || inserted);
 		
 		return reply;
 	}
@@ -46,10 +46,8 @@ public class FastDropLastQueue<T> extends ConcurrentLinkedQueue<T>{
 		
 		final boolean reply=super.remove(_o);
 		
-		if(reply){
-			if(this.currentSize.get()>0){
-				this.currentSize.decrementAndGet();
-			}
+		if((reply)&&(this.currentSize.get()>0)){
+			this.currentSize.decrementAndGet();
 		}
 
 		return reply;
@@ -61,10 +59,8 @@ public class FastDropLastQueue<T> extends ConcurrentLinkedQueue<T>{
 		
 		final T reply=super.poll();
 		
-		if(reply!=null){
-			if(this.currentSize.get()>0){
-				this.currentSize.decrementAndGet();
-			}
+		if((reply!=null)&&(this.currentSize.get()>0)){
+			this.currentSize.decrementAndGet();
 		}
 
 		return reply;
@@ -86,4 +82,12 @@ public class FastDropLastQueue<T> extends ConcurrentLinkedQueue<T>{
 		
 		return reply;
 	}
+
+	@Override
+	public void clear() {
+		while(!super.isEmpty()){
+			poll();
+		}
+	}
+
 }

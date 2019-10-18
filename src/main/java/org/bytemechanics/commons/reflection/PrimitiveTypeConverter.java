@@ -50,7 +50,7 @@ public enum PrimitiveTypeConverter {
 	/**
 	 * Try to convert primitive types to it's corresponding class type if are primitives 
 	 * @param _primitiveClass primitive to convert
-	 * @return it's correponding primitive class or the same class if it's not primitive
+	 * @return it's corresponding primitive class or the same class if it's not primitive
 	 * @throws NullPointerException if the class provided is null
 	 */
 	public static final Class convert(final Class _primitiveClass){

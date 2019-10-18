@@ -426,4 +426,9 @@ public enum GenericTextParser{
 					.flatMap(converter -> converter.parse(_string, _format))
 					.map(value -> (T)value);
 	}
+
+	@Override
+	public String toString() {
+		return this.name();
+	}
 }
