@@ -4,11 +4,11 @@
     <parent>
         <groupId>org.bytemechanics</groupId>
         <artifactId>bytemechanics-maven</artifactId>
-        <version>2.0.1-SNAPSHOT</version>
+        <version>2.0.1</version>
     </parent>
     <artifactId>copy-commons</artifactId>
     <packaging>jar</packaging>
-	<version>1.4.0</version>
+	<version>1.4.1</version>
     <name>Copy Commons</name>
 	<description>Base project to copy sources to the other projects in order to have a single place to test sources and keep zero dependencies in libraries</description>
 	<url>https://copy-commons.bytemechanics.org</url>
