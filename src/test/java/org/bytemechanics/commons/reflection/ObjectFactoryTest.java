@@ -64,15 +64,16 @@ public class ObjectFactoryTest {
     }
 	
 	@ParameterizedTest(name = "Calling of({0}) should return an instance of ObjectFactory with instantiation objective #objectiveClass")
-	@ValueSource(classes = {DummieServiceImpl.class})
-	public void testConstructor(final Class _objectiveClass){
+	@ValueSource(strings = {"org.bytemechanics.commons.reflection.DummieServiceImpl"})
+	public void testConstructor(final String _objectiveClassName) throws ClassNotFoundException{
 
-		ObjectFactory objectFactory=ObjectFactory.of(_objectiveClass);
+		Class objectiveClass=Class.forName(_objectiveClassName);
+		ObjectFactory objectFactory=ObjectFactory.of(objectiveClass);
 		
 		Assertions.assertNotNull(objectFactory);
 		Assertions.assertTrue(objectFactory instanceof ObjectFactory);
 		Assertions.assertNotNull(objectFactory.getToInstantiate());
-		Assertions.assertEquals(_objectiveClass,objectFactory.getToInstantiate());
+		Assertions.assertEquals(objectiveClass,objectFactory.getToInstantiate());
 	}
 
 	static Stream<Arguments> parameterizedDataPack() {
