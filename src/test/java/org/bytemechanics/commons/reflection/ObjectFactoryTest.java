@@ -68,6 +68,7 @@ public class ObjectFactoryTest {
 	public void testConstructor(final String _objectiveClassName) throws ClassNotFoundException{
 
 		Class objectiveClass=Class.forName(_objectiveClassName);
+		@SuppressWarnings("unchecked")
 		ObjectFactory objectFactory=ObjectFactory.of(objectiveClass);
 		
 		Assertions.assertNotNull(objectFactory);
@@ -87,8 +88,9 @@ public class ObjectFactoryTest {
 	@MethodSource("parameterizedDataPack")
 	public void testParameterizedConstructor(final Class _objectiveClass,final Object[] _args){
 
+		@SuppressWarnings("unchecked")
 		ObjectFactory objectFactory=ObjectFactory.of(_objectiveClass)
-										.with((Object[])_args);
+										.with(_args);
 
 		Assertions.assertNotNull(objectFactory);
 		Assertions.assertTrue(objectFactory instanceof ObjectFactory);
@@ -109,8 +111,9 @@ public class ObjectFactoryTest {
 	@MethodSource("supplierDataPack")
 	public void testConstructorSupplier(final Class _supplierClass,final Object[] _args){
 
+		@SuppressWarnings("unchecked")
 		Supplier<Optional> supplier=ObjectFactory.of(_supplierClass)
-										.with((Object[])_args)
+										.with(_args)
 										.supplier();
 		DummieServiceImpl instance=(DummieServiceImpl)((supplier!=null)? supplier.get().get() : null);
 		Object[] expected=new Object[]{(_args.length>0)? _args[0] : "",(_args.length>1)? _args[1] : 0,(_args.length>2)? _args[2] : ""};			
@@ -133,8 +136,9 @@ public class ObjectFactoryTest {
 	@MethodSource("supplierDataPackNoMatch")
 	public void testConstructorSupplierNoMatch(final Class _supplierClass,final Object[] _args){
 
+		@SuppressWarnings("unchecked")
 		Optional result=(Optional)ObjectFactory.of(_supplierClass)
-												.with((Object[])_args)
+												.with(_args)
 												.supplier()
 												.get();
 
@@ -150,12 +154,12 @@ public class ObjectFactoryTest {
 	}
 	@ParameterizedTest(name = "When object factory builds a supplier of {0} with {1} that throws an exception should fail with InvocationTargetException.class}")
 	@MethodSource("supplierDataPackWithException")
-	@SuppressWarnings("ThrowableResultIgnored")
+	@SuppressWarnings({"ThrowableResultIgnored", "unchecked"})
 	public void testConstructorSupplierWithException(final Class _supplierClass,final Object[] _args){
 
 		Assertions.assertThrows(InvocationTargetException.class,
 								() -> ObjectFactory.of(_supplierClass)
-										.with((Object[])_args)
+										.with(_args)
 										.supplier()
 										.get());
 	}

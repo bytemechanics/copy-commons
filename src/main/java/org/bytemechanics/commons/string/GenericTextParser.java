@@ -133,6 +133,7 @@ public enum GenericTextParser{
 																.orElseGet(() -> LocalDateTime.parse(val))),
 									(value,config) -> value.map(val -> config.map(conf -> LambdaUnchecker.uncheckedGet(() -> DateTimeFormatter.ofPattern(conf,Locale.ENGLISH).format(val)))
 															.orElseGet(() -> val.toString()))),
+	@SuppressWarnings("unchecked")
 	ENUM(Enum.class,(value,config) -> value.filter(val -> !val.isEmpty())
 											.map(val -> LambdaUnchecker.uncheckedGet(() ->  Enum.valueOf((Class<Enum>)Class.forName(config.get()),val))),
 					(value,config) -> value.map(val -> val.name())),
@@ -259,12 +260,15 @@ public enum GenericTextParser{
 
 	private final ConverterAdapter converter;
     
+	@SuppressWarnings("unchecked")
     <T> GenericTextParser(final Class<T> _class,BiFunction<Optional<String>,Optional<String>,Optional<T>> _parser,final Class... _synonyms){
 		this.converter=new Converter(_class, _parser, _synonyms);
     }
+	@SuppressWarnings("unchecked")
     <T> GenericTextParser(final Class<T> _class,BiFunction<Optional<String>,Optional<String>,Optional<T>> _parser,BiFunction<Optional<T>,Optional<String>,Optional<String>> _formatter,final Class... _synonyms){
 		this.converter=new Converter(_class, _parser, _formatter, _synonyms);
     }
+	@SuppressWarnings("unchecked")
     <T> GenericTextParser(final Class<T> _class,final String _defaultConfiguration,BiFunction<Optional<String>,Optional<String>,Optional<T>> _parser,BiFunction<Optional<T>,Optional<String>,Optional<String>> _formatter,final Class... _synonyms){
 		this.converter=new Converter(_class,_defaultConfiguration,_parser, _formatter, _synonyms);
     }
@@ -283,6 +287,7 @@ public enum GenericTextParser{
 	 * @param _format format to use to convert object to string (can be null)
 	 * @return an optional of the object converted to string (if the given object can not be converted, its not the correct type, throws an exception)
 	 */
+	@SuppressWarnings("unchecked")
 	public Optional<String> format(final Object _object,final String _format){
 		return	(Optional<String>)this.converter
 										.getFormatter()
@@ -302,6 +307,7 @@ public enum GenericTextParser{
 	 * @throws DateTimeParseException if is parsing a date/time or datetime
 	 * @throws NumberFormatException if is parsing a non parseable numeric
 	 */
+	@SuppressWarnings("unchecked")
 	public <T> Optional<T> parse(final Class<T> _class,final String _string){
 		return parse(_string)
 					.map(val -> (T)val);
@@ -327,6 +333,7 @@ public enum GenericTextParser{
 	 * @throws DateTimeParseException if is parsing a date/time or datetime
 	 * @throws NumberFormatException if is parsing a non parseable numeric
 	 */
+	@SuppressWarnings("unchecked")
 	public <T> Optional<T> parse(final Class<T> _class,final String _string,final String _format){
 		return parse(_string,_format)
 					.map(val -> (T)val);
@@ -339,11 +346,11 @@ public enum GenericTextParser{
 	 * @throws DateTimeParseException if is parsing a date/time or datetime
 	 * @throws NumberFormatException if is parsing a non parseable numeric
 	 */
+	@SuppressWarnings("unchecked")
 	public Optional<Object> parse(final String _string,final String _format){
 		return	(Optional<Object>)this.converter
 										.getParser()
-											.apply(Optional.ofNullable(_string)
-																
+											.apply(Optional.ofNullable(_string)								
 													,Optional.ofNullable(_format)
 																.filter(value -> !value.isEmpty())
 																.map(Optional::of)
@@ -368,6 +375,7 @@ public enum GenericTextParser{
 	 * @return an optional of the appropiate converter or an empty optional
 	 * @since 1.2.0
 	 */
+	@SuppressWarnings("unchecked")
 	public static Optional<GenericTextParser> find(final Class _class){
 		return Optional.of(_class)
 					.flatMap(valueClass -> Stream.of(values())
@@ -420,6 +428,7 @@ public enum GenericTextParser{
 	 * @throws DateTimeParseException if is parsing a date/time or datetime
 	 * @throws NumberFormatException if is parsing a non parseable numeric
 	 */
+	@SuppressWarnings("unchecked")
 	public static final  <T> Optional<T> toValue(final Class<T> _class,final String _string,final String _format){
 		return Optional.ofNullable(_string)
 					.flatMap(object -> find(_class))

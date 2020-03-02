@@ -92,6 +92,7 @@ public class ObjectFactory<T> {
 		return reply;
 	}
 
+	@SuppressWarnings("unchecked")
 	private boolean assignableArray(final Class[] _destiny,final Object[] _origin){
 	
 		boolean reply=true;
@@ -107,6 +108,7 @@ public class ObjectFactory<T> {
 		
 		return reply;
 	}	
+	@SuppressWarnings("unchecked")
 	protected <T> Optional<Constructor<T>> findConstructor(){
 		
 		return Stream.of(this.toInstantiate.getConstructors())
@@ -140,6 +142,7 @@ public class ObjectFactory<T> {
 	 * @return Supplier for the current factory class
 	 * @see Supplier
 	 */
+	@SuppressWarnings("unchecked")
 	public Supplier<Optional<T>> supplier(){
 		
 		return () -> findConstructor()
