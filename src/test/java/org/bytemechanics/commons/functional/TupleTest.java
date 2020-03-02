@@ -104,9 +104,9 @@ public class TupleTest {
 
 	@ParameterizedTest(name ="When replace left={0} value with newLeft={1} then a new instance is created with newLeft value but keeping the original right={2} value")
 	@MethodSource("replaceLeftDatapack")
-	public void testReplaceLeft(final Object _left,final Object _newLeft,final Object _right){
-		final Tuple tuple=Tuple.of(_left,_right);
-		final Tuple tuple2=tuple.left(_newLeft);
+	public <LEFT,RIGHT> void testReplaceLeft(final LEFT _left,final LEFT _newLeft,final RIGHT _right){
+		final Tuple<LEFT,RIGHT> tuple=Tuple.of(_left,_right);
+		final Tuple<LEFT,RIGHT> tuple2=tuple.left(_newLeft);
 		
 		Assertions.assertEquals(_left,tuple.left());
 		Assertions.assertEquals(_left,tuple.getLeft());
@@ -132,9 +132,9 @@ public class TupleTest {
 
 	@ParameterizedTest(name ="When replace right={1} value with newRight={2} then a new instance is created with newRight value but keeping the original left={0} value")
 	@MethodSource("replaceRightDatapack")
-	public void testReplaceRight(final Object _left,final Object _right,final Object _newRight){
-		final Tuple tuple=Tuple.of(_left,_right);
-		final Tuple tuple2=tuple.right(_newRight);
+	public <LEFT,RIGHT> void testReplaceRight(final LEFT _left,final RIGHT _right,final RIGHT _newRight){
+		final Tuple<LEFT,RIGHT> tuple=Tuple.of(_left,_right);
+		final Tuple<LEFT,RIGHT> tuple2=tuple.right(_newRight);
 		
 		Assertions.assertEquals(_left,tuple.left());
 		Assertions.assertEquals(_left,tuple.getLeft());
@@ -159,9 +159,9 @@ public class TupleTest {
 
 	@ParameterizedTest(name ="When replace left={0} with newLeft={1} and right={2} value with newRight={3} then a new instance is created with newRight value and newLeft value")
 	@MethodSource("replaceBothDatapack")
-	public void testReplaceBoth(final Object _left,final Object _newLeft,final Object _right,final Object _newRight){
-		final Tuple tuple=Tuple.of(_left,_right);
-		final Tuple tuple2=tuple.with(_newLeft,_newRight);
+	public <LEFT,RIGHT> void testReplaceBoth(final LEFT _left,final LEFT _newLeft,final RIGHT _right,final RIGHT _newRight){
+		final Tuple<LEFT,RIGHT> tuple=Tuple.of(_left,_right);
+		final Tuple<LEFT,RIGHT> tuple2=tuple.with(_newLeft,_newRight);
 		
 		Assertions.assertEquals(_left,tuple.left());
 		Assertions.assertEquals(_left,tuple.getLeft());

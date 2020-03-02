@@ -35,6 +35,7 @@ public class AutoCloseableResource implements AutoCloseable{
 	 * @param _try supplier to execute in this constructor
 	 * @param _close consumer to be executed during close
 	 */
+	@SuppressWarnings("unchecked")
 	public <TYPE> AutoCloseableResource(final Supplier<TYPE> _try,final Consumer<TYPE> _close){
 		this.instance=_try.get();
 		this.consumer=(Consumer<Object>)_close;
