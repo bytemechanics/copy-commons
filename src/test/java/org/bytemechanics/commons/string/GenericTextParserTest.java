@@ -34,7 +34,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
-import org.bytemechanics.commons.functional.LambdaUnchecker;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -52,15 +51,11 @@ public class GenericTextParserTest {
 	@BeforeAll
 	public static void setup() throws IOException{
 		System.out.println(">>>>> GenericTextParserTest >>>> setupSpec");
-		final InputStream inputStream = LambdaUnchecker.class.getResourceAsStream("/logging.properties");
-		try{
+		try(InputStream inputStream = GenericTextParserTest.class.getResourceAsStream("/logging.properties")){
 			LogManager.getLogManager().readConfiguration(inputStream);
 		}catch (final IOException e){
 			Logger.getAnonymousLogger().severe("Could not load default logging.properties file");
 			Logger.getAnonymousLogger().severe(e.getMessage());
-		}finally{
-			if(inputStream!=null)
-				inputStream.close();
 		}
 	}
 	@BeforeEach
