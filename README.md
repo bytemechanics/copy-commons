@@ -10,6 +10,7 @@ Base project to copy sources to the other projects in order to have a single pla
 As bytemechanics libraries has the objective to create standalone and short libraries some classes are repackaged in order to have the source centralized but avoiding classpath collisions
 
 ## Quick start
+(Please read our [Javadoc](https://copy-commons.bytemechanics.org/javadoc/index.html) for further information)
 _**IMPORTANT NOTE: We strongly recommends to use as dependency only in final projects to avoid dependency hell when someone use your library/framework**_
 
 1. First of all include the Jar file in your compile and execution classpath.
