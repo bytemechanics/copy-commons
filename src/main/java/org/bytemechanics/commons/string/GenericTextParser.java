@@ -49,7 +49,7 @@ public enum GenericTextParser{
 	 */
 	SHORT(Short.class,	(value,config) -> value.filter(val -> !val.isEmpty())
 												.map(val -> config.map(conf -> LambdaUnchecker.uncheckedGet(() -> new DecimalFormat(conf, new DecimalFormatSymbols(Locale.ENGLISH)).parse(val)))
-												.map(decimal -> decimal.shortValue())
+												.map(Number::shortValue)
 												.orElseGet(() -> Short.valueOf(val))),
 						(value,config) -> value.map(val -> config.map(conf -> new DecimalFormat(conf, new DecimalFormatSymbols(Locale.ENGLISH)).format(val))
 												.orElseGet(() -> String.valueOf(val))),short.class),
@@ -59,7 +59,7 @@ public enum GenericTextParser{
 	 */
 	INTEGER(Integer.class,(value,config) -> value.filter(val -> !val.isEmpty())
 													.map(val -> config.map(conf -> LambdaUnchecker.uncheckedGet(() -> new DecimalFormat(conf, new DecimalFormatSymbols(Locale.ENGLISH)).parse(val)))
-													.map(decimal -> decimal.intValue())
+													.map(Number::intValue)
 													.orElseGet(() -> Integer.valueOf(val))),
 						(value,config) -> value.map(val -> config.map(conf -> new DecimalFormat(conf, new DecimalFormatSymbols(Locale.ENGLISH)).format(val))
 												.orElseGet(() -> String.valueOf(val))),int.class),
@@ -69,7 +69,7 @@ public enum GenericTextParser{
 	 */
 	LONG(Long.class,(value,config) -> value.filter(val -> !val.isEmpty())
 											.map(val -> config.map(conf -> LambdaUnchecker.uncheckedGet(() -> new DecimalFormat(conf, new DecimalFormatSymbols(Locale.ENGLISH)).parse(val)))
-											.map(decimal -> decimal.longValue())
+											.map(Number::longValue)
 											.orElseGet(() -> Long.valueOf(val))),
 						(value,config) -> value.map(val -> config.map(conf -> new DecimalFormat(conf, new DecimalFormatSymbols(Locale.ENGLISH)).format(val))
 												.orElseGet(() -> String.valueOf(val))),long.class),
@@ -79,20 +79,20 @@ public enum GenericTextParser{
 	 */
 	FLOAT(Float.class,(value,config) -> value.filter(val -> !val.isEmpty())
 												.map(val -> config.map(conf -> LambdaUnchecker.uncheckedGet(() -> new DecimalFormat(conf, new DecimalFormatSymbols(Locale.ENGLISH)).parse(val)))
-												.map(decimal -> decimal.floatValue())
+												.map(Number::floatValue)
 												.orElseGet(() -> Float.valueOf(val))),
 						(value,config) -> value.map(val -> config.map(conf -> new DecimalFormat(conf, new DecimalFormatSymbols(Locale.ENGLISH)).format(val))
-												.orElseGet(() -> val.toString())),float.class),
+												.orElseGet(val::toString)),float.class),
 	/**
 	 * Default format: #0.0
 	 * @see DecimalFormat
 	 */
 	DOUBLE(Double.class,(value,config) -> value.filter(val -> !val.isEmpty())
 												.map(val -> config.map(conf -> LambdaUnchecker.uncheckedGet(() -> new DecimalFormat(conf, new DecimalFormatSymbols(Locale.ENGLISH)).parse(val)))
-												.map(decimal -> decimal.doubleValue())
+												.map(Number::doubleValue)
 												.orElseGet(() -> Double.valueOf(val))),
 						(value,config) -> value.map(val -> config.map(conf -> new DecimalFormat(conf, new DecimalFormatSymbols(Locale.ENGLISH)).format(val))
-												.orElseGet(() -> val.toString())),double.class),
+												.orElseGet(val::toString)),double.class),
 	/**
 	 * Default format: #,##0.0#
 	 * @see DecimalFormat
@@ -114,7 +114,7 @@ public enum GenericTextParser{
 														.map(val -> config.map(conf -> LambdaUnchecker.uncheckedGet(() -> LocalTime.parse(val, DateTimeFormatter.ofPattern(conf,Locale.ENGLISH))))
 														.orElseGet(() -> LocalTime.parse(val))),
 								(value,config) -> value.map(val -> config.map(conf -> LambdaUnchecker.uncheckedGet(() -> DateTimeFormatter.ofPattern(conf,Locale.ENGLISH).format(val)))
-														.orElseGet(() -> val.toString()))),
+														.orElseGet(val::toString))),
 	/**
 	 * Default format: DateTimeFormatter.ISO_DATE
 	 * @see DateTimeFormatter
@@ -123,7 +123,7 @@ public enum GenericTextParser{
 														.map(val -> config.map(conf -> LambdaUnchecker.uncheckedGet(() -> LocalDate.parse(val, DateTimeFormatter.ofPattern(conf,Locale.ENGLISH))))
 														.orElseGet(() -> LocalDate.parse(val))),
 								(value,config) -> value.map(val -> config.map(conf -> LambdaUnchecker.uncheckedGet(() -> DateTimeFormatter.ofPattern(conf,Locale.ENGLISH).format(val)))
-														.orElseGet(() -> val.toString()))),
+														.orElseGet(val::toString))),
 	/**
 	 * Default format: DateTimeFormatter.ISO_DATE_TIME
 	 * @see DateTimeFormatter
@@ -132,11 +132,11 @@ public enum GenericTextParser{
 																.map(val -> config.map(conf -> LambdaUnchecker.uncheckedGet(() -> LocalDateTime.parse(val, DateTimeFormatter.ofPattern(conf,Locale.ENGLISH))))
 																.orElseGet(() -> LocalDateTime.parse(val))),
 									(value,config) -> value.map(val -> config.map(conf -> LambdaUnchecker.uncheckedGet(() -> DateTimeFormatter.ofPattern(conf,Locale.ENGLISH).format(val)))
-															.orElseGet(() -> val.toString()))),
+															.orElseGet(val::toString))),
 	@SuppressWarnings("unchecked")
 	ENUM(Enum.class,(value,config) -> value.filter(val -> !val.isEmpty())
 											.map(val -> LambdaUnchecker.uncheckedGet(() ->  Enum.valueOf((Class<Enum>)Class.forName(config.get()),val))),
-					(value,config) -> value.map(val -> val.name())),
+					(value,config) -> value.map(Enum::name)),
 	PATH(Path.class,(value,config) -> value.filter(val -> !val.isEmpty())
 											.map(Paths::get),
 					(value,config) -> value.map(Path::toString)),
