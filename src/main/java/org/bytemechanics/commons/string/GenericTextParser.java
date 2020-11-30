@@ -137,6 +137,14 @@ public enum GenericTextParser{
 	ENUM(Enum.class,(value,config) -> value.filter(val -> !val.isEmpty())
 											.map(val -> LambdaUnchecker.uncheckedGet(() ->  Enum.valueOf((Class<Enum>)Class.forName(config.get()),val))),
 					(value,config) -> value.map(Enum::name)),
+	@SuppressWarnings("unchecked")
+	UNSENSITIVE_ENUM(Enum.class,(value,config) -> value.filter(val -> !val.isEmpty())
+								.map(val -> LambdaUnchecker.uncheckedGet(() -> 
+											Stream.of(((Class<Enum>)Class.forName(config.get())).getEnumConstants())
+														.filter(enumVal -> val.equalsIgnoreCase(enumVal.name()))
+														.findAny()
+															.orElseThrow(() -> new IllegalArgumentException("No enum constant to match "+val+" in "+config.get()+" with case unsensitive")))),
+					(value,config) -> value.map(Enum::name)),
 	PATH(Path.class,(value,config) -> value.filter(val -> !val.isEmpty())
 											.map(Paths::get),
 					(value,config) -> value.map(Path::toString)),
