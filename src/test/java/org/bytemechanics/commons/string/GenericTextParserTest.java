@@ -41,6 +41,7 @@ import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 /**
  *
@@ -171,7 +172,26 @@ public class GenericTextParserTest {
 		Assertions.assertTrue(actual.isPresent());
 		Assertions.assertEquals(result,actual.get());
 	}
+	
+	static Stream<Arguments> parseEnumUnsensitiveDataPack() {
+	    return Stream.of(Arguments.of("ENUM"	, GenericTextParser.UNSENSITIVE_ENUM, "org.bytemechanics.commons.string.GenericTextParser", GenericTextParser.ENUM)
+								,Arguments.of("Enum", GenericTextParser.UNSENSITIVE_ENUM, "org.bytemechanics.commons.string.GenericTextParser", GenericTextParser.ENUM)
+								,Arguments.of("LocalDate", GenericTextParser.UNSENSITIVE_ENUM, "org.bytemechanics.commons.string.GenericTextParser", GenericTextParser.LOCALDATE)
+								,Arguments.of("LOCALdate", GenericTextParser.UNSENSITIVE_ENUM, "org.bytemechanics.commons.string.GenericTextParser", GenericTextParser.LOCALDATE)
+								,Arguments.of("localdate", GenericTextParser.UNSENSITIVE_ENUM, "org.bytemechanics.commons.string.GenericTextParser", GenericTextParser.LOCALDATE)
+		);
+	}
+	@ParameterizedTest(name = "When {0} is parsed with {1} using {2} result should be {3}")
+	@MethodSource("parseEnumUnsensitiveDataPack")
+	public void testParseEnumUnsensitive(final String value,final GenericTextParser genericTextParser,final String format,final Object result) throws IOException{
 
+		Optional<Object> actual=genericTextParser.parse((String)value,format);
+		
+		Assertions.assertNotNull(actual);
+		Assertions.assertTrue(actual.isPresent());
+		Assertions.assertEquals(result,actual.get());
+	}
+	
 	static Stream<Arguments> nullEmptydataPack() {
 	    return Stream.of(
 			Arguments.of(null,GenericTextParser.BOOLEAN, null),
