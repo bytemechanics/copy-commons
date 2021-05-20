@@ -1,3 +1,9 @@
+# Version 1.6.0
+---
+
+* Added PaginatedSpliterator class to provide an spliterator capable to stream automatically populated content from any page supplier
+
+
 # Version 1.5.2
 ---
 
