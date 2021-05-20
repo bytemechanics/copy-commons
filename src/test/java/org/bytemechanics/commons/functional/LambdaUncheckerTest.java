@@ -17,6 +17,7 @@ package org.bytemechanics.commons.functional;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.logging.LogManager;
@@ -24,8 +25,10 @@ import java.util.logging.Logger;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 
 /**
  *
@@ -43,6 +46,11 @@ public class LambdaUncheckerTest {
 			Logger.getAnonymousLogger().severe(e.getMessage());
 		}
 	}
+	
+	@BeforeEach
+   void beforeEachTest(final TestInfo testInfo) {
+      System.out.println(">>>>> "+this.getClass().getSimpleName()+" >>>> "+testInfo.getTestMethod().map(Method::getName).orElse("Unkown")+""+testInfo.getTags().toString()+" >>>> "+testInfo.getDisplayName());
+   }
 
 	@Test
 	@DisplayName("When uncheck Consumer with checked exception shouldn't be necessary any exception especified")
