@@ -1,3 +1,9 @@
+# Version 1.7.0
+---
+
+* Added Function replacers for Tuple class
+
+
 # Version 1.6.0
 ---
 

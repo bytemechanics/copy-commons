@@ -24,6 +24,7 @@ import java.util.stream.Stream;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -119,6 +120,15 @@ public class TupleTest {
 		Assertions.assertEquals(_right,tuple2.right());
 		Assertions.assertEquals(_right,tuple2.getRight());
 	}
+	
+	@Test
+	public void testApplyLeft(){
+		final Tuple<String,Integer> tuple=Tuple.of("afg",2);
+		final Tuple<Integer,Integer> result=tuple.left(String::length);
+		final Tuple<Integer,Integer> expected=Tuple.of(3,2);
+		
+		Assertions.assertEquals(expected,result);
+	}
 
 	static Stream<Arguments> replaceRightDatapack() {
 	    return Stream.of(
@@ -147,6 +157,15 @@ public class TupleTest {
 		Assertions.assertEquals(_newRight,tuple2.right());
 		Assertions.assertEquals(_newRight,tuple2.getRight());
 	}
+	@Test
+	public void testApplyRight(){
+		final Tuple<String,Integer> tuple=Tuple.of("afg",2);
+		final Tuple<String,Float> result=tuple.right(Integer::floatValue);
+		final Tuple<String,Float> expected=Tuple.of("afg",2.0f);
+		
+		Assertions.assertEquals(expected,result);
+	}
+
 	static Stream<Arguments> replaceBothDatapack() {
 	    return Stream.of(
 			Arguments.of(2	, 3	, "left-value", 10),		
@@ -155,6 +174,15 @@ public class TupleTest {
 			Arguments.of("right-value-not-null",126, null	,"jjj"),		
 			Arguments.of(null,"another_val",null, 124.0f)
 		);
+	}
+	
+	@Test
+	public void testApplyBoth(){
+		final Tuple<String,Integer> tuple=Tuple.of("afg",2);
+		final Tuple<Integer,Float> result=tuple.with(String::length,Integer::floatValue);
+		final Tuple<Integer,Float> expected=Tuple.of(3,2.0f);
+		
+		Assertions.assertEquals(expected,result);
 	}
 
 	@ParameterizedTest(name ="When replace left={0} with newLeft={1} and right={2} value with newRight={3} then a new instance is created with newRight value and newLeft value")
