@@ -1,3 +1,11 @@
+# Version 1.8.0
+---
+
+* Go to 2.2.2 maven parent
+* Added MemorySeekableByteChannel to create SeekableByteChannel in memory
+* Fixed Javadoc bug on PaginatedSpliterator that can cause compilation failures with strict javadoc validation
+
+
 # Version 1.7.0
 ---
 
