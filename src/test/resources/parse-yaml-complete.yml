@@ -1,0 +1,23 @@
+## YAML Template.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: rss-site
+  labels:
+    app: web
+    #whouldnt appear
+spec:
+  containers:
+      # frontend container
+    - name: front-end 
+      image: nginx
+      ports:
+        - containerPort: 80
+    - name: rss-reader
+      image: nickchase/rss-php-nginx:v1 # ignored comment
+      ports:
+        - containerPort: 88
+      # the following comments should appear
+      comments:
+        - not-important
+        - very important

@@ -113,7 +113,7 @@ public class Tuple<A,B> {
 	 * @param _left new left value to replace in the cloned tuple
 	 * @param _right new right value to replace in the cloned tuple
 	 * @param <C> type of the new left value
-	 * @param <C> type of the new right value
+	 * @param <D> type of the new right value
 	 * @return clone of this tuple with the right and the left values replaced
 	 */
 	public <C,D> Tuple<C,D> with(final C _left,final D _right){

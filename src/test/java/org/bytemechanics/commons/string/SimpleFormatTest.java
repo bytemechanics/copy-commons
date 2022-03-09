@@ -36,94 +36,95 @@ import org.junit.jupiter.params.provider.MethodSource;
  * @author afarre
  */
 public class SimpleFormatTest {
-	
-	@BeforeAll
-	public static void setup() throws IOException{
-		System.out.println(">>>>> SimpleFormatTest >>>> setupSpec");
-		try(InputStream inputStream = LambdaUnchecker.class.getResourceAsStream("/logging.properties")){
-			LogManager.getLogManager().readConfiguration(inputStream);
-		}catch (final IOException e){
-			Logger.getAnonymousLogger().severe("Could not load default logging.properties file");
-			Logger.getAnonymousLogger().severe(e.getMessage());
-		}
-	}
-	@BeforeEach
-    void beforeEachTest(final TestInfo testInfo) {
-        System.out.println(">>>>> "+this.getClass().getSimpleName()+" >>>> "+testInfo.getTestMethod().map(Method::getName).orElse("Unkown")+""+testInfo.getTags().toString()+" >>>> "+testInfo.getDisplayName());
+
+    @BeforeAll
+    public static void setup() throws IOException {
+        System.out.println(">>>>> SimpleFormatTest >>>> setupSpec");
+        try ( InputStream inputStream = LambdaUnchecker.class.getResourceAsStream("/logging.properties")) {
+            LogManager.getLogManager().readConfiguration(inputStream);
+        } catch (final IOException e) {
+            Logger.getAnonymousLogger().severe("Could not load default logging.properties file");
+            Logger.getAnonymousLogger().severe(e.getMessage());
+        }
     }
-	
-	static Stream<Arguments> dataPack() {
-	    return Stream.of(
-			Arguments.of("message without args", new Object[]{}, "message without args"),
-			Arguments.of("message without args",new Object[]{"fsdf"}, "message without args"),
-			Arguments.of("message without args", new Object[]{1}, "message without args"),
-			Arguments.of("message with 1:{} arg", new Object[]{}, "message with 1:null arg"),
-			Arguments.of("message with 1:{} arg", new Object[]{"fsdf"}, "message with 1:fsdf arg"),
-			Arguments.of("message with 1:{} arg", new Object[]{1}, "message with 1:1 arg"),
-			Arguments.of("message with 1:{} arg", new Object[]{"fsdf",2}, "message with 1:fsdf arg"),
-			Arguments.of("message with 1:{} arg", new Object[]{"fsdf","fsdfsd"}, "message with 1:fsdf arg"),
-			Arguments.of("message with arg 1:{}", new Object[]{}, "message with arg 1:null"),
-			Arguments.of("message with arg 1:{}", new Object[]{"fsdf"}, "message with arg 1:fsdf"),
-			Arguments.of("message with arg 1:{}", new Object[]{1}, "message with arg 1:1"),
-			Arguments.of("message with arg 1:{}", new Object[]{"fsdf",2}, "message with arg 1:fsdf"),
-			Arguments.of("message with arg 1:{}", new Object[]{"fsdf","fsdfsd"}, "message with arg 1:fsdf"),
-			Arguments.of("message with arg 1:{},2:{}", new Object[]{}, "message with arg 1:null,2:null"),
-			Arguments.of("message with arg 1:{},2:{}", new Object[]{"fsdf"}, "message with arg 1:fsdf,2:null"),
-			Arguments.of("message with arg 1:{},2:{}", new Object[]{1}, "message with arg 1:1,2:null"),
-			Arguments.of("message with arg 1:{},2:{}", new Object[]{"fsdf",2}, "message with arg 1:fsdf,2:2"),
-			Arguments.of("message with arg 1:{},2:{}", new Object[]{"fsdf","fsdfsd"}, "message with arg 1:fsdf,2:fsdfsd"),
-			Arguments.of("{} message with arg 1:,2:{}", new Object[]{}, "null message with arg 1:,2:null"),
-			Arguments.of("{} message with arg 2:{}"	, new Object[]{"fsdf"}, "fsdf message with arg 2:null"),
-			Arguments.of("{} message with arg 2:{}"	, new Object[]{1}, "1 message with arg 2:null"),
-			Arguments.of("{} message with arg 2:{}"	, new Object[]{"fsdf",2}, "fsdf message with arg 2:2"),
-			Arguments.of("{} message with arg 2:{}"	, new Object[]{"fsdf","fsdfsd"}, "fsdf message with arg 2:fsdfsd"),
-			Arguments.of("message with arg 1:{},2:{}", new Object[]{}, "message with arg 1:null,2:null"),
-			Arguments.of("message with arg 1:{},2:{}", new Object[]{"fsdf {}"}, "message with arg 1:fsdf {},2:null"),
-			Arguments.of("message with arg 1:{},2:{}", new Object[]{1}, "message with arg 1:1,2:null"),
-			Arguments.of("message with arg 1:{},2:{}", new Object[]{"fsdf {}",2}, "message with arg 1:fsdf {},2:2"),
-			Arguments.of("message with arg 1:{},2:{}", new Object[]{"fsdf {}","fsdfsd {}"}, "message with arg 1:fsdf {},2:fsdfsd {}"),
-			Arguments.of("{}{}"	, new Object[]{"par1"}, "par1null"),
-			Arguments.of("{}{}"	, new Object[]{"par1","par2"}, "par1par2"),						
-			Arguments.of("{}{}"	, new Object[]{"par1","par2","par3"}, "par1par2"),						
-			Arguments.of("{}{} text", new Object[]{"par1"}, "par1null text"	),				
-			Arguments.of("{}{} text", new Object[]{"par1","par2"}, "par1par2 text"),					
-			Arguments.of("{}{} text", new Object[]{"par1","par2","par3"}, "par1par2 text"),					
-			Arguments.of("text {}{}", new Object[]{"par1"}, "text par1null"),					
-			Arguments.of("text {}{}", new Object[]{"par1","par2"}, "text par1par2"),					
-			Arguments.of("text {}{}", new Object[]{"par1","par2","par3"}, "text par1par2"),					
-			Arguments.of("text {}{} text"		, new Object[]{"par1"}, "text par1null text"),
-			Arguments.of("text {}{} text"		, new Object[]{"par1","par2"}, "text par1par2 text"	),		
-			Arguments.of("text {}{} text"		, new Object[]{"par1","par2","par3"}, "text par1par2 text"	),		
-			Arguments.of("text {}{}{} text"		, new Object[]{"par1"}, "text par1nullnull text"	),		
-			Arguments.of("text {}{}{} text"		, new Object[]{"par1","par2"}, "text par1par2null text"),			
-			Arguments.of("text {}{}{} text"		, new Object[]{"par1","par2","par3"}, "text par1par2par3 text"),			
-			Arguments.of("text {}{}{}{} text"	, new Object[]{"p1"}, "text p1nullnullnull text"),			
-			Arguments.of("text {}{}{}{} text"	, new Object[]{"p1","p2"}, "text p1p2nullnull text"),			
-			Arguments.of("text {}{}{}{} text"	, new Object[]{"p1","p2","p3"}, "text p1p2p3null text"),			
-			Arguments.of("text {}{}{}{} text"	, new Object[]{"p1","p2","p3","p4"}, "text p1p2p3p4 text"),			
-			Arguments.of("text {{}}{}{}{} text"	, new Object[]{"p1","p2","p3","p4"}, "text {p1}p2p3p4 text"),			
-			Arguments.of("text {}{{}}{}{} text"	, new Object[]{"p1","p2","p3","p4"}, "text p1{p2}p3p4 text"),			
-			Arguments.of("text {}{}{{}}{} text"	, new Object[]{"p1","p2","p3","p4"}, "text p1p2{p3}p4 text"),			
-			Arguments.of("text {}{}{}{{}} text"	, new Object[]{"p1","p2","p3","p4"}, "text p1p2p3{p4} text"),
-			Arguments.of("text {}{}{}{}{}{}{}{} text"	, new Object[]{new String[]{"pa1","pa2"},new int[]{1,2},new long[]{1l,2l},new double[]{1.0d,2.0d},new float[]{1.0f,2.0f},new byte[]{0b0010_0101,0b0010_0101},new boolean[]{true,false},new short[]{1,2}}, "text [pa1, pa2][1, 2][1, 2][1.0, 2.0][1.0, 2.0][37, 37][true, false][1, 2] text")
-		);
-	}
 
-	@ParameterizedTest(name = "When {0} is formatted with {1} result should be {2}")
-	@MethodSource("dataPack")
-	public void testFormat(final String message,final Object[] arguments,final String result){
+    @BeforeEach
+    void beforeEachTest(final TestInfo testInfo) {
+        System.out.println(">>>>> " + this.getClass().getSimpleName() + " >>>> " + testInfo.getTestMethod().map(Method::getName).orElse("Unkown") + "" + testInfo.getTags().toString() + " >>>> " + testInfo.getDisplayName());
+    }
 
-		String actual=SimpleFormat.format(message,(Object[])arguments);
-		Assertions.assertEquals(result,actual);
-	}
+    static Stream<Arguments> dataPack() {
+        return Stream.of(
+                Arguments.of("message without args", new Object[]{}, "message without args"),
+                Arguments.of("message without args", new Object[]{"fsdf"}, "message without args"),
+                Arguments.of("message without args", new Object[]{1}, "message without args"),
+                Arguments.of("message with 1:{} arg", new Object[]{}, "message with 1:null arg"),
+                Arguments.of("message with 1:{} arg", new Object[]{"fsdf"}, "message with 1:fsdf arg"),
+                Arguments.of("message with 1:{} arg", new Object[]{1}, "message with 1:1 arg"),
+                Arguments.of("message with 1:{} arg", new Object[]{"fsdf", 2}, "message with 1:fsdf arg"),
+                Arguments.of("message with 1:{} arg", new Object[]{"fsdf", "fsdfsd"}, "message with 1:fsdf arg"),
+                Arguments.of("message with arg 1:{}", new Object[]{}, "message with arg 1:null"),
+                Arguments.of("message with arg 1:{}", new Object[]{"fsdf"}, "message with arg 1:fsdf"),
+                Arguments.of("message with arg 1:{}", new Object[]{1}, "message with arg 1:1"),
+                Arguments.of("message with arg 1:{}", new Object[]{"fsdf", 2}, "message with arg 1:fsdf"),
+                Arguments.of("message with arg 1:{}", new Object[]{"fsdf", "fsdfsd"}, "message with arg 1:fsdf"),
+                Arguments.of("message with arg 1:{},2:{}", new Object[]{}, "message with arg 1:null,2:null"),
+                Arguments.of("message with arg 1:{},2:{}", new Object[]{"fsdf"}, "message with arg 1:fsdf,2:null"),
+                Arguments.of("message with arg 1:{},2:{}", new Object[]{1}, "message with arg 1:1,2:null"),
+                Arguments.of("message with arg 1:{},2:{}", new Object[]{"fsdf", 2}, "message with arg 1:fsdf,2:2"),
+                Arguments.of("message with arg 1:{},2:{}", new Object[]{"fsdf", "fsdfsd"}, "message with arg 1:fsdf,2:fsdfsd"),
+                Arguments.of("{} message with arg 1:,2:{}", new Object[]{}, "null message with arg 1:,2:null"),
+                Arguments.of("{} message with arg 2:{}", new Object[]{"fsdf"}, "fsdf message with arg 2:null"),
+                Arguments.of("{} message with arg 2:{}", new Object[]{1}, "1 message with arg 2:null"),
+                Arguments.of("{} message with arg 2:{}", new Object[]{"fsdf", 2}, "fsdf message with arg 2:2"),
+                Arguments.of("{} message with arg 2:{}", new Object[]{"fsdf", "fsdfsd"}, "fsdf message with arg 2:fsdfsd"),
+                Arguments.of("message with arg 1:{},2:{}", new Object[]{}, "message with arg 1:null,2:null"),
+                Arguments.of("message with arg 1:{},2:{}", new Object[]{"fsdf {}"}, "message with arg 1:fsdf {},2:null"),
+                Arguments.of("message with arg 1:{},2:{}", new Object[]{1}, "message with arg 1:1,2:null"),
+                Arguments.of("message with arg 1:{},2:{}", new Object[]{"fsdf {}", 2}, "message with arg 1:fsdf {},2:2"),
+                Arguments.of("message with arg 1:{},2:{}", new Object[]{"fsdf {}", "fsdfsd {}"}, "message with arg 1:fsdf {},2:fsdfsd {}"),
+                Arguments.of("{}{}", new Object[]{"par1"}, "par1null"),
+                Arguments.of("{}{}", new Object[]{"par1", "par2"}, "par1par2"),
+                Arguments.of("{}{}", new Object[]{"par1", "par2", "par3"}, "par1par2"),
+                Arguments.of("{}{} text", new Object[]{"par1"}, "par1null text"),
+                Arguments.of("{}{} text", new Object[]{"par1", "par2"}, "par1par2 text"),
+                Arguments.of("{}{} text", new Object[]{"par1", "par2", "par3"}, "par1par2 text"),
+                Arguments.of("text {}{}", new Object[]{"par1"}, "text par1null"),
+                Arguments.of("text {}{}", new Object[]{"par1", "par2"}, "text par1par2"),
+                Arguments.of("text {}{}", new Object[]{"par1", "par2", "par3"}, "text par1par2"),
+                Arguments.of("text {}{} text", new Object[]{"par1"}, "text par1null text"),
+                Arguments.of("text {}{} text", new Object[]{"par1", "par2"}, "text par1par2 text"),
+                Arguments.of("text {}{} text", new Object[]{"par1", "par2", "par3"}, "text par1par2 text"),
+                Arguments.of("text {}{}{} text", new Object[]{"par1"}, "text par1nullnull text"),
+                Arguments.of("text {}{}{} text", new Object[]{"par1", "par2"}, "text par1par2null text"),
+                Arguments.of("text {}{}{} text", new Object[]{"par1", "par2", "par3"}, "text par1par2par3 text"),
+                Arguments.of("text {}{}{}{} text", new Object[]{"p1"}, "text p1nullnullnull text"),
+                Arguments.of("text {}{}{}{} text", new Object[]{"p1", "p2"}, "text p1p2nullnull text"),
+                Arguments.of("text {}{}{}{} text", new Object[]{"p1", "p2", "p3"}, "text p1p2p3null text"),
+                Arguments.of("text {}{}{}{} text", new Object[]{"p1", "p2", "p3", "p4"}, "text p1p2p3p4 text"),
+                Arguments.of("text {{}}{}{}{} text", new Object[]{"p1", "p2", "p3", "p4"}, "text {p1}p2p3p4 text"),
+                Arguments.of("text {}{{}}{}{} text", new Object[]{"p1", "p2", "p3", "p4"}, "text p1{p2}p3p4 text"),
+                Arguments.of("text {}{}{{}}{} text", new Object[]{"p1", "p2", "p3", "p4"}, "text p1p2{p3}p4 text"),
+                Arguments.of("text {}{}{}{{}} text", new Object[]{"p1", "p2", "p3", "p4"}, "text p1p2p3{p4} text"),
+                Arguments.of("text {}{}{}{}{}{}{}{} text", new Object[]{new String[]{"pa1", "pa2"}, new int[]{1, 2}, new long[]{1l, 2l}, new double[]{1.0d, 2.0d}, new float[]{1.0f, 2.0f}, new byte[]{0b0010_0101, 0b0010_0101}, new boolean[]{true, false}, new short[]{1, 2}}, "text [pa1, pa2][1, 2][1, 2][1.0, 2.0][1.0, 2.0][37, 37][true, false][1, 2] text")
+        );
+    }
 
-	@ParameterizedTest(name = "When {0} is formatted with {1} result should be {2}")
-	@MethodSource("dataPack")
-	public void testSupplier(final String message,final Object[] arguments,final String result){
+    @ParameterizedTest(name = "When {0} is formatted with {1} result should be {2}")
+    @MethodSource("dataPack")
+    public void testFormat(final String message, final Object[] arguments, final String result) {
 
-		Supplier<String> actual=SimpleFormat.supplier(message,(Object[])arguments);
-		Assertions.assertNotNull(actual);
-		Assertions.assertEquals(result,actual.get());
-	}
+        String actual = SimpleFormat.format(message, (Object[]) arguments);
+        Assertions.assertEquals(result, actual);
+    }
+
+    @ParameterizedTest(name = "When {0} is formatted with {1} result should be {2}")
+    @MethodSource("dataPack")
+    public void testSupplier(final String message, final Object[] arguments, final String result) {
+
+        Supplier<String> actual = SimpleFormat.supplier(message, (Object[]) arguments);
+        Assertions.assertNotNull(actual);
+        Assertions.assertEquals(result, actual.get());
+    }
 
 }
