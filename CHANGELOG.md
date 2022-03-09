@@ -3,8 +3,10 @@
 
 * Go to 2.2.2 maven parent
 * Added MemorySeekableByteChannel to create SeekableByteChannel in memory
+* Added YAMLPropertyReader to read simplified yaml files into key value pairs with key in path format (ex: first.second[1].third.withValue=my-value)
+* Added YAMLPropertyWriter to write simplified yaml files from key value pairs with key in path format (ex: first.second[1].third.withValue=my-value)
 * Fixed Javadoc bug on PaginatedSpliterator that can cause compilation failures with strict javadoc validation
-
+* Fixed some tests
 
 # Version 1.7.0
 ---
