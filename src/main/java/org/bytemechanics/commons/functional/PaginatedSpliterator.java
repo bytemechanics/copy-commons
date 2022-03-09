@@ -14,8 +14,9 @@ import java.util.stream.Stream;
 /**
  * Spliterator implementation that populates new data to the stream by calling recurrently a provided page supplier. Usage:
  * <code>
- *		Spliterator<MyType> spliterator=new PaginatedSupplierSpliterator<>(myLastType -> myTypePageSupplier(),estimatedAmount);
- *		Stream<MyType> autoPopulatedStream=StreamSupport.stream(spliterator,true);
+ * ;grt&
+ *		Spliterator &lsaquo; MyType &rsaquo; spliterator=new PaginatedSupplierSpliterator &lsaquo; &rsaquo; (myLastType -> myTypePageSupplier(),estimatedAmount);
+ *		Stream &lsaquo; MyType &rsaquo; autoPopulatedStream=StreamSupport.stream(spliterator,true);
  * </code>
  * This spliterator return the fields ORDERED, return NONNULL values, is IMMUTABLE and CONCURRENT compatible but NOT SIZED
  * Very important: the supplier must return an ordered results otherwise can not ensure to not return the same value more than once

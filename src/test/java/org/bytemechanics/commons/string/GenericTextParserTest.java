@@ -41,7 +41,6 @@ import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.ValueSource;
 
 /**
  *
@@ -465,11 +464,11 @@ public class GenericTextParserTest {
  			Arguments.of(false, Optional.of(GenericTextParser.BOOLEAN)),	
  			Arguments.of(Boolean.FALSE, Optional.of(GenericTextParser.BOOLEAN)),	
  			Arguments.of(((char)'a'), Optional.of(GenericTextParser.CHAR)),		
- 			Arguments.of(new Character((char)'j'), Optional.of(GenericTextParser.CHAR)),			
+ 			Arguments.of(Character.valueOf('j'), Optional.of(GenericTextParser.CHAR)),			
  			Arguments.of(((char)'d')			, Optional.of(GenericTextParser.CHAR)),		
- 			Arguments.of(new Character((char)'i'), Optional.of(GenericTextParser.CHAR)),			
+ 			Arguments.of(Character.valueOf('i'), Optional.of(GenericTextParser.CHAR)),			
  			Arguments.of(((char)'z'), Optional.of(GenericTextParser.CHAR)),			
- 			Arguments.of(new Character((char)'h'), Optional.of(GenericTextParser.CHAR)),			
+ 			Arguments.of(Character.valueOf('h'), Optional.of(GenericTextParser.CHAR)),			
 			Arguments.of(((short)1)	, Optional.of(GenericTextParser.SHORT)),
  			Arguments.of(Short.valueOf((short)2), Optional.of(GenericTextParser.SHORT)),			
 			Arguments.of(((int)1)	, Optional.of(GenericTextParser.INTEGER)	),

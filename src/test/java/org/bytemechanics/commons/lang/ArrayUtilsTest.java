@@ -17,13 +17,16 @@ package org.bytemechanics.commons.lang;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Method;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 import org.bytemechanics.commons.functional.LambdaUnchecker;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 
 /**
  *
@@ -42,11 +45,15 @@ public class ArrayUtilsTest {
 			Logger.getAnonymousLogger().severe(e.getMessage());
 		}
 	}
+
+	@BeforeEach
+   void beforeEachTest(final TestInfo testInfo) {
+		System.out.println(">>>>> "+this.getClass().getSimpleName()+" >>>> "+testInfo.getTestMethod().map(Method::getName).orElse("Unkown")+""+testInfo.getTags().toString()+" >>>> "+testInfo.getDisplayName());
+	}
 	
 	@Test
 	@DisplayName("Concat array with first argument as null should return second")
 	public void testConcatNulls() {
-		System.out.println("ArrayUtilsTest > testConcat_first_null");
 		Object[] _first = null;
 		Object[] _second = new Object[]{1};
 		Object[] actual=ArrayUtils.concat(_first, _second);
@@ -55,7 +62,6 @@ public class ArrayUtilsTest {
 	@Test
 	@DisplayName("Concat array with second argument as null should return first")
 	public void testConcat_second_null() {
-		System.out.println("ArrayUtilsTest > testConcat_second_null");
 		Object[] _first = new Object[]{1};
 		Object[] _second = null;
 		Object[] actual=ArrayUtils.concat(_first, _second);
@@ -64,7 +70,6 @@ public class ArrayUtilsTest {
 	@Test
 	@DisplayName("Concat array with both arguments as null should return null")
 	public void testConcat_both_null() {
-		System.out.println("ArrayUtilsTest > testConcat_both_null");
 		Object[] _first = null;
 		Object[] _second = null;
 		Object[] actual=ArrayUtils.concat(_first, _second);
@@ -73,7 +78,6 @@ public class ArrayUtilsTest {
 	@Test
 	@DisplayName("Concat array with both arguments present should return the array concatenation")
 	public void testConcat() {
-		System.out.println("ArrayUtilsTest > testConcat");
 		Object[] _first = new Object[]{1,3};
 		Object[] _second = new Object[]{2,5};
 		Object[] actual=ArrayUtils.concat(_first, _second);
