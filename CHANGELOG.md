@@ -1,3 +1,10 @@
+# Version 1.8.1
+---
+
+* Fix maven parent snapshot to release
+* Fix apache felix configuration for the new packages
+
+
 # Version 1.8.0
 ---
 
