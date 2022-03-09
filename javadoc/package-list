@@ -1,5 +1,6 @@
 org.bytemechanics.commons.collections
 org.bytemechanics.commons.functional
+org.bytemechanics.commons.io
 org.bytemechanics.commons.lang
 org.bytemechanics.commons.reflection
 org.bytemechanics.commons.string
