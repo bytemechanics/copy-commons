@@ -1,3 +1,10 @@
+# Version 1.8.2
+---
+
+* Fix YAMLPropertyReader close properly reader on closing returned stream
+* Fix YAMLPropertyWriter close writen stream after processing
+
+
 # Version 1.8.1
 ---
 

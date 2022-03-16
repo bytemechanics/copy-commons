@@ -8,7 +8,7 @@
     </parent>
     <artifactId>copy-commons</artifactId>
     <packaging>jar</packaging>
-    <version>1.8.1</version>
+    <version>1.8.2</version>
     <name>Copy Commons</name>
     <description>Base project to copy sources to the other projects in order to have a single place to test sources and keep zero dependencies in libraries</description>
     <url>https://copy-commons.bytemechanics.org</url>

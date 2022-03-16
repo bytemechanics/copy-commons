@@ -332,9 +332,11 @@ public class YAMLPropertyWriter extends FilterWriter{
      * @param _stream stream of properties to append
      */
     public void write(Stream<Property> _stream){
-        _stream.filter(this::filterLength)
-                .flatMap(this::splitPath)
-                .forEach(this::append);
+        try(Stream<Property> closeableStream=_stream){
+            closeableStream.filter(this::filterLength)
+                            .flatMap(this::splitPath)
+                            .forEach(this::append);
+        }
     }
 
     /**

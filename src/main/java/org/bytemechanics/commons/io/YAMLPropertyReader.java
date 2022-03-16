@@ -409,6 +409,18 @@ public class YAMLPropertyReader extends FilterReader {
                         }
                         return this.propertyBuffer.poll();
                     }
-                }, Spliterator.ORDERED | Spliterator.NONNULL | Spliterator.IMMUTABLE),false);
+                }, Spliterator.ORDERED | Spliterator.NONNULL | Spliterator.IMMUTABLE),false)
+                    .onClose(this::close);
     }
+
+    @Override
+    public void close() {
+        try{
+            super.close(); 
+        }catch(IOException e){
+            throw new UncheckedIOException(e);
+        }
+    }
+    
+    
 }
