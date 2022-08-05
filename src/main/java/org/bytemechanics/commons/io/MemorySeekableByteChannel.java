@@ -235,13 +235,13 @@ public class MemorySeekableByteChannel implements SeekableByteChannel {
                 }
             }
             while (reply < maxBytes) {
-                final long pendingSize = maxBytes - reply;
+                final int pendingSize = maxBytes - reply;
                 final byte[] chunk = this.chunks.get(newCurrentChunk);
                 final int chunkWritableLength = chunk.length - newCurrentChunkPosition;
                 if (pendingSize < chunkWritableLength) {
                     logger.log(Level.FINEST, "write::ending::{0} (pendingSize:{1},chunkWritableLength:{2})", new Object[]{reply, pendingSize, chunkWritableLength});
                     final int from = newCurrentChunkPosition;
-                    final int to = (int) (newCurrentChunkPosition + pendingSize);
+                    final int to = newCurrentChunkPosition + pendingSize;
                     final int writeLength = copy(_source, chunk, from, to);
                     reply += writeLength;
                     newPosition += writeLength;

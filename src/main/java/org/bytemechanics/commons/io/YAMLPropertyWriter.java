@@ -107,7 +107,7 @@ public class YAMLPropertyWriter extends FilterWriter{
         /** Flag to indicate if is list */
         public final boolean list;
         /** Flag to indicate that child write has been done */
-        public boolean started;
+        private boolean started;
 
         
         public YamlEntry(final int _depth,final String _key,final String _value) {
@@ -118,10 +118,17 @@ public class YAMLPropertyWriter extends FilterWriter{
                                 .filter(ky -> ky.charAt(ky.length()-1)==']')
                                 .map(ky -> ky.substring(0,ky.indexOf('[')))
                                 .orElse(_key);
-            this.list=(_key==null)? true : _key.charAt(_key.length()-1)==']';
+            this.list=(_key==null) || _key.charAt(_key.length()-1)==']';
             this.started=false;            
         }
 
+		public boolean isStarted() {
+			return started;
+		}
+		public void setStarted(boolean started) {
+			this.started = started;
+		}
+		
         public boolean isList(){
             return this.list;
         }
@@ -278,11 +285,11 @@ public class YAMLPropertyWriter extends FilterWriter{
                     final YamlEntry parentEntry=this.entryPathCache.get(parentDepth);
                     if(parentEntry!=null){
                         final boolean isLength=("length".equals(_yamlEntry.name))&&(parentEntry.key.endsWith("[*]"));
-                        int adjustedTab=(((parentEntry.isList())&&(!parentEntry.started))||(_yamlEntry.key==null))? tab-1 : tab;
+                        int adjustedTab=(((parentEntry.isList())&&(!parentEntry.isStarted()))||(_yamlEntry.key==null))? tab-1 : tab;
                         adjustedTab=(isLength)? adjustedTab-1 : adjustedTab;
                         final String finalName=(isLength)? parentEntry.name+"Length" : _yamlEntry.name;
-                        append(adjustedTab,finalName,_yamlEntry.value,((parentEntry.isList())&&(!parentEntry.started)&&(!isLength)));
-                        parentEntry.started=true;
+                        append(adjustedTab,finalName,_yamlEntry.value,((parentEntry.isList())&&(!parentEntry.isStarted())&&(!isLength)));
+                        parentEntry.setStarted(true);
                     }else{
                         append(tab,_yamlEntry.name,_yamlEntry.value,false);
                     }

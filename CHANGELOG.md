@@ -1,3 +1,16 @@
+# Version 1.9.1
+---
+
+* Fixed versioning (new features should be minor versions: 1.8.3 should have been 1.9.0)
+* Updated latest parent 2.2.3 supporting coverage report on sonarqube
+* Fixed several static analysis issues and codesmells:
+** https://sonarcloud.io/project/issues?issues=AYJs9Vf46yZAMkscV7gK&open=AYJs9Vf46yZAMkscV7gK&id=org.bytemechanics%3Acopy-commons
+** https://sonarcloud.io/project/issues?issues=AYJs9Vf46yZAMkscV7gL&open=AYJs9Vf46yZAMkscV7gL&id=org.bytemechanics%3Acopy-commons
+** https://sonarcloud.io/project/issues?issues=AYJs9Vgu6yZAMkscV7gQ&open=AYJs9Vgu6yZAMkscV7gQ&id=org.bytemechanics%3Acopy-commons
+** https://sonarcloud.io/project/issues?issues=AYJs9Vg86yZAMkscV7gU&open=AYJs9Vg86yZAMkscV7gU&id=org.bytemechanics%3Acopy-commons
+** https://sonarcloud.io/project/issues?issues=AYJs9Vg86yZAMkscV7gY&open=AYJs9Vg86yZAMkscV7gY&id=org.bytemechanics%3Acopy-commons
+
+
 # Version 1.8.3
 ---
 

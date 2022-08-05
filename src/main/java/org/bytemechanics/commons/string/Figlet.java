@@ -264,7 +264,7 @@ public class Figlet {
 						.map(this.aphabet::get)
 						.map(bannerChar -> bannerChar[0].length())
 						.map(bannerCharSize -> (_compressed)? bannerCharSize-2 : bannerCharSize)
-						.mapToInt(bannerCharSize -> (int)bannerCharSize)
+						.mapToInt(Integer::intValue)
 						.sum();
 	}
 

@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Queue;
@@ -216,7 +217,7 @@ public class YAMLPropertyReader extends FilterReader {
         Optional<Entry> reply=Optional.empty();
         
         try {
-            Optional<Entry> parsedLine=Optional.empty();
+            Optional<Entry> parsedLine;
             Optional<String> readLine;
             do{
                 readLine=Optional.ofNullable(((BufferedReader) this.in).readLine());
@@ -246,14 +247,14 @@ public class YAMLPropertyReader extends FilterReader {
                      */
                     class Key{
                         /** key name */
-                        String key=null;
+                        String internalKey=null;
                         /** key depth (equivalent to entry.tab) */
                         int depth=0;
                         /** key list counter to keep an index of the items in the key list */
                         int listCounter=-1;
                         
                         public Key(final String _key,final int _depth,final int _listCounter){
-                            this.key=_key;
+                            this.internalKey=_key;
                             this.depth=_depth;
                             this.listCounter=_listCounter;
                         }
@@ -263,7 +264,7 @@ public class YAMLPropertyReader extends FilterReader {
                          * @return true if key is not null
                          */
                         public boolean keyNonNull(){
-                            return this.key!=null;
+                            return this.internalKey!=null;
                         }
 
                         /**
@@ -272,7 +273,7 @@ public class YAMLPropertyReader extends FilterReader {
                          */
                         @Override
                         public String toString(){
-                            return (listCounter>-1)? String.join("",key,"[",String.valueOf(listCounter),"]") : key;
+                            return (listCounter>-1)? String.join("",internalKey,"[",String.valueOf(listCounter),"]") : internalKey;
                         }
                     }
                     /** Class only used to render length keys */
@@ -288,7 +289,7 @@ public class YAMLPropertyReader extends FilterReader {
                          */
                         @Override
                         public String toString(){
-                            return key.concat("[*]");
+                            return internalKey.concat("[*]");
                         }
                     }
                     
@@ -303,7 +304,7 @@ public class YAMLPropertyReader extends FilterReader {
                         if(appendListLength){
                             final Key current=keys.get(keys.size()-1);
                             if(current.listCounter>-1){
-                                Stream<Key> tempStream=Stream.<Key>concat(keys.stream().limit(keys.size()-1), Stream.of(new LengthKey(current.key,current.depth,-1)));
+                                Stream<Key> tempStream=Stream.<Key>concat(keys.stream().limit(((long)keys.size())-1l), Stream.of(new LengthKey(current.internalKey,current.depth,-1)));
                                 tempStream=Stream.concat(tempStream, Stream.of(new Key("length",0, -1)));
                                 final String lengthKey=writeKeyPath(tempStream);
                                 propertyBuffer.offer(new Property(lengthKey,String.valueOf(current.listCounter+1)));
@@ -400,14 +401,16 @@ public class YAMLPropertyReader extends FilterReader {
                         return !this.propertyBuffer.isEmpty();
                     }
 
-                    /** Return next element in spriterator */
+                    /** Return next element in spliterator */
                     @Override
                     public Property next() {
-                        
-                        if(this.propertyBuffer.isEmpty()){
+
+						if(this.propertyBuffer.isEmpty()){
                             read();
                         }
-                        return this.propertyBuffer.poll();
+						return Optional.ofNullable(this.propertyBuffer)
+										.map(Queue::poll)
+										.orElseThrow(NoSuchElementException::new);
                     }
                 }, Spliterator.ORDERED | Spliterator.NONNULL | Spliterator.IMMUTABLE),false)
                     .onClose(this::close);

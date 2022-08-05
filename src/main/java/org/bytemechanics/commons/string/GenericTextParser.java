@@ -103,7 +103,7 @@ public enum GenericTextParser{
 																				format.setParseBigDecimal(true);
 																				return format.parse(val);
 																			}))
-																	.map(decimal -> (BigDecimal)decimal),
+																	.map(BigDecimal.class::cast),
 							(value,config) -> value.map(new DecimalFormat(config.get(), new DecimalFormatSymbols(Locale.ENGLISH))::format)),
     STRING(String.class,(value,config) -> value.map(String::valueOf)),
 	/**

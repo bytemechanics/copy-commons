@@ -1,7 +1,6 @@
 package org.bytemechanics.commons.collections;
 
 import java.util.Collection;
-import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
