@@ -1,3 +1,9 @@
+# Version 1.8.3
+---
+
+* Add EnumerationSpliterator to easily stream Enumerations
+
+
 # Version 1.8.2
 ---
 
