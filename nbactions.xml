@@ -34,11 +34,5 @@
 		<activatedProfiles>
 		    <activatedProfile>sonar</activatedProfile>
 		</activatedProfiles>
-		<properties>
-			<!--sonar.host.url>https://sonarcloud.io</sonar.host.url-->
-			<!--sonar.projectKey>org.bytemechanics:copy-commons</sonar.projectKey-->
-			<!--sonar.organization>bytemechanics-github</sonar.organization-->
-			<!--sonar.login>219ee1739efe09bba41c7ffbea4094014b0c149d</sonar.login-->
-		</properties>
 	</action>
 </actions>
